@@ -38,6 +38,17 @@ body{
     top:40%;
     margin:-130px 0 0 -166px;
 }
+
+.box.registrar
+{
+    height:600px;
+    width:640px;
+    position:absolute;
+    left:40%;
+    top:25%;
+    margin:-130px 0 0 -166px;
+}
+
 .boxBody
 {
     background:#fefefe;
@@ -154,10 +165,10 @@ body{
 .btnLogin:focus,
 .btnLogin:active{
     background:#C4161C;
-    background:-moz-linear-gradient(top, #EAEAEA, #c14649);
-    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#c14649));
+    background:-moz-linear-gradient(top, #EAEAEA, #dbdbdb);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#dbdbdb));
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7acbed', EndColorStr='#badff3')";
-    color:#fff;
+    
 }
 .btnLogin:active
 {

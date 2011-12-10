@@ -9,26 +9,61 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
+        <link rel="stylesheet" type="text/css" href="CSS/structure.css">
         <title>MCVC</title>
     </head>
     <body>
-        <form action="RegistrarServlets" method="post">
-            <label>Email</label>
-            <input type="email" name="email" id="email"/><br/>
-            <label>Nombre</label>
-            <input type="text" name="nombre" id="nombre"/><br/>
-            <label>Primer Apellido</label>
-            <input type="text" name="1apellido" id="1apellido"/><br/>
-            <label>Segundo Apellido</label>
-            <input type="text" name="2apellido" id="2apellido"/><br/>
-            <label>Celular</label>
-            <input type="text" name="celular" id="celular"/><br/>
-            <label>Telefono</label>
-            <input type="text" name="telefono" id="telefono"/><br/>
-            <label>Contraseña</label>
-            <input type="password" name="pass" id="pass"/><br/>
-            <input type="submit" name="submit" id="submit"></input>
-            
+        <form class="box registrar" action="RegistrarServlet" method="POST">
+            <fieldset class="boxBody">
+                <table>
+                    <tr>
+                        <td>
+                            <label>Email</label>
+                            <input type="text" tabindex="1" placeholder="ejemplo@gmail.com" required name="email" id="email"/> 
+                        </td>
+                        <td style="padding-left: 10px;">
+                            <label>Celular</label>
+                            <input type="text" name="celular" id="celular" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" id="nombre" required/>
+                        </td> 
+                        <td style="padding-left: 10px;">
+                            <label>Telefono</label>
+                            <input type="text" name="telefono" id="telefono" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Primer Apellido</label>
+                            <input type="text" name="1apellido" id="1apellido" required/> 
+                        </td>
+                        <td style="padding-left: 10px;">
+                            <label>Contraseña</label>
+                            <input type="password" tabindex="2" required name="password" id="password" required/>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Segundo Apellido</label>
+                            <input type="text" name="2apellido" id="2apellido" required/>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </fieldset>
+            <footer>
+                <input type="submit" class="btnLogin" value="Guardar" tabindex="4">
+            </footer>
         </form>
+
+
     </body>
 </html>
