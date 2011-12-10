@@ -24,6 +24,8 @@
             </fieldset>
             <footer>
                 <label><a href="Registrar.jsp">Registrar</a></label>
+                <label><a href="Clase.jsp?maestro=m">Try Class as maestro</a></label>
+                <label><a href="Clase.jsp?maestro=a">Try Class as alumno</a></label>
                 <input type="submit" class="btnLogin" value="Login" tabindex="4">
             </footer>
         </form>

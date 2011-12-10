@@ -15,7 +15,7 @@
         <title>MCVC</title>
     </head>
     <body>
-        <form class="box registrar" action="RegistrarServlet" method="POST">
+        <form class="box registrar" action="RegistrarServlets" method="POST">
             <fieldset class="boxBody">
                 <table>
                     <tr>
@@ -45,7 +45,7 @@
                         </td>
                         <td style="padding-left: 10px;">
                             <label>Contraseña</label>
-                            <input type="password" tabindex="2" required name="password" id="password" required/>
+                            <input type="password" tabindex="2" required name="pass" id="pass" required/>
 
                         </td>
                     </tr>

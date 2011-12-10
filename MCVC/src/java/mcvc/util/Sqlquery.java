@@ -34,6 +34,7 @@ public class Sqlquery {
     }
 
     public TblUsuarios getUserinfo(String email) {
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
         TblUsuarios user = null;
         tblusuarios = null;
         try {
@@ -51,6 +52,7 @@ public class Sqlquery {
     }
     
     public void setMaestroClases(String email){
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
         tblsession = null;
         try {
             org.hibernate.Transaction tx = session.beginTransaction();
@@ -61,6 +63,7 @@ public class Sqlquery {
     }
 
     public String insertUser(String usrEmail, String usrNombre, String usrPrimerApellido, String usrSegundoApellido, String usrCelular, String usrTelefono, String usrPassword) {
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
         String  ok = "";
         org.hibernate.Transaction tx = null;
         try {
@@ -87,6 +90,7 @@ public class Sqlquery {
     }
     
     public String insertSession(String clsNombre,Date clsFechaCreacion,Date clsFechaSession,short clsCupo,String clsToken,String clsMaestro,short clsStatus,String clsSessionId){
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
         String ok="";
         org.hibernate.Transaction tx = null;
         try {
