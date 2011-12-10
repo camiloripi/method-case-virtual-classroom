@@ -9,43 +9,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
+        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
+        <link rel="stylesheet" type="text/css" href="CSS/structure.css">
+        <title>MCVC</title>
     </head>
     <body>
-        <form action="LoginServlet" method="post">
-            <div style="padding-left: 35%; padding-right: 35%; padding-top: 75px">
-                <table style="border: ridge">
-                    <tr>
-                        <td colspan="2" style="text-align: center; background-color: coral; color: white">
-                            Login
-                        </td> 
-                    </tr>
-                    <tr>
-                        <td>
-                            Usuario:
-                        </td>
-                        <td>
-                            <input type="text" name="user" id="user" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Contraseña:
-                        </td>
-                        <td>
-                            <input type="password" name="password" id="password"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: right" colspan="2">
-                            <input type="submit" value="Login" id="btEnviar"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </form>
+        <form class="box login" action="LoginServlet" method="post">
+	<fieldset class="boxBody">
+	  <label>Email</label>
+	  <input type="text" tabindex="1" placeholder="ejemplo@gmail.com" required name="user" id="user"/>
+	  <label>Contraseña</label>
+	  <input type="password" tabindex="2" required name="password" id="password"/>
+	</fieldset>
+	<footer>
+	  <label><a href="Registrar.jsp">Registrar</a></label>
+	  <input type="submit" class="btnLogin" value="Login" tabindex="4">
+	</footer>
+</form>
         
-        <a href="Registrar.jsp">Registrar</a>
-            
+       
+
     </body>
 </html>
