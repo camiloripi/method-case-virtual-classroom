@@ -13,26 +13,38 @@
         <title>JSP Page</title>
     </head>
     <body>
-        
+        Bienvenido <% out.print(request.getSession().getAttribute("usuario"));%>
         <table border="1">
             <tr>
                 <td><a href="CrearClase.jsp">CREAR CLASE</a></td>
-                <td>Mis Sessiones como Alumno</td>
+                <td>OPCION PARA REGISTRAR TOKEN</td>
             </tr>
             <tr>
                 <td>Mis Sessiones como Maestro</td>
                 <td>Mis Sessiones como Alumno</td>
             </tr>
             <tr><td>
-                
-                <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
-        <%for (int i = 0; i < face.getTblsession().size(); i++) {%>
-        <a href="LinkCamilo.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>&usuario=<%=request.getSession().getAttribute("usuario")%>">
-        <label><%=face.getTblsession().get(i).getClsNombre()%> - <%=face.getTblsession().get(i).getClsId()%></label></a><br></br>        <%}%>
-                row 2, cell 1</td>
-                <td>row 2, cell 2</td>
+
+                    <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
+                    <%if (face.getSession()!=null){for (int i = 0; i < face.getTblsession().size(); i++) {%>
+                    <a href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>">
+                        <label><%=face.getTblsession().get(i).getClsNombre()%> - <%=face.getTblsession().get(i).getClsId()%></label></a><br></br>
+                        <%}}%>
+                </td>
+
+
+
+                <td>
+                    <%face.setEstudianteClases((String) request.getSession().getAttribute("usuario"));%>
+
+                    <% if (face.getTblestudiantesxclase() == null) {
+                            out.print("ES NULL");
+                        } else {
+                            out.print("El size es: " + face.getTblestudiantesxclase().size());
+                        }%>
+                </td>
             </tr>
         </table>
-        
+
     </body>
 </html>

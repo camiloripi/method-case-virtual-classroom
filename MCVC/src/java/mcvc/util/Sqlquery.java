@@ -61,6 +61,15 @@ public class Sqlquery {
         } catch (Exception e) {
         }
     }
+    public void setEstudianteClases(String email){
+        this.tblestudiantesxclase=null;
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblEstudiantesxclase where TblUsuarios='"+email+"'");
+            tblestudiantesxclase = (List<TblEstudiantesxclase>) q.list();
+        } catch (Exception e) {
+        }
+    }
 
     public String insertUser(String usrEmail, String usrNombre, String usrPrimerApellido, String usrSegundoApellido, String usrCelular, String usrTelefono, String usrPassword) {
         this.session = HibernateUtil.getSessionFactory().getCurrentSession();
