@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Dec 9, 2011 4:38:12 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 10-dic-2011 9:34:57 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="mcvc.hibernate.clases.TblSession" table="tbl_session" catalog="mv_classroom">
         <id name="clsId" type="java.lang.Integer">
@@ -11,11 +11,11 @@
         <property name="clsNombre" type="string">
             <column name="CLS_Nombre" length="60" not-null="true" />
         </property>
-        <property name="clsFechaCreacion" type="date">
-            <column name="CLS_Fecha_Creacion" length="10" not-null="true" />
+        <property name="clsFechaCreacion" type="timestamp">
+            <column name="CLS_Fecha_Creacion" length="19" not-null="true" />
         </property>
-        <property name="clsFechaSession" type="date">
-            <column name="CLS_Fecha_Session" length="10" not-null="true" />
+        <property name="clsFechaSession" type="timestamp">
+            <column name="CLS_Fecha_Session" length="19" not-null="true" />
         </property>
         <property name="clsCupo" type="short">
             <column name="CLS_Cupo" not-null="true" />
@@ -29,14 +29,8 @@
         <property name="clsStatus" type="short">
             <column name="CLS_Status" not-null="true" />
         </property>
-        <property name="clsTokenMaestro" type="string">
-            <column name="CLS_Token_Maestro" not-null="true" />
-        </property>
         <property name="clsSessionId" type="string">
             <column name="CLS_Session_ID" not-null="true" />
-        </property>
-        <property name="clsTime" type="string">
-            <column name="CLS_Time" length="5" not-null="true" />
         </property>
         <set name="tblEstudiantesxclases" inverse="true">
             <key>

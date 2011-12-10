@@ -4,10 +4,8 @@
  */
 package mcvc.servlets;
 
-import com.opentok.api.API_Config;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,12 +21,7 @@ import com.opentok.exception.OpenTokException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import mcvc.hibernate.clases.HibernateUtil;
-import mcvc.hibernate.clases.TblSession;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import java.security.*;
+import mcvc.util.Sqlquery;
 
 /**
  *
@@ -75,7 +68,7 @@ public class Servlet_Home_1 extends HttpServlet {
             out.println(request.getParameter("txt_cupo"));
             //Imprimiendo
             
-            String sessionid,tokenmaestro;
+            String sessionid;
             
             DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -83,15 +76,17 @@ public class Servlet_Home_1 extends HttpServlet {
             out.println("NOW: "+dateFormat.format(dateNow));
                       
             Date dateSession = dateFormat.parse(fecha+" "+hora+":00");            
-            out.println(dateFormat.format(dateSession));
+            out.println("Session: "+dateFormat.format(dateSession));
             
             sessionid=generateSessionID();            
-            tokenmaestro=generateToKenMaestro(sessionid);
-            out.println(sessionid);
-            out.println(tokenmaestro);
+            out.println(sessionid+" : "+sessionid.length());
+                        
+            String token = nombre + usuario + dateNow.toString() + dateSession.toString();
+            String tokenClase = StringMD.getStringMessageDigest(token, "MD5");
             
             //out.println(dateFormat.format(date));
-            out.println(this.agregarbd(usuario, nombre, dateNow, dateSession, cupo, tokenmaestro, sessionid));
+            Sqlquery sql = new Sqlquery();
+            out.println(sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid));
             
             
             out.println("</html>");
@@ -107,54 +102,15 @@ public class Servlet_Home_1 extends HttpServlet {
         }
     }
     
-       public String generateSessionID() throws OpenTokException{
-        String ID="";
+       public String generateSessionID() throws OpenTokException {
+        String ID = "";
 
         //Generate a basic session
-       ID = sdk.create_session().session_id;
-        System.out.println(ID);      
+        ID = sdk.create_session().session_id;
+        System.out.println(ID);
         return ID;
-        
-    }
-       public String agregarbd(String usuario, String nombre,  Date fechacreacion, Date fechasession, short cupo, String tokenMaestro, String sessionid)
-       {
-           String error = "";
-     
-     Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-   
-  
-            org.hibernate.Transaction tx = null;
-            
-            
-          String token = nombre+usuario+fechacreacion+fechasession;
-         
-         String tokenClase = StringMD.getStringMessageDigest(token, "MD5");
-         
-         
 
-      try {
-          
-          
-       tx = session.beginTransaction();
-        TblSession tr = new  TblSession();
-        tr.setClsNombre(nombre);
-        tr.setClsCupo(cupo);
-        tr.setClsMaestro(usuario);
-        tr.setClsSessionId(sessionid);        
-        tr.setClsStatus((short)1);
-        tr.setClsFechaCreacion(fechacreacion);
-        tr.setClsFechaSession(fechasession);
-        tr.setClsToken(tokenClase);
-        tr.setClsTokenMaestro(tokenMaestro);
-       
-      session.save(tr);
-      tx.commit();
-      }catch ( HibernateException e ) {
-             if ( tx != null ){ tx.rollback(); error = e.getMessage();}
-         }  
-     
-     return error;
-       }
+    }
     
     public String generateToKenMaestro(String sessionID) throws OpenTokException{
         String token="";

@@ -86,7 +86,7 @@ public class Sqlquery {
         return ok;
     }
     
-    public String insertSession(String clsNombre,Date clsFechaCreacion,Date clsFechaSession,short clsCupo,String clsToken,String clsMaestro,short clsStatus,String clsTokenMaestro,String clsSessionId,String clsTime){
+    public String insertSession(String clsNombre,Date clsFechaCreacion,Date clsFechaSession,short clsCupo,String clsToken,String clsMaestro,short clsStatus,String clsSessionId){
         String ok="";
         org.hibernate.Transaction tx = null;
         try {
@@ -99,9 +99,7 @@ public class Sqlquery {
             tr.setClsToken(clsToken);
             tr.setClsMaestro(clsMaestro);
             tr.setClsStatus(clsStatus);
-            tr.setClsTokenMaestro(clsTokenMaestro);
             tr.setClsSessionId(clsSessionId);
-            tr.setClsTime(clsTime);
             
             session.save(tr);
             tx.commit();

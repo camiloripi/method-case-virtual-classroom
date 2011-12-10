@@ -1,5 +1,5 @@
 package mcvc.hibernate.clases;
-// Generated Dec 9, 2011 4:38:12 PM by Hibernate Tools 3.2.1.GA
+// Generated 10-dic-2011 9:34:54 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -20,16 +20,14 @@ public class TblSession  implements java.io.Serializable {
      private String clsToken;
      private String clsMaestro;
      private short clsStatus;
-     private String clsTokenMaestro;
      private String clsSessionId;
-     private String clsTime;
      private Set<TblEstudiantesxclase> tblEstudiantesxclases = new HashSet<TblEstudiantesxclase>(0);
 
     public TblSession() {
     }
 
 	
-    public TblSession(String clsNombre, Date clsFechaCreacion, Date clsFechaSession, short clsCupo, String clsToken, String clsMaestro, short clsStatus, String clsTokenMaestro, String clsSessionId, String clsTime) {
+    public TblSession(String clsNombre, Date clsFechaCreacion, Date clsFechaSession, short clsCupo, String clsToken, String clsMaestro, short clsStatus, String clsSessionId) {
         this.clsNombre = clsNombre;
         this.clsFechaCreacion = clsFechaCreacion;
         this.clsFechaSession = clsFechaSession;
@@ -37,11 +35,9 @@ public class TblSession  implements java.io.Serializable {
         this.clsToken = clsToken;
         this.clsMaestro = clsMaestro;
         this.clsStatus = clsStatus;
-        this.clsTokenMaestro = clsTokenMaestro;
         this.clsSessionId = clsSessionId;
-        this.clsTime = clsTime;
     }
-    public TblSession(String clsNombre, Date clsFechaCreacion, Date clsFechaSession, short clsCupo, String clsToken, String clsMaestro, short clsStatus, String clsTokenMaestro, String clsSessionId, String clsTime, Set<TblEstudiantesxclase> tblEstudiantesxclases) {
+    public TblSession(String clsNombre, Date clsFechaCreacion, Date clsFechaSession, short clsCupo, String clsToken, String clsMaestro, short clsStatus, String clsSessionId, Set<TblEstudiantesxclase> tblEstudiantesxclases) {
        this.clsNombre = clsNombre;
        this.clsFechaCreacion = clsFechaCreacion;
        this.clsFechaSession = clsFechaSession;
@@ -49,9 +45,7 @@ public class TblSession  implements java.io.Serializable {
        this.clsToken = clsToken;
        this.clsMaestro = clsMaestro;
        this.clsStatus = clsStatus;
-       this.clsTokenMaestro = clsTokenMaestro;
        this.clsSessionId = clsSessionId;
-       this.clsTime = clsTime;
        this.tblEstudiantesxclases = tblEstudiantesxclases;
     }
    
@@ -111,26 +105,12 @@ public class TblSession  implements java.io.Serializable {
     public void setClsStatus(short clsStatus) {
         this.clsStatus = clsStatus;
     }
-    public String getClsTokenMaestro() {
-        return this.clsTokenMaestro;
-    }
-    
-    public void setClsTokenMaestro(String clsTokenMaestro) {
-        this.clsTokenMaestro = clsTokenMaestro;
-    }
     public String getClsSessionId() {
         return this.clsSessionId;
     }
     
     public void setClsSessionId(String clsSessionId) {
         this.clsSessionId = clsSessionId;
-    }
-    public String getClsTime() {
-        return this.clsTime;
-    }
-    
-    public void setClsTime(String clsTime) {
-        this.clsTime = clsTime;
     }
     public Set<TblEstudiantesxclase> getTblEstudiantesxclases() {
         return this.tblEstudiantesxclases;
