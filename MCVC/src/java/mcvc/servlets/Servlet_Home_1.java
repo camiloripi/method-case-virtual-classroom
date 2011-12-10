@@ -44,16 +44,6 @@ public class Servlet_Home_1 extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Servlet_Home_1</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Servlet_Home_1 at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
             
             String usuario=(String)request.getSession().getAttribute("usuario");
             

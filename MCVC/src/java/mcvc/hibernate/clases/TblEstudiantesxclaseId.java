@@ -1,5 +1,5 @@
 package mcvc.hibernate.clases;
-// Generated 10-dic-2011 9:34:54 by Hibernate Tools 3.2.1.GA
+// Generated Dec 10, 2011 10:08:36 AM by Hibernate Tools 3.2.1.GA
 
 
 
