@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 9, 2011 4:38:12 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="mcvc.hibernate.clases.TblEstudiantesxclase" table="tbl_estudiantesxclase" catalog="mv_classroom">
+        <composite-id name="id" class="mcvc.hibernate.clases.TblEstudiantesxclaseId">
+            <key-property name="excEstudiante" type="string">
+                <column name="EXC_Estudiante" length="50" />
+            </key-property>
+            <key-property name="excClase" type="int">
+                <column name="EXC_Clase" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="tblSession" class="mcvc.hibernate.clases.TblSession" update="false" insert="false" fetch="select">
+            <column name="EXC_Clase" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tblUsuarios" class="mcvc.hibernate.clases.TblUsuarios" update="false" insert="false" fetch="select">
+            <column name="EXC_Estudiante" length="50" not-null="true" />
+        </many-to-one>
+        <property name="excNota" type="java.lang.Character">
+            <column name="EXC_Nota" length="1" />
+        </property>
+        <property name="excCantParticipaciones" type="java.lang.Integer">
+            <column name="EXC_Cant_Participaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

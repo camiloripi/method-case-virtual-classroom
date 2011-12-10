@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 9, 2011 4:38:12 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="mcvc.hibernate.clases.TblSession" table="tbl_session" catalog="mv_classroom">
+        <id name="clsId" type="java.lang.Integer">
+            <column name="CLS_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="clsNombre" type="string">
+            <column name="CLS_Nombre" length="60" not-null="true" />
+        </property>
+        <property name="clsFechaCreacion" type="date">
+            <column name="CLS_Fecha_Creacion" length="10" not-null="true" />
+        </property>
+        <property name="clsFechaSession" type="date">
+            <column name="CLS_Fecha_Session" length="10" not-null="true" />
+        </property>
+        <property name="clsCupo" type="short">
+            <column name="CLS_Cupo" not-null="true" />
+        </property>
+        <property name="clsToken" type="string">
+            <column name="CLS_Token" length="32" not-null="true" unique="true" />
+        </property>
+        <property name="clsMaestro" type="string">
+            <column name="CLS_Maestro" length="50" not-null="true" />
+        </property>
+        <property name="clsStatus" type="short">
+            <column name="CLS_Status" not-null="true" />
+        </property>
+        <property name="clsTokenMaestro" type="string">
+            <column name="CLS_Token_Maestro" not-null="true" />
+        </property>
+        <property name="clsSessionId" type="string">
+            <column name="CLS_Session_ID" not-null="true" />
+        </property>
+        <property name="clsTime" type="string">
+            <column name="CLS_Time" length="5" not-null="true" />
+        </property>
+        <set name="tblEstudiantesxclases" inverse="true">
+            <key>
+                <column name="EXC_Clase" not-null="true" />
+            </key>
+            <one-to-many class="mcvc.hibernate.clases.TblEstudiantesxclase" />
+        </set>
+    </class>
+</hibernate-mapping>

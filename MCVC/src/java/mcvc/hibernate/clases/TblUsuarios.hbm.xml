@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 9, 2011 4:38:12 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="mcvc.hibernate.clases.TblUsuarios" table="tbl_usuarios" catalog="mv_classroom">
+        <id name="usrEmail" type="string">
+            <column name="USR_Email" length="50" />
+            <generator class="assigned" />
+        </id>
+        <property name="usrNombres" type="string">
+            <column name="USR_Nombres" length="60" not-null="true" />
+        </property>
+        <property name="usrPrimerApellido" type="string">
+            <column name="USR_Primer_Apellido" length="60" not-null="true" />
+        </property>
+        <property name="usrCelular" type="string">
+            <column name="USR_Celular" length="15" />
+        </property>
+        <property name="usrTelefono" type="string">
+            <column name="USR_Telefono" length="15" />
+        </property>
+        <property name="usrPassword" type="string">
+            <column name="USR_Password" length="32" not-null="true" />
+        </property>
+        <property name="usrSegundoApellido" type="string">
+            <column name="USR_Segundo_Apellido" length="60" not-null="true" />
+        </property>
+        <property name="usrStatus" type="boolean">
+            <column name="USR_Status" not-null="true" />
+        </property>
+        <set name="tblLogs" inverse="true">
+            <key>
+                <column name="LOG_User_Id" length="50" not-null="true" />
+            </key>
+            <one-to-many class="mcvc.hibernate.clases.TblLog" />
+        </set>
+        <set name="tblEstudiantesxclases" inverse="true">
+            <key>
+                <column name="EXC_Estudiante" length="50" not-null="true" />
+            </key>
+            <one-to-many class="mcvc.hibernate.clases.TblEstudiantesxclase" />
+        </set>
+    </class>
+</hibernate-mapping>
