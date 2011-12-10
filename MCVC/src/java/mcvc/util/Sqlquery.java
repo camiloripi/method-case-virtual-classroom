@@ -49,6 +49,16 @@ public class Sqlquery {
         return user;
 
     }
+    
+    public void setMaestroClases(String email){
+        tblsession = null;
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblSession where clsMaestro='"+email+"'");
+            tblsession = (List<TblSession>) q.list();
+        } catch (Exception e) {
+        }
+    }
 
     public String insertUser(String usrEmail, String usrNombre, String usrPrimerApellido, String usrSegundoApellido, String usrCelular, String usrTelefono, String usrPassword) {
         String  ok = "";
