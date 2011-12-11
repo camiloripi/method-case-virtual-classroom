@@ -16,27 +16,44 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Crear Clase</h1>
-        <FORM action="Servlet_Home_1" method="post">
-            <table>
+        
+        <FORM action="Servlet_Home_1" method="POST" class="box crearclase">
+          
+            <fieldset class="boxBody">
+                
+              <table>
                 <tr>
-                    <td>Nombre de la Sesión:</td>
-                    <td><input type="text" value="" name="txt_sesion" /><td>
+                 
+                    <td>
+                    <label>Nombre de la Sesión:</label>
+                    <input type="text" value="" name="txt_sesion" required />
+                    <td>
                 </tr>
                 <tr>
-                    <td>Fecha Sesión:</td>
-                    <td><input type="date" value="" name="txt_fecha"/><td>
+                    
+                    <td>
+                    <label>Fecha Sesión:</label>
+                    <input type="date" value="" name="txt_fecha" requiredS/>
+                    <td>
                 </tr>
                 <tr>
-                    <td>Hora Sesión:</td>
-                    <td><input type="time" value="" name="txt_hora"/><td>
+                    <td>
+                    <label>Hora Sesión:</label>
+                    <input type="time" value="" name="txt_hora" required/>
+                    <td>
                 </tr>
                 <tr>
-                    <td>Cupo:</td>
-                    <td><input type="text" value="" name="txt_cupo"/><td>
+                    <td>
+                    <label>Cupo:</label>
+                    <input type="text" value="" name="txt_cupo" required/>
+                    <td>
                 </tr>
-            </table>
-            <input type="submit" name="btn_crear" value="Crear" /><br />
+            </table>  
+            </fieldset>
+            <footer>
+              <input type="submit" name="btn_crear" value="Crear" class="btnnormal" />  
+            </footer>
+            
         </FORM>
 
     </body>

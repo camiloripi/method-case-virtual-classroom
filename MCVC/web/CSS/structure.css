@@ -49,6 +49,15 @@ body{
     margin:-130px 0 0 -166px;
 }
 
+.box.crearclase{
+  height:600px;
+    width:332px;
+    position:absolute;
+    left:50%;
+    top:25%;
+    margin:-130px 0 0 -166px;  
+}
+
 .box.clase
 {
     height:530px;
@@ -131,6 +140,8 @@ body{
 }
 .box input[type=text],
 .box input[type=password],
+.box input[type=date],
+.box input[type=time],
 .txtField,
 .cjComboBox
 {
@@ -148,6 +159,8 @@ body{
 }
 .box input[type=text]:focus,
 .box input[type=password]:focus,
+.box input[type=date]:focus,
+.box input[type=time]:focus,
 .txtField:focus,
 .cjComboBox:focus
 {
