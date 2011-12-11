@@ -75,7 +75,8 @@
 
                     </td>
                     <td style="padding-left: 10px;">
-                        <label>Token:</label>
+                        <form action="RegistrarToken_Servlet" method="POST">
+                          <label>Token:</label>
                         <table >
                             <tr>
                                 <td>
@@ -83,7 +84,9 @@
                                 </td>
                                 <td><input style="margin-top: 5px;" type="submit" name="btn_registrar" value="Registrar Token" class="btnnormal" /></td>
                             </tr>
-                        </table>
+                        </table>  
+                        </form>
+                        
                         <div style="width: 100%; height: 220px; overflow: auto;">
                             <table style="width: 100%" >
                                 <tr>

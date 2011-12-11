@@ -42,6 +42,7 @@ public class RegistrarServlets extends HttpServlet {
             Sqlquery sqlquery = new Sqlquery();
             sqlquery.setcurrentSession();
             String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);
+            
             response.sendRedirect("index.jsp");
         } finally {            
             out.close();

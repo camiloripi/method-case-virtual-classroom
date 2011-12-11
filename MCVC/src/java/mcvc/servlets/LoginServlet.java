@@ -42,11 +42,14 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 if (user.getUsrPassword().equals(pass)) {
                     request.getSession().setAttribute("usuario", usr);
+                    sqlquery.closeSession();
                     response.sendRedirect("Home.jsp");
                 } else {
+                    sqlquery.closeSession();
                     response.sendRedirect("LoginFail.jsp");
                 }
             } else {
+                sqlquery.closeSession();
                 response.sendRedirect("LoginFail.jsp");
             }
 
