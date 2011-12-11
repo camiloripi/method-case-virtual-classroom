@@ -56,6 +56,59 @@ public class Sqlquery {
 
     }
     
+    public boolean  isMaestro(String email,String token){
+        boolean ismaestro = false;
+        tblsession = null;
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblSession where clsMaestro='"+email+"' and clsToken='"+token+"'");
+            tblsession = (List<TblSession>) q.list();
+        } catch (Exception e) {
+        }
+        if(tblsession.size()>0){
+            ismaestro=true;
+        }
+        
+        return ismaestro;
+       
+    }
+    
+    public String getSessionId(String Token){
+        String sessionid="";
+        tblsession = null;
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblSession where clsToken='"+Token+"'");
+            tblsession = (List<TblSession>) q.list();
+        } catch (Exception e) {
+        }
+        if(tblsession.size()>0){
+            sessionid = tblsession.get(0).getClsSessionId();
+        }
+        
+        return sessionid;
+    }
+    
+    public void changeClassStatus(String Token,String Status){
+        tblsession = null;
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblSession where  clsToken='"+Token+"'");
+            tblsession = (List<TblSession>) q.list();
+            if(tblsession.size()>0){
+                TblSession tblupdate = new TblSession();
+                tblupdate = tblsession.get(0);
+                int status = Integer.valueOf(Status);
+                short status_short = (short)status;
+                tblupdate.setClsStatus(status_short);
+                session.saveOrUpdate(tblupdate);
+                tx.commit();
+            }
+            
+        } catch (Exception e) {
+        }
+    }
+    
     public void setMaestroClases(String email){
         tblsession = null;
         try {

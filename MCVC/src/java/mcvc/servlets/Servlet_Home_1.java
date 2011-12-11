@@ -14,13 +14,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.opentok.api.API_Config;
-import com.opentok.api.OpenTokSDK;
-import com.opentok.api.constants.RoleConstants;
 import com.opentok.exception.OpenTokException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import mcvc.face.select.face_tokbox;
 import mcvc.util.Sqlquery;
 
 /**
@@ -30,7 +28,7 @@ import mcvc.util.Sqlquery;
 @WebServlet(name = "Servlet_Home_1", urlPatterns = {"/Servlet_Home_1"})
 public class Servlet_Home_1 extends HttpServlet {
 
-    OpenTokSDK sdk = new OpenTokSDK(API_Config.API_KEY, API_Config.API_SECRET); 
+    
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -68,9 +66,9 @@ public class Servlet_Home_1 extends HttpServlet {
             Date dateSession = dateFormat.parse(fecha+" "+hora+":00");            
             out.println("Session: "+dateFormat.format(dateSession));
             
-            sessionid=generateSessionID();            
-            out.println(sessionid+" : "+sessionid.length());
-                        
+            face_tokbox toxbox = new face_tokbox();
+            sessionid=toxbox.generateSessionID();
+            System.out.println(sessionid);            
             String token = nombre + usuario + dateNow.toString() + dateSession.toString();
             String tokenClase = StringMD.getStringMessageDigest(token, "MD5");
             
@@ -84,30 +82,16 @@ public class Servlet_Home_1 extends HttpServlet {
     
             
             
-        } catch (ParseException ex) {
-            Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (OpenTokException ex) {
+            Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             out.close();
         }
     }
     
-       public String generateSessionID() throws OpenTokException {
-        String ID = "";
 
-        //Generate a basic session
-        ID = sdk.create_session().session_id;
-        System.out.println(ID);
-        return ID;
-
-    }
-    
-    public String generateToKenMaestro(String sessionID) throws OpenTokException{
-        String token="";
-         token =  sdk.generate_token(sessionID,RoleConstants.MODERATOR);
-        return token;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
