@@ -7,12 +7,6 @@ package mcvc.servlets;
 import java.io.IOException; //Esta
 import java.io.PrintWriter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException; //Esta
 import javax.servlet.http.HttpServlet; //Esta
 import javax.servlet.http.HttpServletRequest; //Esta
@@ -43,6 +37,7 @@ public class LoginServlet extends HttpServlet {
             String usr = request.getParameter("user");
             String pass = request.getParameter("password");
             Sqlquery sqlquery = new Sqlquery();
+            sqlquery.setcurrentSession();
             TblUsuarios user = sqlquery.getUserinfo(usr);
             if (user != null) {
                 if (user.getUsrPassword().equals(pass)) {

@@ -49,6 +49,16 @@ body{
     margin:-130px 0 0 -166px;
 }
 
+.box.clase
+{
+    height:530px;
+    width:660px;
+    position:absolute;
+    left:40%;
+    top:25%;
+    margin:-130px 0 0 -166px;
+}
+
 .boxBody
 {
     background:#fefefe;
@@ -58,6 +68,31 @@ body{
     border-bottom:1px solid #dde0e8;
     padding:100px 20px;
     margin-bottom: 2px;
+}
+
+.boxBodyclase
+{
+    background:#fefefe;
+    background-image:url("../IMG/diamond_u.png");
+    background-repeat: no-repeat;
+    border-top:1px solid #dde0e8;
+    border-bottom:1px solid #dde0e8;
+    padding:100px 20px;
+    
+    margin-bottom: 2px;
+}
+
+.boxBodyclase #videoPanel{
+    height: 230px;
+    margin: 0 auto;
+    padding-left: 30%;
+    
+}
+
+
+
+.boxBodyclase a{
+    color: #000 !important;
 }
 
 .box footer
@@ -84,8 +119,13 @@ body{
     float:left;
     margin:4px 0 0;
 }
+
+.box footer #publishForm{
+    color: #fff;
+}
 .box footer input[type=checkbox]{
     vertical-align:sub;
+    
     *vertical-align:middle;
     margin-right:10px;
 }
@@ -159,6 +199,39 @@ body{
     margin-left:12px;
     float:right;
     padding:7px 21px;
+}
+
+.btnnormal{
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:15px;
+    background:#a1d8f0;
+    background:-moz-linear-gradient(top, #EAEAEA, #ffffff);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#ffffff));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#badff3', EndColorStr='#7acbed')";
+    border:1px solid #7db0cc !important;
+    cursor: pointer;
+    padding:11px 16px;
+    font:bold 11px/14px Verdana, Tahomma, Geneva;
+    text-shadow:rgba(0,0,0,0.2) 0 1px 0px; 
+    color:#000;
+    -moz-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    -webkit-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    margin-left:12px;
+    margin-bottom: 5px;
+    padding:7px 21px; 
+}
+
+.btnnormal:hover{
+    ackground:#C4161C;
+    background:-moz-linear-gradient(top, #EAEAEA, #dbdbdb);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#dbdbdb));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7acbed', EndColorStr='#badff3')";
+    
+}
+.btnnormal:active{
+   text-shadow:rgba(0,0,0,0.3) 0 -1px 0px; 
 }
 
 .btnLogin:hover,

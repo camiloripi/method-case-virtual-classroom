@@ -76,10 +76,11 @@ public class Servlet_Home_1 extends HttpServlet {
             
             //out.println(dateFormat.format(date));
             Sqlquery sql = new Sqlquery();
+            sql.setcurrentSession();
             out.println(sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid));
+            response.sendRedirect("Home.jsp");
             
-            
-            out.println("</html>");
+           
     
             
             

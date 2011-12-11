@@ -40,6 +40,7 @@ public class RegistrarServlets extends HttpServlet {
             String telefono = request.getParameter("telefono");
             String contraseña = request.getParameter("pass");            
             Sqlquery sqlquery = new Sqlquery();
+            sqlquery.setcurrentSession();
             String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);
             response.sendRedirect("index.jsp");
         } finally {            

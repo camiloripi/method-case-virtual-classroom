@@ -35,6 +35,7 @@ public class RegistrarToken_Servlet extends HttpServlet {
             String token=request.getParameter("txt_token");
             out.println("<html>"+token+"    ");
             Sqlquery sql = new Sqlquery();
+            sql.setcurrentSession();
             Integer id=sql.getiD(token);
             if(id!=null){
             out.println(id);
@@ -43,17 +44,6 @@ public class RegistrarToken_Servlet extends HttpServlet {
             }else{
             out.println("ERROR, EL TOKEN NO EXISTE");}
 
-            out.println("</html>");
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegistrarToken_Servlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegistrarToken_Servlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
         } finally {            
             out.close();
         }
