@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="CSS/reset.css">
         <link rel="stylesheet" type="text/css" href="CSS/structure.css"></link>
 
-        <title>JSP Page</title>
+        <title>MCVC</title>
     </head>
     <body>
         

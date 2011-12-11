@@ -6,136 +6,159 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="face" scope="page" class="mcvc.util.Sqlquery"/>
-  <%face.setcurrentSession();%>
+<%face.setcurrentSession();%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
+        <link rel="stylesheet" type="text/css" href="CSS/structure.css"></link>
+        <title>MCVC</title>
     </head>
     <body>
-        Bienvenido <% out.print(request.getSession().getAttribute("usuario"));%>
-        <table border="1">
-            <tr>
-                <td><a href="CrearClase.jsp">CREAR CLASE</a></td>
-                <td>XXX
+        <div class="box home">
+
+            <fieldset class="boxBody">
+                <table style="width: 100%">
+                    <thead>
+                    <th>
+                        <label>Mis Sessiones como Maestro</lable>
+                    </th>
+                    <th>
+                        <label>Mis Sessiones como Alumno</lable>
+                    </th>
+                    </thead>
+                    <tbody>
+                    <td>
+                        <div style="width: 100%; height: 300px; overflow: auto;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <label>Nombre de la Sesion</label> 
+                                    </td>
+                                    <td>
+                                        <label>Fecha</label>
+                                    </td>
+                                    <td>
+                                        <label>Estatus</label>
+                                    </td>
+                                </tr>
+                                <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
+                                <%if (face.getSession() != null) {
+                                        for (int i = 0; i < face.getTblsession().size(); i++) {
+                                %><tr class="trh"><td><label><a style="color: #000;"href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>"><%=face.getTblsession().get(i).getClsNombre()%></a></td></label>
+
+                                    <td><label><% out.print(face.getTblsession().get(i).getClsFechaSession());%></label></td>
+                                    <td>
+                                        <%if (face.getTblsession().get(i).getClsStatus() == 1) {%>
+                                        <label>Inactiva</label>       
+                                        <%}%>
+                                        <%if (face.getTblsession().get(i).getClsStatus() == 2) {%>
+                                        <label>Activa </label>     
+                                        <%}%>
+                                        <%if (face.getTblsession().get(i).getClsStatus() == 3) {%>
+                                        <label>En Proceso</label>       
+                                        <%}%>
+                                        <%if (face.getTblsession().get(i).getClsStatus() == 4) {%>
+                                        <label>Terminada</label>     
+                                        <%}%>
+                                    </td>
+                                </tr>
+                                <%
+                                        }
+                                    }%>
 
 
-                    <FORM action="RegistrarToken_Servlet" method="post">
-                        <table>
+                            </table>   
+                        </div>
+
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <label>Token:</label>
+                        <table >
                             <tr>
-                                <td>Token:</td>
-                                <td><input type="text" value="" name="txt_token" /><td>
-                                <td> <input type="submit" name="btn_registrar" value="Registrar Token" /></td>    
+                                <td>
+                                  <input type="text" value="" name="txt_token" />  
+                                </td>
+                                <td><input style="margin-top: 5px;" type="submit" name="btn_registrar" value="Registrar Token" class="btnnormal" /></td>
                             </tr>
                         </table>
-                        <br />
-                    </FORM>
-
-
-                    OPCION PARA REGISTRAR TOKEN
-
-
-                    XXX
-
-                </td>
-            </tr>
-            <tr>
-                <td>Mis Sessiones como Maestro</td>
-                <td>Mis Sessiones como Alumno</td>
-            </tr>
-            <tr><td>
-                    <table border="1" >
-                        <tr>
-                            <td>Nombre de la Sesion</td>
-                            <td>Fecha</td>
-                            <td>Status</td>
-                        </tr>
-                        <tr>
-                            <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
-                            <%if (face.getSession() != null) {
-                                    for (int i = 0; i < face.getTblsession().size(); i++) {
-                            %><td><a href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>">
-                                    <%=face.getTblsession().get(i).getClsNombre()%></a></td>
-                            <td><% out.print(face.getTblsession().get(i).getClsFechaSession());%></td>
-                            <td>
-                                <%if (face.getTblsession().get(i).getClsStatus() == 1) {%>
-                                Inactiva       
-                                <%}%>
-                                <%if (face.getTblsession().get(i).getClsStatus() == 2) {%>
-                                Activa      
-                                <%}%>
-                                <%if (face.getTblsession().get(i).getClsStatus() == 3) {%>
-                                En Proceso       
-                                <%}%>
-                                <%if (face.getTblsession().get(i).getClsStatus() == 4) {%>
-                                Terminada       
-                                <%}%>
-                            </td>
-                        </tr>
-                        <%
-                                }
-                            }%>
-
-
-                    </table>
+                        <div style="width: 100%; height: 220px; overflow: auto;">
+                            <table style="width: 100%" >
+                                <tr>
+                                    <td><label>Nombre de la Sesion</label></td>
+                                    <td><label>Fecha</label></td>
+                                    <td><label>Estatus</label></td>
+                                </tr>
 
 
 
+                                <%face.setEstudianteClases((String) request.getSession().getAttribute("usuario"));%>
+                                <% if (face.getTblestudiantesxclase() == null) {
+                                        out.print("ES NULL");
+                                    } else {
+                                %>
 
+                                <%for (int i = 0; i < face.getTblestudiantesxclase().size(); i++) {%>
+                                <tr class="trh"><td >
+                                        <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 1 || face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 4) {%>
+                                        <label><% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></label>
+                                        <%} else {%>
+                                        <label><a style="color: #000;" href="Clase.jsp?token=<% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsToken());%>"> <% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></a></label>
+                                        <%}%>
+                                    </td>
+                                    <td>
+                                        <label><%out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsFechaSession());%></label> 
+                                    </td>
+                                    <td>
+                                        <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 1) {%>
+                                        <label>Inactiva</label>      
+                                        <%}%>
+                                        <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 2) {%>
+                                        <label>Activa</label>    
+                                        <%}%>
+                                        <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 3) {%>
+                                        <label>En Proceso</label>       
+                                        <%}%>
+                                        <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 4) {%>
+                                        <label>Terminada</label>       
+                                        <%}%>
 
+                                    </td>
+                                </tr><%}
+                                    }%>
 
-                <td>
+                            </table>
+                                    
+                        </div>
+                           
+                        
+                    </td>
 
-                    <table border="1" >
-                        <tr>
-                            <td>Nombre de la Sesion</td>
-                            <td>Fecha</td>
-                            <td>Status</td>
-                        </tr>
+                    </tbody>
+                </table>
 
+            </fieldset> 
+                                    <footer style="padding-top: 12px !important;">
+                <table>
+                    <tr>
+                        <td style="padding-top: 10px;">
+                          <a href="CrearClase.jsp" class="btnnormal" style="color: #000;text-decoration: none">CREAR CLASE</a>  
+                        </td>
+                        <td>
+                            <label style="color: #fff; margin-left: 20px;font-size: 30px;">Bienvenido <% out.print(request.getSession().getAttribute("usuario"));%></label>
+                        </td>
+                    </tr>
+                </table>
+              
+            </footer>
 
-
-                        <%face.setEstudianteClases((String) request.getSession().getAttribute("usuario"));%>
-                        <% if (face.getTblestudiantesxclase() == null) {
-                                out.print("ES NULL");
-                            } else {
-                        %>
-                        <tr>
-                            <%for (int i = 0; i < face.getTblestudiantesxclase().size(); i++) {%>
-                            <td>
-                                <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 1 || face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 4) {%>
-                                <label><% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></label>
-                                <%}else{%>
-                                <a href="Clase.jsp?token=<% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsToken());%>"> <% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></a>
-                                <%}%>
-                            </td>
-                            <td>
-                                <%out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsFechaSession());%>
-                            </td>
-                            <td>
-                                <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 1) {%>
-                                Inactiva       
-                                <%}%>
-                                <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 2) {%>
-                                Activa      
-                                <%}%>
-                                <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 3) {%>
-                                En Proceso       
-                                <%}%>
-                                <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 4) {%>
-                                Terminada       
-                                <%}%>
-
-                            </td>
-                        </tr><%}}%>
-
-                    </table>
-
-
-                </td>
-            </tr>
         </table>
 
-    </body>
+
+    </div>
+
+    <%face.closeSession();%>
+</body>
 </html>

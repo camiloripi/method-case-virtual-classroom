@@ -58,6 +58,19 @@ body{
     margin:-130px 0 0 -166px;  
 }
 
+.box.home{
+    height:600px;
+    width:1000px;
+    position:absolute;
+    left:25%;
+    top:25%;
+    margin:-130px 0 0 -166px;
+}
+
+
+
+
+
 .box.clase
 {
     height:530px;
@@ -102,6 +115,14 @@ body{
 
 .boxBodyclase a{
     color: #000 !important;
+}
+
+.trh:hover{
+    background-color: #C4161C;
+    color: #fff !important;
+}
+.trh:hover a{
+    color: #fff !important;
 }
 
 .box footer

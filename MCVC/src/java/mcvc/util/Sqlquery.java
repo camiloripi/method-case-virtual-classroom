@@ -35,6 +35,10 @@ public class Sqlquery {
       this.session = HibernateUtil.getSessionFactory().getCurrentSession();  
     }
     
+    public void closeSession(){
+        session.close();
+    }
+    
     public TblUsuarios getUserinfo(String email) {
         TblUsuarios user = null;
         tblusuarios = null;
@@ -70,8 +74,10 @@ public class Sqlquery {
             mitemp = (List<TblSession>) q.list();
             if (mitemp.size()==1){
             return mitemp.get(0).getClsId();
-            }else{return null;}
+            }else{
+                return null;}
         } catch (Exception e) {
+            
             return null;
         }
     }
