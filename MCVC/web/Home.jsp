@@ -17,31 +17,90 @@
         <table border="1">
             <tr>
                 <td><a href="CrearClase.jsp">CREAR CLASE</a></td>
-                <td>OPCION PARA REGISTRAR TOKEN</td>
+                <td>XXX
+                    
+                    
+                    <FORM action="RegistrarToken_Servlet" method="post">
+            <table>
+                <tr>
+                    <td>Token:</td>
+                    <td><input type="text" value="" name="txt_token" /><td>
+                    <td> <input type="submit" name="btn_registrar" value="Registrar Token" /></td>    
+                </tr>
+            </table>
+           <br />
+        </FORM>
+                    
+                    
+                    OPCION PARA REGISTRAR TOKEN
+                
+                    
+                    XXX
+                
+                </td>
             </tr>
             <tr>
                 <td>Mis Sessiones como Maestro</td>
                 <td>Mis Sessiones como Alumno</td>
             </tr>
             <tr><td>
+<table border="1" >
+<tr>
+<td>Nombre de la Sesion</td>
+<td>Fecha</td>
+<td>Status</td>
+</tr>
+<tr>
+ <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
+ <%if (face.getSession() != null) {
+ for (int i = 0; i < face.getTblsession().size(); i++) {
+    %><td><a href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>">
+                        <%=face.getTblsession().get(i).getClsNombre()%></a></td>
+    <td><% out.print(face.getTblsession().get(i).getClsFechaSession()); %></td>
+    <td><% out.print("hola");%></td>
+    </tr>
+<% 
+ }
+                            }%>
 
-                    <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
-                    <%if (face.getSession()!=null){for (int i = 0; i < face.getTblsession().size(); i++) {%>
-                    <a href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>">
-                        <label><%=face.getTblsession().get(i).getClsNombre()%> - <%=face.getTblsession().get(i).getClsId()%></label></a><br></br>
-                        <%}}%>
-                </td>
 
-
-
+</table>
+                    
+                            
+                            
+                            
+                            
+                
                 <td>
-                    <%face.setEstudianteClases((String) request.getSession().getAttribute("usuario"));%>
+                    
+<table border="1" >
+<tr>
+<td>Nombre de la Sesion</td>
+<td>Fecha</td>
+<td>Status</td>
+</tr>
 
+
+
+                    <%face.setEstudianteClases((String) request.getSession().getAttribute("usuario"));%>
                     <% if (face.getTblestudiantesxclase() == null) {
                             out.print("ES NULL");
                         } else {
-                            out.print("El size es: " + face.getTblestudiantesxclase().size());
+                        %>
+                    <tr>
+<%    
+                        //out.print("El size es: " + face.getTblestudiantesxclase().size());
+                            for (int i = 0; i < face.getTblestudiantesxclase().size(); i++) {
+                                %><td><a href="Clase.jsp?token=<% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsToken());%>"> <% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></a></td><%
+                                %><td><%out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsFechaSession());%></td><%
+                                %><td><%out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus());%></td><%
+                            %></tr><%
+                            }
                         }%>
+
+</table>
+
+
                 </td>
             </tr>
         </table>

@@ -61,6 +61,48 @@ public class Sqlquery {
         } catch (Exception e) {
         }
     }
+    public Integer getiD(String token){
+        List<TblSession> mitemp;
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+        //tblsession = null;
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblSession where CLS_Token='"+token+"'");
+            mitemp = (List<TblSession>) q.list();
+            if (mitemp.size()==1){
+            return mitemp.get(0).getClsId();
+            }else{return null;}
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public String registrarToken(Integer id, String email) {
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String  ok = "";
+        org.hibernate.Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            TblEstudiantesxclase tr = new TblEstudiantesxclase();
+            TblEstudiantesxclaseId temporal=new TblEstudiantesxclaseId();
+            temporal.setExcClase(id);
+            temporal.setExcEstudiante(email);
+            tr.setId(temporal);
+            
+            tr.setExcCantParticipaciones(0);
+            tr.setExcNota('A');          
+            
+            session.save(tr);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ok = e.getMessage();
+        }
+
+        return ok;
+    }
+    
     public void setEstudianteClases(String email){
         this.session = HibernateUtil.getSessionFactory().getCurrentSession();
         this.tblestudiantesxclase=null;
