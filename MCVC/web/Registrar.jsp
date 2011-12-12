@@ -21,11 +21,11 @@
                     <tr>
                         <td>
                             <label>Email</label>
-                            <input type="text" tabindex="1" placeholder="ejemplo@gmail.com" required name="email" id="email"/> 
+                            <input type="email" tabindex="1" placeholder="ejemplo@gmail.com" required name="email" id="email"/> 
                         </td>
                         <td style="padding-left: 10px;">
                             <label>Celular</label>
-                            <input type="text" name="celular" id="celular" required/>
+                            <input type="number" name="celular" id="celular" required/>
                         </td>
                     </tr>
                     <tr>
@@ -35,7 +35,7 @@
                         </td> 
                         <td style="padding-left: 10px;">
                             <label>Telefono</label>
-                            <input type="text" name="telefono" id="telefono" required/>
+                            <input type="number" name="telefono" id="telefono" required/>
                         </td>
                     </tr>
                     <tr>

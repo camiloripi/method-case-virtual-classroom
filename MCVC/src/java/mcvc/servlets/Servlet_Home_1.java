@@ -45,30 +45,24 @@ public class Servlet_Home_1 extends HttpServlet {
             
             String usuario=(String)request.getSession().getAttribute("usuario");
             
-            out.println("<html>"+request.getParameter("txt_sesion"));
-            //Imprimiendo
             String nombre=request.getParameter("txt_sesion");
             String fecha=request.getParameter("txt_fecha");
             String hora=request.getParameter("txt_hora");
             out.println(fecha);
             out.println(hora);
             short cupo = Short.valueOf(request.getParameter("txt_cupo"));
-            out.println(request.getParameter("txt_cupo"));
-            //Imprimiendo
             
             String sessionid;
             
             DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
             Date dateNow = new java.util.Date(); 
-            out.println("NOW: "+dateFormat.format(dateNow));
                       
-            Date dateSession = dateFormat.parse(fecha+" "+hora+":00");            
-            out.println("Session: "+dateFormat.format(dateSession));
+            Date dateSession = dateFormat.parse(fecha+" "+hora+":00");   
             
             face_tokbox toxbox = new face_tokbox();
-            sessionid=toxbox.generateSessionID();
-            System.out.println(sessionid);            
+            sessionid=toxbox.generateSessionID();           
+                        
             String token = nombre + usuario + dateNow.toString() + dateSession.toString();
             String tokenClase = StringMD.getStringMessageDigest(token, "MD5");
             
@@ -76,12 +70,10 @@ public class Servlet_Home_1 extends HttpServlet {
             Sqlquery sql = new Sqlquery();
             sql.setcurrentSession();
             sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid);         
-            response.sendRedirect("TokenPage.jsp?token="+tokenClase+"&nombre="+nombre);
+            response.sendRedirect("TokenPage.jsp?token="+tokenClase+"&nombre="+nombre);            
             
-           
+            out.println("</html>");
     
-            
-            
         } catch (OpenTokException ex) {
             Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {

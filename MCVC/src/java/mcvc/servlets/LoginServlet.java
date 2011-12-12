@@ -39,8 +39,9 @@ public class LoginServlet extends HttpServlet {
             Sqlquery sqlquery = new Sqlquery();
             sqlquery.setcurrentSession();
             TblUsuarios user = sqlquery.getUserinfo(usr);
+            
             if (user != null) {
-                if (user.getUsrPassword().equals(pass)) {
+                if (user.getUsrPassword().equals(StringMD.getStringMessageDigest(pass, "MD5"))) {
                     request.getSession().setAttribute("usuario", usr);
                     sqlquery.closeSession();
                     response.sendRedirect("Home.jsp");

@@ -43,11 +43,15 @@
                                     <td>
                                         <label>Estatus</label>
                                     </td>
+                                    <td></td>
                                 </tr>
                                 <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
                                 <%if (face.getSession() != null) {
                                         for (int i = 0; i < face.getTblsession().size(); i++) {
-                                %><tr class="trh"><td><label><a style="color: #000;"href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>"><%=face.getTblsession().get(i).getClsNombre()%></a></td></label>
+                                %><tr class="trh">
+                                    <td>
+                                        <label><a style="color: #000;"href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>&maestro=m"><%=face.getTblsession().get(i).getClsNombre()%></a></label>
+                                    </td>
 
                                     <td><label><% out.print(face.getTblsession().get(i).getClsFechaSession());%></label></td>
                                     <td>
@@ -63,6 +67,9 @@
                                         <%if (face.getTblsession().get(i).getClsStatus() == 4) {%>
                                         <label>Terminada</label>     
                                         <%}%>
+                                    </td>
+                                    <td>
+                                        <label><a class="masito" href="TokenPage.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>&nombre=<%=face.getTblsession().get(i).getClsNombre()%>">MAS</a></label>
                                     </td>
                                 </tr>
                                 <%

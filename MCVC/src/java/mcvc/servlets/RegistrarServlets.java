@@ -38,7 +38,8 @@ public class RegistrarServlets extends HttpServlet {
             String apellido2 = request.getParameter("2apellido");
             String celular = request.getParameter("celular");
             String telefono = request.getParameter("telefono");
-            String contraseña = request.getParameter("pass");            
+            String contraseña = StringMD.getStringMessageDigest(request.getParameter("pass"),"MD5");
+            
             Sqlquery sqlquery = new Sqlquery();
             sqlquery.setcurrentSession();
             String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);

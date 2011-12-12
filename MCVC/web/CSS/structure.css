@@ -160,9 +160,11 @@ body{
     margin-right:10px;
 }
 .box input[type=text],
+.box input[type=email],
 .box input[type=password],
 .box input[type=date],
 .box input[type=time],
+.box input[type=number],
 .txtField,
 .cjComboBox
 {
@@ -179,9 +181,11 @@ body{
     display:block;
 }
 .box input[type=text]:focus,
+.box input[type=email]:focus,
 .box input[type=password]:focus,
 .box input[type=date]:focus,
 .box input[type=time]:focus,
+.box input[type=number]:focus,
 .txtField:focus,
 .cjComboBox:focus
 {
@@ -266,6 +270,14 @@ body{
 }
 .btnnormal:active{
    text-shadow:rgba(0,0,0,0.3) 0 -1px 0px; 
+}
+
+.masito
+{
+    background:#C4161C;
+    background:-moz-linear-gradient(top, #EAEAEA, #dbdbdb);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#dbdbdb));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7acbed', EndColorStr='#badff3')";
 }
 
 .btnLogin:hover,
