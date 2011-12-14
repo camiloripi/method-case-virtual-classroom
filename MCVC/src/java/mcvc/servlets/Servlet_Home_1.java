@@ -69,15 +69,20 @@ public class Servlet_Home_1 extends HttpServlet {
             //out.println(dateFormat.format(date));
             Sqlquery sql = new Sqlquery();
             sql.setcurrentSession();
-            sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid);         
+            String mes=sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid);         
+            if(!mes.equals("")){
+                response.sendRedirect("MsjError.jsp?msj=No Se Pudo crear la clase&topage=Home&text=Home");
+            }else{
             response.sendRedirect("TokenPage.jsp?token="+tokenClase+"&nombre="+nombre);            
+            }
             
-            out.println("</html>");
     
         } catch (OpenTokException ex) {
             Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("MsjError.jsp?msj=No Se Pudo crear la clase&topage=Home&text=Home");
         } catch (ParseException ex) {
             Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("MsjError.jsp?msj=No Se Pudo crear la clase&topage=Home&text=Home");
         } finally {            
             out.close();
         }

@@ -47,11 +47,11 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect("Home.jsp");
                 } else {
                     sqlquery.closeSession();
-                    response.sendRedirect("LoginFail.jsp");
+                    response.sendRedirect("MsjError.jsp?msj=Usuario o Contraseña incorrecta&topage=index&text=Login");
                 }
             } else {
                 sqlquery.closeSession();
-                response.sendRedirect("LoginFail.jsp");
+                response.sendRedirect("MsjError.jsp?msj=Usuario o Contraseña incorrecta&topage=index&text=Login");
             }
 
 

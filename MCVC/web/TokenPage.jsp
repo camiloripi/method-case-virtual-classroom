@@ -9,11 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
-        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
-        <link rel="stylesheet" type="text/css" href="CSS/structure.css"></link>
-        <title>MCVC</title>
+        <%if (session.getAttribute("usuario") == null) {
+                        response.sendRedirect("index.jsp");
+                    }%>
+        <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
     </head>
     <body>
         <div class="box login">

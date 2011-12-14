@@ -9,10 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
-        <link rel="stylesheet" type="text/css" href="CSS/structure.css">
-        <title>MCVC</title>
+        <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
     </head>
     <body>
         <form class="box registrar" action="RegistrarServlets" method="POST">

@@ -36,7 +36,10 @@ public class ChangeStatusServlet extends HttpServlet {
             String status = request.getParameter("status");
             Sqlquery sqlquery = new Sqlquery();
             sqlquery.setcurrentSession();
-            sqlquery.changeClassStatus(token, status);
+            String mjs= sqlquery.changeClassStatus(token, status);
+            if(!mjs.equals("")){
+                response.sendRedirect("MsjError.jsp?msj="+mjs+"&topage=Home&text=Home");
+            }
             
         } finally {            
             out.close();

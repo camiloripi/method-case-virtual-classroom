@@ -11,10 +11,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
-        <link rel="stylesheet" type="text/css" href="CSS/structure.css"></link>
-        <title>MCVC</title>
+        <%if (session.getAttribute("usuario") == null) {
+                        response.sendRedirect("index.jsp");
+                    }%>
+        <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
+        
     </head>
     <body>
         <div class="box home">
@@ -151,7 +152,7 @@
 
             </fieldset> 
                                     <footer style="padding-top: 12px !important;">
-                <table>
+                                        <table style="width: 100%">
                     <tr>
                         <td style="padding-top: 10px;">
                           <a href="CrearClase.jsp" class="btnnormal" style="color: #000;text-decoration: none">CREAR CLASE</a>  
@@ -159,9 +160,12 @@
                         <td>
                             <label style="color: #fff; margin-left: 20px;font-size: 30px;">Bienvenido <% out.print(request.getSession().getAttribute("usuario"));%></label>
                         </td>
+                        <td>
+                            <a class="btnLogin" style="text-decoration: none;color: #000" href="index.jsp" >Logout</a>
+                        </td>
                     </tr>
                 </table>
-              
+                         
             </footer>
 
         </table>

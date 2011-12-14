@@ -15,12 +15,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
-        <title>MCVC</title>
-        <link rel="stylesheet" type="text/css" href="CSS/reset.css">
-        <link rel="stylesheet" type="text/css" href="CSS/structure.css">
-        <script src="http://staging.tokbox.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
-        <script type="text/javascript" src="JS/jquery.min.js"></script> 
+        <%if (session.getAttribute("usuario") == null) {
+                response.sendRedirect("index.jsp");
+            }%>
+        <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
+        <script src="http://staging.tokbox.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>       
         <script type="text/javascript" charset="utf-8">
             var session = TB.initSession("<%=sessionId%>"); // Sample session ID. 
             var publisher;
@@ -34,44 +33,52 @@
             });
             
             function connect(){
-                session.connect(6642061, "<%=tokbox.generateToKenMaestro(sessionId)%>");
+                token ="";
+            <%if (ismaestro) {%>
+                token = "<%=tokbox.generateToKenMaestro(sessionId)%>";        
+            <%} else {%>
+                token="<%=tokbox.generateToKenAlumno(sessionId)%>";
+            <%}%>
+                    session.connect(6642061, token);
                 
-            }
+                }
             
-            function disconnect(){
-                session.disconnect();
-                changeStatus(4);
+                function disconnect(){
+                    session.disconnect();
+            <%if (ismaestro) {%>
+                    changeStatus(4);
+            <%}%>
                 
-            }
+                }
              
-            function startPublishing(){
-                if (!publisher) {              
-                    var containerDiv = document.createElement('div');
-                    containerDiv.className = "subscriberContainer";
-                    containerDiv.setAttribute('id', 'opentok_publisher');
-                    containerDiv.style.float = "left";
-                    var videoPanel = document.getElementById("videoPanel");
-                    videoPanel.appendChild(containerDiv);
-                    var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
-                    publisherDiv.setAttribute('id', 'replacement_div')
-                    containerDiv.appendChild(publisherDiv);
-                    var publisherProperties = new Object();
-                    if (document.getElementById("pubAudioOnly").checked) {
-                        publisherProperties.publishVideo = false;
-                    }
-                    if (document.getElementById("pubVideoOnly").checked) {
-                        publisherProperties.publishAudio = false;
-                    }
-                    publisher= session.publish(publisherDiv.id, publisherProperties);
-                    changeStatus(3);
-                    $("#pubControls").hide();
-                } 
-            }
+                function startPublishing(){
+                    if (!publisher) {              
+                        var containerDiv = document.createElement('div');
+                        containerDiv.className = "subscriberContainer";
+                        containerDiv.setAttribute('id', 'opentok_publisher');
+                        containerDiv.style.float = "left";
+                        var videoPanel = document.getElementById("videoPanel");
+                        videoPanel.appendChild(containerDiv);
+                        var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
+                        publisherDiv.setAttribute('id', 'replacement_div')
+                        containerDiv.appendChild(publisherDiv);
+                        var publisherProperties = new Object();
+                        if (document.getElementById("pubAudioOnly").checked) {
+                            publisherProperties.publishVideo = false;
+                        }
+                        if (document.getElementById("pubVideoOnly").checked) {
+                            publisherProperties.publishAudio = false;
+                        }
+                        publisher= session.publish(publisherDiv.id, publisherProperties);
+                        changeStatus(3);
+                        $("#pubControls").hide();
+                    } 
+                }
                         
-            function sessionConnectedHandler(event) {              
-                subscribeToStreams(event.streams);
-                $("#disconnectLink").show();
-                $("#connectLink").hide();
+                function sessionConnectedHandler(event) {              
+                    subscribeToStreams(event.streams);
+                    $("#disconnectLink").show();
+                    $("#connectLink").hide();
             <%if (ismaestro) {%>
                     $("#pubControls").show();
                     changeStatus(2);

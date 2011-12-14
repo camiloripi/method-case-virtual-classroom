@@ -42,7 +42,8 @@ public class RegistrarToken_Servlet extends HttpServlet {
             sql.registrarToken(id,(String) request.getSession().getAttribute("usuario"));
             response.sendRedirect("Home.jsp");
             }else{
-            out.println("ERROR, EL TOKEN NO EXISTE");}
+            response.sendRedirect("MsjError.jsp?msj=EL TOKEN NO EXISTE&topage=Home&text=Home");
+            }
 
         } finally {            
             out.close();

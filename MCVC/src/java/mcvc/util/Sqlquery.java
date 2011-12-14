@@ -89,8 +89,9 @@ public class Sqlquery {
         return sessionid;
     }
     
-    public void changeClassStatus(String Token,String Status){
+    public String changeClassStatus(String Token,String Status){
         tblsession = null;
+        String ok="";
         try {
             org.hibernate.Transaction tx = session.beginTransaction();
             Query q = session.createQuery("from TblSession where  clsToken='"+Token+"'");
@@ -106,7 +107,10 @@ public class Sqlquery {
             }
             
         } catch (Exception e) {
+            ok = "No se Pudo Cambiar de Estatus";
         }
+        
+        return ok;
     }
     
     public void setMaestroClases(String email){
@@ -191,7 +195,7 @@ public class Sqlquery {
             if (tx != null) {
                 tx.rollback();
             }
-            ok = e.getMessage();
+            ok = "No se Pudo Insertar el Usuario Intentelo de Nuevo";
         }
 
         return ok;

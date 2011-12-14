@@ -43,8 +43,11 @@ public class RegistrarServlets extends HttpServlet {
             Sqlquery sqlquery = new Sqlquery();
             sqlquery.setcurrentSession();
             String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);
-            
+            if(!mes.equals("")){
+                response.sendRedirect("MsjError.jsp?msj="+mes+"&topage=Registrar&text=Registrar");
+            }else{
             response.sendRedirect("index.jsp");
+            }
         } finally {            
             out.close();
         }
