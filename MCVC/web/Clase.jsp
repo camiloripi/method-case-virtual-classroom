@@ -106,6 +106,9 @@
                             }
                         }
                     }
+                    <%if(!ismaestro){%>
+                            window.location.replace("Home.jsp");
+                     <%}%>
                     
                 }
                 
