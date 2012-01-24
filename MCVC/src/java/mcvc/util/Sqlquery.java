@@ -6,12 +6,7 @@ package mcvc.util;
 
 import java.util.Date;
 import java.util.List;
-import mcvc.hibernate.clases.HibernateUtil;
-import mcvc.hibernate.clases.TblEstudiantesxclase;
-import mcvc.hibernate.clases.TblEstudiantesxclaseId;
-import mcvc.hibernate.clases.TblLog;
-import mcvc.hibernate.clases.TblSession;
-import mcvc.hibernate.clases.TblUsuarios;
+import mcvc.hibernate.clases.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -32,11 +27,13 @@ public class Sqlquery {
     public Sqlquery() {
     }
     public void setcurrentSession(){
-      this.session = HibernateUtil.getSessionFactory().getCurrentSession();  
+      this.session = HibernateUtil.getSessionFactory().getCurrentSession(); 
+      
     }
     
     public void closeSession(){
         session.close();
+        HibernateUtil.getSessionFactory().close(); 
     }
     
     public TblUsuarios getUserinfo(String email) {
@@ -97,7 +94,7 @@ public class Sqlquery {
             Query q = session.createQuery("from TblSession where  clsToken='"+Token+"'");
             tblsession = (List<TblSession>) q.list();
             if(tblsession.size()>0){
-                TblSession tblupdate = new TblSession();
+                TblSession tblupdate;
                 tblupdate = tblsession.get(0);
                 int status = Integer.valueOf(Status);
                 short status_short = (short)status;
