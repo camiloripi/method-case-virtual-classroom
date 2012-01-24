@@ -35,12 +35,12 @@
             function connect(){
                 token ="";
             <%if (ismaestro) {%>
-                token = "<%=tokbox.generateToKenMaestro(sessionId)%>";        
+                    token = "<%=tokbox.generateToKenMaestro(sessionId)%>";        
             <%} else {%>
-                token="<%=tokbox.generateToKenAlumno(sessionId)%>";
+                    token="<%=tokbox.generateToKenAlumno(sessionId)%>";
             <%}%>
                     session.connect(6642061, token);
-                
+                    
                 }
             
                 function disconnect(){
@@ -56,12 +56,12 @@
                         var containerDiv = document.createElement('div');
                         containerDiv.className = "subscriberContainer";
                         containerDiv.setAttribute('id', 'opentok_publisher');
-                        containerDiv.style.float = "left";
-                        var videoPanel = document.getElementById("videoPanel");
+                        var videoPanel = document.getElementById("maestro_div");
                         videoPanel.appendChild(containerDiv);
                         var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
                         publisherDiv.setAttribute('id', 'replacement_div')
                         containerDiv.appendChild(publisherDiv);
+            
                         var publisherProperties = new Object();
                         if (document.getElementById("pubAudioOnly").checked) {
                             publisherProperties.publishVideo = false;
@@ -106,9 +106,9 @@
                             }
                         }
                     }
-                    <%if(!ismaestro){%>
-                            window.location.replace("Home.jsp");
-                     <%}%>
+            <%if (!ismaestro) {%>
+                    window.location.replace("Home.jsp");
+            <%}%>
                     
                 }
                 
@@ -121,12 +121,11 @@
                             containerDiv.className = "subscriberContainer";
                             var divId = stream.streamId;    // Give the div the id of the stream as its id
                             containerDiv.setAttribute('id', 'streamContainer' + divId);
-                            var videoPanel = document.getElementById("videoPanel");
+                            var videoPanel = document.getElementById("alumno_div");
                             videoPanel.appendChild(containerDiv);
 
                             var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
                             subscriberDiv.setAttribute('id', divId);
-                            subscriberDiv.style.cssFloat = "top";
                             containerDiv.appendChild(subscriberDiv);
                             session.subscribe(stream, divId);
                         }
@@ -178,7 +177,24 @@
         <div class="box clase">
 
             <fieldset class="boxBodyclase">
-                <div id="videoPanel"></div> 
+                <div id="videoPanel">
+                    <table style="width: 600px;height: 200px">
+                        <tr>
+                            <td style="width: 50%">
+                                <div id="maestro_div">
+
+                                </div> 
+                            </td>
+                            <td style="width: 50%">
+                                <div id="alumno_div">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div> 
             </fieldset>
             <footer style="height: 102px !important;">
                 <div id="sessionControls">

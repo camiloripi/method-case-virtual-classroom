@@ -72,12 +72,9 @@ body{
 
 .box.clase
 {
-    height:530px;
-    width:660px;
-    position:absolute;
-    left:40%;
-    top:25%;
-    margin:-130px 0 0 -166px;
+    height:90%;
+    width:90%;
+    margin-top: 2%;
 }
 
 .boxBody
@@ -105,11 +102,24 @@ body{
 
 .boxBodyclase #videoPanel{
     height: 230px;
-    margin: 0 auto;
-    padding-left: 30%;
+    width: 600px;
     
 }
 
+.boxBodyclase #videoPanel #maestro_div{
+    height: 100%;
+    
+}
+
+.boxBodyclase #videoPanel #alumno_div{
+    height: 100%;
+    
+}
+
+.boxBodyclase #grid{
+    
+    
+}
 
 
 .boxBodyclase a{
@@ -155,7 +165,7 @@ body{
 .box footer input[type=checkbox]{
     vertical-align:sub;
     
-    *vertical-align:middle;
+    /*vertical-align:middle;*/
     margin-right:10px;
 }
 .box input[type=text],
@@ -261,7 +271,7 @@ body{
 }
 
 .btnnormal:hover{
-    ackground:#C4161C;
+    background:#C4161C;
     background:-moz-linear-gradient(top, #EAEAEA, #dbdbdb);
     background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#dbdbdb));
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7acbed', EndColorStr='#badff3')";
