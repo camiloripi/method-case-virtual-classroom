@@ -4,12 +4,20 @@
     Author     : Camilo
 --%>
 
+<%@page import="mcvc.hibernate.clases.TblSession"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="face" scope="page" class="mcvc.util.Sqlquery"/>
 <jsp:useBean id="tokbox" scope="page" class="mcvc.face.select.face_tokbox"/>
 <%face.setcurrentSession();%>
 <%boolean ismaestro = face.isMaestro((String) request.getSession().getAttribute("usuario"), request.getParameter("token"));%>
 <%String sessionId = face.getSessionId(request.getParameter("token"));%>
+<%TblSession tblsession = face.getTblsession().get(0);%>
+<%int cupos = tblsession.getClsCupo();%>
+<%int n = 1;%>
+
+<%while ((n * n) < cupos) {%>
+<%n++;
+    }%>
 
 <!DOCTYPE html>
 <html>
@@ -26,6 +34,7 @@
             session.addEventListener("sessionConnected", sessionConnectedHandler);
             session.addEventListener("streamCreated", streamCreatedHandler);
             session.addEventListener("streamDestroyed", streamDestroyedHandler);
+            session.addEventListener("connectionCreated", connectionCreatedHandler);
             // OpenTok sample API key and sample token string. 
             $(document).ready(function() {
                 $("#disconnectLink").hide();
@@ -69,6 +78,9 @@
                         if (document.getElementById("pubVideoOnly").checked) {
                             publisherProperties.publishAudio = false;
                         }
+                        
+                        publisherProperties.width=200;
+                        publisherProperties.height=200;
                         publisher= session.publish(publisherDiv.id, publisherProperties);
                         changeStatus(3);
                         $("#pubControls").hide();
@@ -166,6 +178,25 @@
                     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                     xmlhttp.send("token=<%=request.getParameter("token")%>&status="+status);
                 }
+                
+                function connectionCreatedHandler(event) {
+                      <%if (ismaestro) {%> 
+                         var row = $("#row").val();
+                         var col = $("#col").val();
+                         $("#alu_"+row+"_"+col).attr("style","background-color: #000");
+                         var n = $("#n").val();
+                         col++;
+                         if(col >= n-1){
+                             $("#col").val(0);
+                             $("#row").val(row + 1);
+                         }else{
+                            $("#col").val(col); 
+                         }
+                         
+                      <%}%>
+                   
+                   
+                }
             
             
             
@@ -178,7 +209,7 @@
 
             <fieldset class="boxBodyclase">
                 <div id="videoPanel">
-                    <table style="width: 600px;height: 200px">
+                    <table style="width: 400px;height: 200px">
                         <tr>
                             <td style="width: 50%">
                                 <div id="maestro_div">
@@ -191,31 +222,57 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                        <table style="width: 200px;height: 200px" >
+                            <%for (int i = 0; i < n; i++) {%>
+                            <tr>
+                                <%for (int j = 0; j < n; j++) {%>
+                                <td style="border: 1px solid #000" id="alu_<%=String.valueOf(i)+"_"+String.valueOf(j)%>"></td>
+                                <%}%>
+
+                            </tr>
+                            <%}%>
+                        </table>
+
+                        </tr>
                     </table>
 
 
                 </div> 
             </fieldset>
-            <footer style="height: 102px !important;">
-                <div id="sessionControls">
-                    <input type="button" class="btnnormal" value="Connect" id ="connectLink" onClick="connect()" />
-                    <input type="button" class="btnnormal" value="Leave" id ="disconnectLink" onClick="disconnect()" />
-                </div>
+            <footer >
+                <table>
+                    <tr>
+                        <td>
+                            <div id="sessionControls">
+                                <input type="button" class="btnnormal" value="Connect" id ="connectLink" onClick="connect()" />
+                                <input type="button" class="btnnormal" value="Leave" id ="disconnectLink" onClick="disconnect()" />
+                            </div> 
+                        </td>
+                        <td>
+                            <div id ="pubControls">
+                                <form id="publishForm"> 
+                                    <input type="button" class="btnnormal" value="Start Publishing" onClick="startPublishing()" />
+                                    <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
+                                    <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
+                                    <input type="radio" id="pubVideoOnly" name="pubRad" />&nbsp;Video-only
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
 
-                <div id ="pubControls">
-                    <form id="publishForm"> 
-                        <input type="button" class="btnnormal" value="Start Publishing" onClick="startPublishing()" />
-                        <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
-                        <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
-                        <input type="radio" id="pubVideoOnly" name="pubRad" />&nbsp;Video-only
-                    </form>
-                </div>
+                </table>
+
+
+
             </footer>
 
 
 
         </div>
 
-
+                        <input type="hidden" id="row" value="0"/>
+                        <input type="hidden" id="col" value="0"/>
+                        <input type="hidden" id="n" value="<%=n%>"/>
     </body>
 </html>

@@ -4,6 +4,7 @@
     Author     : Eliazar Melendez
 --%>
 
+<%@page import="mcvc.util.static_shock"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,6 +12,7 @@
         <%session.setAttribute("usuario",null);%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
+
     </head>
     <body>
         <form class="box login" action="LoginServlet" method="post">

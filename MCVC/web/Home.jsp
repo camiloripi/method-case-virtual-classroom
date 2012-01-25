@@ -14,6 +14,8 @@
         <%if (session.getAttribute("usuario") == null) {
                         response.sendRedirect("index.jsp");
                     }%>
+                    
+                    
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
         
     </head>
