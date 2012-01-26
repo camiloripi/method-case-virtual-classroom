@@ -4,6 +4,7 @@
     Author     : Camilo
 --%>
 
+<%@page import="mcvc.hibernate.clases.TblUsuarios"%>
 <%@page import="mcvc.hibernate.clases.TblSession"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="face" scope="page" class="mcvc.util.Sqlquery"/>
@@ -12,6 +13,7 @@
 <%boolean ismaestro = face.isMaestro((String) request.getSession().getAttribute("usuario"), request.getParameter("token"));%>
 <%String sessionId = face.getSessionId(request.getParameter("token"));%>
 <%TblSession tblsession = face.getTblsession().get(0);%>
+<%TblUsuarios tblUsuarios = face.getUserinfo((String) request.getSession().getAttribute("usuario"));%>
 <%int cupos = tblsession.getClsCupo();%>
 <%int n = 1;%>
 
@@ -42,12 +44,15 @@
             });
             
             function connect(){
+               
+                
                 token ="";
             <%if (ismaestro) {%>
-                    token = "<%=tokbox.generateToKenMaestro(sessionId)%>";        
+                    token ="<%=tokbox.generateToKenMaestro(sessionId, tblUsuarios)%>";        
             <%} else {%>
-                    token="<%=tokbox.generateToKenAlumno(sessionId)%>";
+                    token="<%=tokbox.generateToKenAlumno(sessionId, tblUsuarios)%>";
             <%}%>
+              
                     session.connect(6642061, token);
                     
                 }
@@ -87,7 +92,7 @@
                     } 
                 }
                         
-                function sessionConnectedHandler(event) {              
+                function sessionConnectedHandler(event) {
                     subscribeToStreams(event.streams);
                     $("#disconnectLink").show();
                     $("#connectLink").hide();
@@ -95,7 +100,7 @@
                     $("#pubControls").show();
                     changeStatus(2);
             <%}%>
-                
+                    alert(session.connection.data);
                 
                 }
 			
@@ -180,23 +185,69 @@
                 }
                 
                 function connectionCreatedHandler(event) {
-                      <%if (ismaestro) {%> 
-                         var row = $("#row").val();
-                         var col = $("#col").val();
-                         $("#alu_"+row+"_"+col).attr("style","background-color: #000");
-                         var n = $("#n").val();
-                         col++;
-                         if(col >= n-1){
-                             $("#col").val(0);
-                             $("#row").val(row + 1);
-                         }else{
-                            $("#col").val(col); 
-                         }
+            <%if (ismaestro) {%> 
+                    
+                    var row = 0;
+                    var col = 0;
+                    var n = $("#n").val();
+                    alert(event.connections.length);
+                    for(var j=0;j<event.connections.length;j++){
+                        var connectiondata = getConnectionData(event.connections[j]);
+                        if($("#alu_"+row+"_"+col+" .email").val()!= "" ){
+                            alert("es diferente de vacio");
+                            if($("#alu_"+row+"_"+col+" .email").val()== connectiondata[0]){
+                                col++;
+                                
+                                alert("es igual al campo alctual");
+                            }else{
+                                col++;
+                                if(col >= n-1){
+                                    col =0
+                                    row++;
+                                }
+                                alert("es diferente al campo alctual");
+                                $("#alu_"+row+"_"+col).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");                       
+                                $("#alu_"+row+"_"+col+" .email").val(connectiondata[0]);
+                                $("#alu_"+row+"_"+col+" .username").val(connectiondata[1]);
+                                $("#alu_"+row+"_"+col+" .pa").val(connectiondata[2]);
+                                $("#alu_"+row+"_"+col+" .sa").val(connectiondata[3]);
+                                $("#alu_"+row+"_"+col+" .telefono").val(connectiondata[4]);
+                                $("#alu_"+row+"_"+col+" .celular").val(connectiondata[5]);
+                        
+                                col++; 
+                            }
+                        }else{
+                            $("#alu_"+row+"_"+col).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");                       
+                            $("#alu_"+row+"_"+col+" .email").val(connectiondata[0]);
+                            $("#alu_"+row+"_"+col+" .username").val(connectiondata[1]);
+                            $("#alu_"+row+"_"+col+" .pa").val(connectiondata[2]);
+                            $("#alu_"+row+"_"+col+" .sa").val(connectiondata[3]);
+                            $("#alu_"+row+"_"+col+" .telefono").val(connectiondata[4]);
+                            $("#alu_"+row+"_"+col+" .celular").val(connectiondata[5]);
+                        
+                            col++;
+                        
+                        }
+                        
+                        
+                        if(col >= n-1){
+                            col =0
+                            row++;
+                        }
+                        
+                    }
                          
-                      <%}%>
+            <%}%>
                    
                    
                 }
+                          
+                function getConnectionData(connection) {
+			
+                    var connectionData = connection.data.split(',')
+                        
+                    return connectionData;
+		}
             
             
             
@@ -222,21 +273,74 @@
                                 </div>
                             </td>
                         </tr>
+                        
+                    </table>
+                    <table>
                         <tr>
-                        <table style="width: 200px;height: 200px" >
+                            <td>
+                                <table style="width: 200px;height: 200px" >
                             <%for (int i = 0; i < n; i++) {%>
                             <tr>
                                 <%for (int j = 0; j < n; j++) {%>
-                                <td style="border: 1px solid #000" id="alu_<%=String.valueOf(i)+"_"+String.valueOf(j)%>"></td>
+                                <td style="border: 1px solid #000;" id="alu_<%=String.valueOf(i) + "_" + String.valueOf(j)%>">
+                                    <input type="hidden" class="email" value=""/>
+                                    <input type="hidden" class="username" value=""/>
+                                    <input type="hidden" class="pa" value=""/>
+                                    <input type="hidden" class="sa" value=""/>
+                                    <input type="hidden" class="telefono" value=""/>
+                                    <input type="hidden" class="celular" value=""/>
+                                </td>
                                 <%}%>
 
                             </tr>
                             <%}%>
                         </table>
-
+                                
+                            </td>
+                            <td>
+                                <table style="width: 200px;height: 200px; border: 1px solid #000">
+                                    <tr>
+                                        <td>Nombre</td>
+                                        <td>
+                                            <label id="nombre"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Primer Apellido</td>
+                                        <td>
+                                            <label id="pr_ape"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Segundo Apellido</td>
+                                        <td>
+                                            <label id="sg_ape"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Correro</td>
+                                        <td>
+                                            <label id="correo"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Telefono</td>
+                                        <td>
+                                            <label id="Telefono"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Celular</td>
+                                        <td>
+                                            <label id="Celular"></label>
+                                        </td>
+                                    </tr>
+                                </table>                              
+                            </td>
+                      
                         </tr>
                     </table>
-
+                    
 
                 </div> 
             </fieldset>
@@ -271,8 +375,6 @@
 
         </div>
 
-                        <input type="hidden" id="row" value="0"/>
-                        <input type="hidden" id="col" value="0"/>
-                        <input type="hidden" id="n" value="<%=n%>"/>
+        <input type="hidden" id="n" value="<%=n%>"/>
     </body>
 </html>
