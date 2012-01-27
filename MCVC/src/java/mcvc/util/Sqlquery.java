@@ -27,13 +27,12 @@ public class Sqlquery {
     public Sqlquery() {
     }
     public void setcurrentSession(){
-      this.session = HibernateUtil.getSessionFactory().getCurrentSession(); 
+      this.session = HibernateUtil.getSessionFactory().openSession(); 
       
     }
     
     public void closeSession(){
         session.close();
-        HibernateUtil.getSessionFactory().close(); 
     }
     
     public TblUsuarios getUserinfo(String email) {
@@ -62,7 +61,7 @@ public class Sqlquery {
             tblsession = (List<TblSession>) q.list();
         } catch (Exception e) {
         }
-        if(tblsession.size()>0){
+        if(tblsession.size() > 0){
             ismaestro=true;
         }
         

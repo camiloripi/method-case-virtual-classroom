@@ -4,21 +4,23 @@
  */
 package mcvc.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mcvc.util.Sqlquery;
+import mcvc.util.SIGNALS;
 
 /**
  *
- * @author camilo
+ * @author Camilo-Rivera
  */
-@WebServlet(name = "RegistrarServlets", urlPatterns = {"/RegistrarServlets"})
-public class RegistrarServlets extends HttpServlet {
+public class ServletSiganlR extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -34,28 +36,26 @@ public class RegistrarServlets extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        Sqlquery sqlquery = new Sqlquery();
-            sqlquery.setcurrentSession();
         try {
-            String email = request.getParameter("email");
-            String nombre = request.getParameter("nombre");
-            String apellido1 = request.getParameter("1apellido");
-            String apellido2 = request.getParameter("2apellido");
-            String celular = request.getParameter("celular");
-            String telefono = request.getParameter("telefono");
-            String contraseña = StringMD.getStringMessageDigest(request.getParameter("pass"), "MD5");
+            String sessionId = request.getParameter("sessionId");
+            String reciver = request.getParameter("reciver");
+            ArrayList<SIGNALS> signals_arr = (ArrayList<SIGNALS>) request.getServletContext().getAttribute(sessionId);
+            ArrayList<SIGNALS> toreturn = new ArrayList<SIGNALS>();
+            for (int i = 0; i < signals_arr.size(); i++) {
+                if (signals_arr.get(i).isEstatus() && signals_arr.get(i).getReciber().equals(reciver)) {
+                    SIGNALS sig = signals_arr.get(i);
+                    sig.setEstatus(false);
+                    toreturn.add(sig);
+                    signals_arr.set(i, sig);
 
-            
-            String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);
-           
-            
-            if (!mes.equals("")) {
-                response.sendRedirect("MsjError.jsp?msj=" + mes + "&topage=Registrar&text=Registrar");
-            } else {
-                response.sendRedirect("index.jsp");
+                }
             }
+            request.getServletContext().setAttribute(sessionId, signals_arr);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<SIGNALS>>() {
+            }.getType();
+            out.print(gson.toJson(toreturn, listType));
         } finally {
-             sqlquery.closeSession();
             out.close();
         }
     }

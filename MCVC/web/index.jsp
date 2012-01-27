@@ -4,7 +4,6 @@
     Author     : Eliazar Melendez
 --%>
 
-<%@page import="mcvc.util.static_shock"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

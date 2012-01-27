@@ -6,19 +6,18 @@ package mcvc.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mcvc.util.Sqlquery;
+import mcvc.util.SIGNALS;
 
 /**
  *
- * @author camilo
+ * @author Camilo-Rivera
  */
-@WebServlet(name = "RegistrarServlets", urlPatterns = {"/RegistrarServlets"})
-public class RegistrarServlets extends HttpServlet {
+public class ServletSignals extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -34,28 +33,23 @@ public class RegistrarServlets extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        Sqlquery sqlquery = new Sqlquery();
-            sqlquery.setcurrentSession();
         try {
-            String email = request.getParameter("email");
-            String nombre = request.getParameter("nombre");
-            String apellido1 = request.getParameter("1apellido");
-            String apellido2 = request.getParameter("2apellido");
-            String celular = request.getParameter("celular");
-            String telefono = request.getParameter("telefono");
-            String contraseña = StringMD.getStringMessageDigest(request.getParameter("pass"), "MD5");
-
+            String sessionId = request.getParameter("sessionId");
+            String sender = request.getParameter("sender");
+            String reciver = request.getParameter("reciver");
+            int type = Integer.valueOf(request.getParameter("type"));
+            SIGNALS signal = new SIGNALS();
+            signal.setEstatus(true);
+            signal.setReciber(reciver);
+            signal.setSender(sender);
+            signal.setType(type);
+            ArrayList<SIGNALS>signals_arr = (ArrayList<SIGNALS>)request.getServletContext().getAttribute(sessionId);
+            signals_arr.add(signal);
+            request.getServletContext().setAttribute(sessionId,signals_arr);
             
-            String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);
-           
             
-            if (!mes.equals("")) {
-                response.sendRedirect("MsjError.jsp?msj=" + mes + "&topage=Registrar&text=Registrar");
-            } else {
-                response.sendRedirect("index.jsp");
-            }
-        } finally {
-             sqlquery.closeSession();
+            
+        } finally {            
             out.close();
         }
     }

@@ -3,5 +3,5 @@
 <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="CSS/reset.css">
 <link rel="stylesheet" type="text/css" href="CSS/structure.css">
-<script type="text/javascript" src="JS/jquery.min.js"></script> 
+<script type="text/javascript" src="JS/jquery-1.7.1.js"></script> 
 <title>MCVC</title>

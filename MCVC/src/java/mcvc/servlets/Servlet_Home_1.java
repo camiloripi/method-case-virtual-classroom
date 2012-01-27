@@ -4,9 +4,13 @@
  */
 package mcvc.servlets;
 
+import com.opentok.exception.OpenTokException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -14,10 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.opentok.exception.OpenTokException;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import mcvc.face.select.face_tokbox;
 import mcvc.util.Sqlquery;
 
@@ -41,6 +41,8 @@ public class Servlet_Home_1 extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        Sqlquery sql = new Sqlquery();
+        sql.setcurrentSession();
         try {
             
             String usuario=(String)request.getSession().getAttribute("usuario");
@@ -66,24 +68,27 @@ public class Servlet_Home_1 extends HttpServlet {
             String token = nombre + usuario + dateNow.toString() + dateSession.toString();
             String tokenClase = StringMD.getStringMessageDigest(token, "MD5");
             
-            //out.println(dateFormat.format(date));
-            Sqlquery sql = new Sqlquery();
-            sql.setcurrentSession();
-            String mes=sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid);         
+            
+            String mes=sql.insertSession(nombre, dateNow, dateSession, cupo, tokenClase, usuario, (short)1, sessionid); 
+            
             if(!mes.equals("")){
+                
                 response.sendRedirect("MsjError.jsp?msj=No Se Pudo crear la clase&topage=Home&text=Home");
             }else{
+                 
             response.sendRedirect("TokenPage.jsp?token="+tokenClase+"&nombre="+nombre);            
             }
             
     
         } catch (OpenTokException ex) {
             Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
+            
             response.sendRedirect("MsjError.jsp?msj=No Se Pudo crear la clase&topage=Home&text=Home");
         } catch (ParseException ex) {
             Logger.getLogger(Servlet_Home_1.class.getName()).log(Level.SEVERE, null, ex);
             response.sendRedirect("MsjError.jsp?msj=No Se Pudo crear la clase&topage=Home&text=Home");
-        } finally {            
+        } finally { 
+            sql.closeSession();
             out.close();
         }
     }

@@ -4,14 +4,12 @@
  */
 package mcvc.servlets;
 
-import java.io.IOException; //Esta
+import java.io.IOException;
 import java.io.PrintWriter;
-
-import javax.servlet.ServletException; //Esta
-import javax.servlet.http.HttpServlet; //Esta
-import javax.servlet.http.HttpServletRequest; //Esta
-import javax.servlet.http.HttpServletResponse; //Esta
-
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import mcvc.hibernate.clases.TblUsuarios;
 import mcvc.util.Sqlquery;
 
@@ -32,25 +30,24 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        Sqlquery sqlquery = new Sqlquery();
+        sqlquery.setcurrentSession();
         try {
 
             String usr = request.getParameter("user");
             String pass = request.getParameter("password");
-            Sqlquery sqlquery = new Sqlquery();
-            sqlquery.setcurrentSession();
+            
             TblUsuarios user = sqlquery.getUserinfo(usr);
             
             if (user != null) {
                 if (user.getUsrPassword().equals(StringMD.getStringMessageDigest(pass, "MD5"))) {
                     request.getSession().setAttribute("usuario", usr);
-                    sqlquery.closeSession();
                     response.sendRedirect("Home.jsp");
                 } else {
-                    sqlquery.closeSession();
                     response.sendRedirect("MsjError.jsp?msj=Usuario o Contraseña incorrecta&topage=index&text=Login");
                 }
             } else {
-                sqlquery.closeSession();
+                
                 response.sendRedirect("MsjError.jsp?msj=Usuario o Contraseña incorrecta&topage=index&text=Login");
             }
 
@@ -58,6 +55,7 @@ public class LoginServlet extends HttpServlet {
 
 
         } finally {
+            sqlquery.closeSession();
             out.close();
         }
     }

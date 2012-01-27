@@ -20,6 +20,14 @@
         <servlet-name>Servlet_Home_1</servlet-name>
         <servlet-class>mcvc.servlets.Servlet_Home_1</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletSignals</servlet-name>
+        <servlet-class>mcvc.servlets.ServletSignals</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletSiganlR</servlet-name>
+        <servlet-class>mcvc.servlets.ServletSiganlR</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>Servlet_Home_1</servlet-name>
         <url-pattern>/Servlet_Home_1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSignals</servlet-name>
+        <url-pattern>/ServletSignals</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSiganlR</servlet-name>
+        <url-pattern>/ServletSiganlR</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

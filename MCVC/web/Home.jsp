@@ -5,8 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="face" scope="page" class="mcvc.util.Sqlquery"/>
+<jsp:useBean id="face" scope="application" class="mcvc.util.Sqlquery"/>
 <%face.setcurrentSession();%>
+<%try{%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -174,7 +175,8 @@
 
 
     </div>
-
+                    <%}finally{%>
     <%face.closeSession();%>
+    <%}%>
 </body>
 </html>

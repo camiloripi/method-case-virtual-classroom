@@ -31,21 +31,22 @@ public class RegistrarToken_Servlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        Sqlquery sql = new Sqlquery();
+            sql.setcurrentSession();
         try {
             String token=request.getParameter("txt_token");
-            out.println("<html>"+token+"    ");
-            Sqlquery sql = new Sqlquery();
-            sql.setcurrentSession();
+            
             Integer id=sql.getiD(token);
             if(id!=null){
-            out.println(id);
             sql.registrarToken(id,(String) request.getSession().getAttribute("usuario"));
+            
             response.sendRedirect("Home.jsp");
             }else{
             response.sendRedirect("MsjError.jsp?msj=EL TOKEN NO EXISTE&topage=Home&text=Home");
             }
 
-        } finally {            
+        } finally {   
+            sql.closeSession();
             out.close();
         }
     }

@@ -31,17 +31,20 @@ public class ChangeStatusServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        Sqlquery sqlquery = new Sqlquery();
+        sqlquery.setcurrentSession();
         try {
             String token = request.getParameter("token");
             String status = request.getParameter("status");
-            Sqlquery sqlquery = new Sqlquery();
-            sqlquery.setcurrentSession();
+            
             String mjs= sqlquery.changeClassStatus(token, status);
+            
             if(!mjs.equals("")){
                 response.sendRedirect("MsjError.jsp?msj="+mjs+"&topage=Home&text=Home");
             }
             
-        } finally {            
+        } finally {
+            sqlquery.closeSession();
             out.close();
         }
     }
