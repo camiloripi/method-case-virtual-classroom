@@ -4,28 +4,37 @@
     Author     : Camilo
 --%>
 
+<%@page import="mcvc.face.select.face_tokbox"%>
+<%@page import="mcvc.util.Sqlquery"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="mcvc.util.SIGNALS"%>
 <%@page import="mcvc.hibernate.clases.TblUsuarios"%>
 <%@page import="mcvc.hibernate.clases.TblSession"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="face" scope="application" class="mcvc.util.Sqlquery"/>
-<jsp:useBean id="tokbox" scope="application" class="mcvc.face.select.face_tokbox"/>
+<%if (request.getParameter("token") != null) {%>
+<%Sqlquery face = new Sqlquery();%>
+<%face_tokbox tokbox = new face_tokbox();%>
 <%face.setcurrentSession();%>
-<%boolean ismaestro = face.isMaestro((String) request.getSession().getAttribute("usuario"), request.getParameter("token"));%>
+<%try {%>
+<%boolean ismaestro = face.isMaestro((String) session.getAttribute("usuario"), request.getParameter("token"));%>
+
 <%String sessionId = face.getSessionId(request.getParameter("token"));%>
 <%TblSession tblsession = face.getTblsession().get(0);%>
-<%TblUsuarios tblUsuarios = face.getUserinfo((String) request.getSession().getAttribute("usuario"));%>
+<%TblUsuarios tblUsuarios = face.getUserinfo((String) session.getAttribute("usuario"));%>
 <%String maestro = tblsession.getClsMaestro();%>
-<%face.closeSession();%>
 <%int cupos = tblsession.getClsCupo();%>
+
+
 <%int n = 1;%>
 
 <%while ((n * n) < cupos) {%>
 <%n++;
     }%>
+
+<%if (ismaestro) {%>
 <%ArrayList<SIGNALS> signals_arr = new ArrayList<SIGNALS>();%>
-<%request.getServletContext().setAttribute(sessionId, signals_arr);%>
+<%getServletContext().setAttribute(sessionId, signals_arr);%>
+<%}%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -50,6 +59,8 @@
                 $("#disconnectLink").hide();
                 $("#pubControls").hide();
                 $("#aluControls").hide();
+                $("#permitir_hablar").hide();
+                $("#parar_hablar").hide();
             });
             
             function connect(){
@@ -92,19 +103,21 @@
                         publisherProperties.width=200;
                         publisherProperties.height=200;
                         publisher= session.publish(publisherDiv.id, publisherProperties);
-                        changeStatus(3);
+                        
                         $("#pubControls").hide();
             <%if (!ismaestro) {%>
-                                    $("#dejar_de_hablar").show();
-                                    $("#levantar_mano").hide();
+                        $("#dejar_de_hablar").show();
+                        $("#levantar_mano").hide();
+            <%} else {%>
+                        changeStatus(3);
             <%}%>
-                                } 
-                            }
+                    } 
+                }
                         
-                            function sessionConnectedHandler(event) {
-                                subscribeToStreams(event.streams);
-                                $("#disconnectLink").show();
-                                $("#connectLink").hide();
+                function sessionConnectedHandler(event) {
+                    subscribeToStreams(event.streams);
+                    $("#disconnectLink").show();
+                    $("#connectLink").hide();
             <%if (ismaestro) {%>
                     $("#pubControls").show();
                     changeStatus(2);
@@ -114,76 +127,78 @@
             <%}%>
                    
                 
-                    }
+                }
 			
-                    function streamCreatedHandler(event) {
-                        subscribeToStreams(event.streams);
-                    }
+                function streamCreatedHandler(event) {
+                    subscribeToStreams(event.streams);
+                }
                 
-                    function streamDestroyedHandler(event) {
+                function streamDestroyedHandler(event) {
                    
-                        var publisherContainer = document.getElementById("opentok_publisher");
-                        var videoPanel = document.getElementById("videoPanel");
-                        for (i = 0; i < event.streams.length; i++) {
-                            var stream = event.streams[i];
-                            if (stream.connection.connectionId == session.connection.connectionId) {
-                                videoPanel.removeChild(publisherContainer);
-                            } else {
-                                var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
-                                if(streamContainerDiv) {
-                                    videoPanel = document.getElementById("videoPanel")
-                                    videoPanel.removeChild(streamContainerDiv);
-                                }
-            
+                    var publisherContainer = document.getElementById("opentok_publisher");
+                    var videoPanel = document.getElementById("videoPanel");
+                    for (i = 0; i < event.streams.length; i++) {
+                        var stream = event.streams[i];
+                        if (stream.connection.connectionId == session.connection.connectionId) {
+                            videoPanel.removeChild(publisherContainer);
+                        } else {
+                            var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
+                            if(streamContainerDiv) {
+                                videoPanel = document.getElementById("videoPanel")
+                                videoPanel.removeChild(streamContainerDiv);
                             }
+            
                         }
-                    
                     }
+                    
+                }
                 
 			
-                    function subscribeToStreams(streams) {
-                        for (i = 0; i < streams.length; i++) {
-                            var stream = streams[i];
-                            if (stream.connection.connectionId != session.connection.connectionId) {
-                                var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
-                                containerDiv.className = "subscriberContainer";
-                                var divId = stream.streamId;    // Give the div the id of the stream as its id
-                                containerDiv.setAttribute('id', 'streamContainer' + divId);
-                                var videoPanel = document.getElementById("alumno_div");
-                                videoPanel.appendChild(containerDiv);
-
-                                var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
-                                subscriberDiv.setAttribute('id', divId);
-                                containerDiv.appendChild(subscriberDiv);
-                                session.subscribe(stream, divId);
+                function subscribeToStreams(streams) {
+                    for (i = 0; i < streams.length; i++) {
+                        var stream = streams[i];
+                        if (stream.connection.connectionId != session.connection.connectionId) {
+                            var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
+                            containerDiv.className = "subscriberContainer";
+                            var divId = stream.streamId;    // Give the div the id of the stream as its id
+                            containerDiv.setAttribute('id', 'streamContainer' + divId);
+                            var videoPanel = document.getElementById("alumno_div");
+                            videoPanel.appendChild(containerDiv);
+                            var publisherProperties = new Object();
+                            publisherProperties.width=200;
+                            publisherProperties.height=200;
+                            var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
+                            subscriberDiv.setAttribute('id', divId);
+                            containerDiv.appendChild(subscriberDiv);
+                            session.subscribe(stream, divId,publisherProperties);
                             
-                            }
                         }
                     }
+                }
                 
-                    function changeStatus(status)
-                    {
-                        $.ajax({
-                            type: "POST",
-                            url: "ChangeStatusServlet",
-                            data: "token=<%=request.getParameter("token")%>&status="+status,
-                            success: function(){
-                                switch(status){
-                                    case 2 : alert("Se cambio el status a: Activa");
-                                        break;
-                                    case 3 : alert("Se cambio el status a: En Proceso");
-                                        break;
-                                    case 4 : alert("Se cambio el status a: Terminada");
-                                        window.location.replace("Home.jsp");
-                                        break;
+                function changeStatus(status)
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "ChangeStatusServlet",
+                        data: "token=<%=request.getParameter("token")%>&status="+status,
+                        success: function(){
+                            switch(status){
+                                case 2 : alert("Se cambio el status a: Activa");
+                                    break;
+                                case 3 : alert("Se cambio el status a: En Proceso");
+                                    break;
+                                case 4 : alert("Se cambio el status a: Terminada");
+                                    window.location.replace("Home.jsp");
+                                    break;
                                     
-                                }  
-                            }
-                        });
+                            }  
+                        }
+                    });
      
-                    }
+                }
                 
-                    function connectionCreatedHandler(event) {
+                function connectionCreatedHandler(event) {
             <%if (ismaestro) {%> 
                     
                     var row = 0;
@@ -267,7 +282,7 @@
                 
                 function connectionDestroyedHandler(event) {
                     
-                    
+            <%if (ismaestro) {%>
                     var row = 0;
                     var col = 0;
                     var n = $("#n").val();
@@ -288,6 +303,7 @@
                         
                         
                     }
+            <%}%>
                 }
             
                 function LevantarMano(){
@@ -303,11 +319,124 @@
                 }
             
                 function signalHandler(event) {
-                if(event.fromConnection.connectionId != session.connection.connectionId)
-                   var connectiondata = getConnectionData(event.fromConnection);
-                    alert("Signal received from connection: " +connectiondata[0]);
+                    if(event.fromConnection.connectionId != session.connection.connectionId){
+                        $.ajax({
+                            type: "POST",
+                            url: "ServletSiganlR",
+                            data: "sessionId=<%=sessionId%>&reciver=<%=tblUsuarios.getUsrEmail()%>",
+                            dataType: "json",
+                            success: function(data){
+                                if(data!=null){
+                                    var señales = typeof data != 'object' ? JSON.parse(data) : data;
+                                    for(var i=0;i<señales.length;i++){
+                                        if(señales[i].reciber == "<%=tblUsuarios.getUsrEmail()%>"){
+                                            if(señales[i].type== 1){
+                                                var id = fintd(señales[i].sender);
+                                                if(id != ""){
+                                                    $(id+" .permitir_participar").val("SI")
+                                       
+                                                    $(id).attr("style","background-color: #8dc700;border: 1px solid #000; cursor: pointer");
+                                                }
+                                       
+                                            }
+                                            if(señales[i].type == 2){
+                                                alert("me dieron permiso")
+                                                startPublishing();
+                                            }
+                                            if(señales[i].type == 3){
+                                                session.unpublish(publisher);
+                                                $("#dejar_de_hablar").hide();
+                                                $("#levantar_mano").show();
+                                            }
+                                        }
+                                   
+                                    }
+                                }  
+                            }
+                        });
+                    }
+                }
+                
+                function fintd(email){
+                    var n = $("#n").val();
+                    var id = ""
+                    
+                    for(var i =0;i<n;i++){
+                        for(var j=0;j<n;j++){
+                            id = "#alu_"+i+"_"+j;
+                            if( $(id+" .email").val() == email){
+                                return id;
+                            }
+                        }
+                    }
+                    return "";
                 }
             
+                function showinfo(id){
+                    $("#nombre").text($(id+" .username").val()); 
+                    $("#pr_ape").text($(id+" .pa").val()); 
+                    $("#sg_ape").text($(id+" .sa").val()); 
+                    $("#correo").text($(id+" .email").val()); 
+                    $("#Telefono").text($(id+" .telefono").val()); 
+                    $("#Celular").text($(id+" .celular").val());
+               
+                    if($(id+" .permitir_participar").val()=="SI"){
+                        $("#permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
+                        $("#permitir_hablar").show();
+                    }else{
+                        $("#permitir_hablar").hide(); 
+                    }
+                
+                    if($(id+" .participando").val() == "SI"){
+                        $("#parar_hablar").show();
+                    }else{
+                        $("#parar_hablar").hide();
+                    }
+                }
+            
+                function permitirhablar(id){
+                    alert("Permitire hablar");
+                    var email = $(id+" .email").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "ServletSignals",
+                        data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=2",
+                        success: function(){
+                            alert("Se guardo la señal");
+                            $("#permitir_hablar").hide();
+                            $("#parar_hablar").attr("onclick", "parar('"+id+"')");
+                            $("#parar_hablar").show();
+                            $(id+" .participando").val("SI");
+                            $(id+" .permitir_participar").val("NO");
+                            session.signal();
+                        }
+                    });  
+                }
+                
+                function parar(id){
+                    alert("detener participacion");
+                    var email = $(id+" .email").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "ServletSignals",
+                        data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=3",
+                        success: function(){
+                            alert("Se guardo la señal");
+                            $("#permitir_hablar").hide();
+                            $("#parar_hablar").attr("onclick", "");
+                            $("#parar_hablar").hide();
+                            $(id+" .participando").val("NO");
+                            $(id+" .permitir_participar").val("NO");
+                            session.signal();
+                        }
+                    });
+                }
+                
+                function BajarMano(){
+                    session.unpublish(publisher);
+                    $("#dejar_de_hablar").hide();
+                    $("#levantar_mano").show();
+                }
             
         </script>
 
@@ -320,12 +449,12 @@
                 <div id="videoPanel">
                     <table style="width: 400px;height: 200px" >
                         <tr>
-                            <td style="width: 50%">
+                            <td style="width: 200px">
                                 <div id="maestro_div">
 
                                 </div> 
                             </td>
-                            <td style="width: 50%">
+                            <td style="width: 200px">
                                 <div id="alumno_div">
 
                                 </div>
@@ -348,6 +477,8 @@
                                             <input type="hidden" class="sa" value=""/>
                                             <input type="hidden" class="telefono" value=""/>
                                             <input type="hidden" class="celular" value=""/>
+                                            <input type="hidden" class="permitir_participar" value="NO" />
+                                            <input type="hidden" class="participando" value="NO" />
                                         </td>
                                         <%}%>
 
@@ -360,40 +491,33 @@
                                 <table style="width: 200px;height: 200px; border: 1px solid #000">
                                     <tr>
                                         <td>Nombre</td>
-                                        <td>
-                                            <label id="nombre"></label>
-                                        </td>
+                                        <td><label id="nombre"></label></td>
                                     </tr>
                                     <tr>
                                         <td>Primer Apellido</td>
-                                        <td>
-                                            <label id="pr_ape"></label>
-                                        </td>
+                                        <td><label id="pr_ape"></label></td>
                                     </tr>
                                     <tr>
                                         <td>Segundo Apellido</td>
-                                        <td>
-                                            <label id="sg_ape"></label>
-                                        </td>
+                                        <td><label id="sg_ape"></label></td>
                                     </tr>
                                     <tr>
                                         <td>Correro</td>
-                                        <td>
-                                            <label id="correo"></label>
-                                        </td>
+                                        <td><label id="correo"></label></td>
                                     </tr>
                                     <tr>
                                         <td>Telefono</td>
-                                        <td>
-                                            <label id="Telefono"></label>
-                                        </td>
+                                        <td><label id="Telefono"></label></td>
                                     </tr>
                                     <tr>
                                         <td>Celular</td>
-                                        <td>
-                                            <label id="Celular"></label>
-                                        </td>
+                                        <td><label id="Celular"></label></td>
                                     </tr>
+                                    <tr>
+                                        <td><input type="button" class="btnnormal" value="Permitir Hablar" id ="permitir_hablar" onClick="" /></td>
+                                        <td><input type="button" class="btnnormal" value="Detener Participacion" id ="parar_hablar" onClick="" /></td>
+                                    </tr>
+
                                 </table>                              
                             </td>
 
@@ -425,7 +549,7 @@
                         <td>
                             <div id="aluControls">
                                 <input type="button" class="btnnormal" value="Levantar Mano" id ="levantar_mano" onClick="LevantarMano()" />
-                                <input type="button" class="btnnormal" value="Dejar de Hablar" id ="dejar_de_hablar" onClick="LevantarMano()" />
+                                <input type="button" class="btnnormal" value="Dejar de Hablar" id ="dejar_de_hablar" onClick="BajarMano()" />
                             </div>
                         </td>
                     </tr>
@@ -443,3 +567,7 @@
         <input type="hidden" id="n" value="<%=n%>"/>
     </body>
 </html>
+<%} finally {%>
+<%face.closeSession();%>
+<%}
+    }%>

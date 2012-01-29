@@ -4,8 +4,9 @@
     Author     : Camilo & Jaime
 --%>
 
+<%@page import="mcvc.util.Sqlquery"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="face" scope="application" class="mcvc.util.Sqlquery"/>
+<%Sqlquery face = new Sqlquery();%>
 <%face.setcurrentSession();%>
 <%try{%>
 <!DOCTYPE html>
@@ -49,7 +50,7 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <%face.setMaestroClases((String) request.getSession().getAttribute("usuario"));%>
+                                <%face.setMaestroClases((String) session.getAttribute("usuario"));%>
                                 <%if (face.getSession() != null) {
                                         for (int i = 0; i < face.getTblsession().size(); i++) {
                                 %><tr class="trh">
@@ -108,7 +109,7 @@
 
 
 
-                                <%face.setEstudianteClases((String) request.getSession().getAttribute("usuario"));%>
+                                <%face.setEstudianteClases((String) session.getAttribute("usuario"));%>
                                 <% if (face.getTblestudiantesxclase() == null) {
                                         out.print("ES NULL");
                                     } else {
@@ -161,7 +162,7 @@
                           <a href="CrearClase.jsp" class="btnnormal" style="color: #000;text-decoration: none">CREAR CLASE</a>  
                         </td>
                         <td>
-                            <label style="color: #fff; margin-left: 20px;font-size: 30px;">Bienvenido <% out.print(request.getSession().getAttribute("usuario"));%></label>
+                            <label style="color: #fff; margin-left: 20px;font-size: 30px;">Bienvenido <% out.print(session.getAttribute("usuario"));%></label>
                         </td>
                         <td>
                             <a class="btnLogin" style="text-decoration: none;color: #000" href="index.jsp" >Logout</a>

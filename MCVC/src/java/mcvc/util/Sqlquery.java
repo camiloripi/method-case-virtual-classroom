@@ -37,16 +37,18 @@ public class Sqlquery {
     
     public TblUsuarios getUserinfo(String email) {
         TblUsuarios user = null;
-        tblusuarios = null;
+        
         try {
-            org.hibernate.Transaction tx = session.beginTransaction();
+            tblusuarios = null;
+            session.beginTransaction();
             Query q = session.createQuery("from TblUsuarios where USR_Email='"+email+"'");
             tblusuarios = (List<TblUsuarios>) q.list();
+            if(tblusuarios.size()>0){
+            user = tblusuarios.get(0);
+            }
         } catch (Exception e) {
         }
-        if(tblusuarios.size()>0){
-            user = tblusuarios.get(0);
-        }
+        
 
         return user;
 
@@ -54,16 +56,18 @@ public class Sqlquery {
     
     public boolean  isMaestro(String email,String token){
         boolean ismaestro = false;
-        tblsession = null;
+        
         try {
-            org.hibernate.Transaction tx = session.beginTransaction();
+            tblsession = null;
+           session.beginTransaction();
             Query q = session.createQuery("from TblSession where clsMaestro='"+email+"' and clsToken='"+token+"'");
             tblsession = (List<TblSession>) q.list();
-        } catch (Exception e) {
-        }
-        if(tblsession.size() > 0){
+             if(tblsession.size() > 0){
             ismaestro=true;
         }
+        } catch (Exception e) {
+        }
+       
         
         return ismaestro;
        
@@ -71,16 +75,18 @@ public class Sqlquery {
     
     public String getSessionId(String Token){
         String sessionid="";
-        tblsession = null;
+        
         try {
-            org.hibernate.Transaction tx = session.beginTransaction();
+            tblsession = null;
+           session.beginTransaction();
             Query q = session.createQuery("from TblSession where clsToken='"+Token+"'");
             tblsession = (List<TblSession>) q.list();
-        } catch (Exception e) {
-        }
-        if(tblsession.size()>0){
+            if(tblsession.size()>0){
             sessionid = tblsession.get(0).getClsSessionId();
         }
+        } catch (Exception e) {
+        }
+        
         
         return sessionid;
     }
