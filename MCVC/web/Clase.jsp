@@ -408,6 +408,9 @@
                             $("#parar_hablar").show();
                             $(id+" .participando").val("SI");
                             $(id+" .permitir_participar").val("NO");
+                            var count = $(id+" .count_participacion").text();
+                            count ++;
+                            $(id+" .count_participacion").text(count);
                             session.signal();
                         }
                     });  
@@ -479,6 +482,7 @@
                                             <input type="hidden" class="celular" value=""/>
                                             <input type="hidden" class="permitir_participar" value="NO" />
                                             <input type="hidden" class="participando" value="NO" />
+                                            <label class="count_participacion">0</label>
                                         </td>
                                         <%}%>
 
