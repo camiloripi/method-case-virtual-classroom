@@ -43,7 +43,7 @@
                 response.sendRedirect("index.jsp");
             }%>
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
-        <script src="http://staging.tokbox.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>       
+        <script src="http://static.opentok.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>       
         <script type="text/javascript" charset="utf-8">
             var session = TB.initSession("<%=sessionId%>"); // Sample session ID. 
             var publisher;
@@ -64,7 +64,7 @@
             });
             
             function connect(){
-               
+              
                 
                 token ="";
             <%if (ismaestro) {%>
@@ -82,7 +82,9 @@
                 }
              
                 function startPublishing(){
-                    if (!publisher) {              
+                    if (!publisher) {   
+                        
+                       
                         var containerDiv = document.createElement('div');
                         containerDiv.className = "subscriberContainer";
                         containerDiv.setAttribute('id', 'opentok_publisher');
@@ -102,7 +104,7 @@
                         
                         publisherProperties.width=200;
                         publisherProperties.height=200;
-                        publisher= session.publish(publisherDiv.id, publisherProperties);
+                        publisher = session.publish(publisherDiv.id, publisherProperties);
                         
                         $("#pubControls").hide();
             <%if (!ismaestro) {%>
@@ -136,15 +138,16 @@
                 function streamDestroyedHandler(event) {
                    
                     var publisherContainer = document.getElementById("opentok_publisher");
-                    var videoPanel = document.getElementById("videoPanel");
+                    var videoPanel = document.getElementById("maestro_div");
                     for (i = 0; i < event.streams.length; i++) {
                         var stream = event.streams[i];
                         if (stream.connection.connectionId == session.connection.connectionId) {
+                            publisher =null;
                             videoPanel.removeChild(publisherContainer);
                         } else {
                             var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
                             if(streamContainerDiv) {
-                                videoPanel = document.getElementById("videoPanel")
+                                videoPanel = document.getElementById("maestro_div")
                                 videoPanel.removeChild(streamContainerDiv);
                             }
             
@@ -201,59 +204,46 @@
                 function connectionCreatedHandler(event) {
             <%if (ismaestro) {%> 
                     
-                    var row = 0;
-                    var col = 0;
                     var n = $("#n").val();
+                    var foundit = false;
                     for(var j=0;j<event.connections.length;j++){
                         var connectiondata = getConnectionData(event.connections[j]);
-                        if($("#alu_"+row+"_"+col+" .email").val()!= "" ){
-                            alert("es diferente de vacio");
-                            if($("#alu_"+row+"_"+col+" .email").val()== connectiondata[0]){
-                                $("#alu_"+row+"_"+col).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
-                                $("#alu_"+row+"_"+col).attr("onclick","showinfo('#alu_"+row+"_"+col+"')");
-                                $("#alu_"+row+"_"+col+" .connectionid").val(event.connections[j].connectionId);
-                                col++;
-                                
-                                alert("es igual al campo alctual");
-                            }else{
-                                col++;
-                                if(col >= n-1){
-                                    col =0
-                                    row++;
+                        for(var a=0;a < n;a++){
+                            for(var s=0;s < n;s++){
+                                if($("#alu_"+a+"_"+s+" .email").val()== connectiondata[0] && foundit == false){
+                                    $("#alu_"+a+"_"+s).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
+                                    $("#alu_"+a+"_"+s).attr("onclick","showinfo('#alu_"+a+"_"+s+"')");
+                                    $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId); 
+                                    foundit = true;
+                                    break;
                                 }
-                                alert("es diferente al campo alctual");
-                                $("#alu_"+row+"_"+col).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");  
-                                $("#alu_"+row+"_"+col).attr("onclick","showinfo('#alu_"+row+"_"+col+"')");
-                                $("#alu_"+row+"_"+col+" .connectionid").val(event.connections[j].connectionId);
-                                $("#alu_"+row+"_"+col+" .email").val(connectiondata[0]);
-                                $("#alu_"+row+"_"+col+" .username").val(connectiondata[1]);
-                                $("#alu_"+row+"_"+col+" .pa").val(connectiondata[2]);
-                                $("#alu_"+row+"_"+col+" .sa").val(connectiondata[3]);
-                                $("#alu_"+row+"_"+col+" .telefono").val(connectiondata[4]);
-                                $("#alu_"+row+"_"+col+" .celular").val(connectiondata[5]);
-                        
-                                col++; 
                             }
-                        }else{
-                            $("#alu_"+row+"_"+col).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
-                            $("#alu_"+row+"_"+col).attr("onclick","showinfo('#alu_"+row+"_"+col+"')");
-                            $("#alu_"+row+"_"+col+" .connectionid").val(event.connections[j].connectionId);
-                            $("#alu_"+row+"_"+col+" .email").val(connectiondata[0]);
-                            $("#alu_"+row+"_"+col+" .username").val(connectiondata[1]);
-                            $("#alu_"+row+"_"+col+" .pa").val(connectiondata[2]);
-                            $("#alu_"+row+"_"+col+" .sa").val(connectiondata[3]);
-                            $("#alu_"+row+"_"+col+" .telefono").val(connectiondata[4]);
-                            $("#alu_"+row+"_"+col+" .celular").val(connectiondata[5]);
-                        
-                            col++;
-                        
+                            
                         }
                         
-                        
-                        if(col >= n-1){
-                            col =0
-                            row++;
+                        if(foundit==false){
+                            for(var a=0;a < n;a++){
+                                for(var s=0;s < n;s++){
+                                    if($("#alu_"+a+"_"+s+" .email").val()== "" && foundit == false){
+                                        $("#alu_"+a+"_"+s).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
+                                        $("#alu_"+a+"_"+s).attr("onclick","showinfo('#alu_"+a+"_"+s+"')");
+                                        $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId);
+                                        $("#alu_"+a+"_"+s+" .email").val(connectiondata[0]);
+                                        $("#alu_"+a+"_"+s+" .username").val(connectiondata[1]);
+                                        $("#alu_"+a+"_"+s+" .pa").val(connectiondata[2]);
+                                        $("#alu_"+a+"_"+s+" .sa").val(connectiondata[3]);
+                                        $("#alu_"+a+"_"+s+" .telefono").val(connectiondata[4]);
+                                        $("#alu_"+a+"_"+s+" .celular").val(connectiondata[5]);
+                                        foundit = true;
+                                        break;
+                                    }
+                                }
+                            
+                            } 
+                            
                         }
+                       
+                        
                         
                     }
                          
@@ -283,25 +273,25 @@
                 function connectionDestroyedHandler(event) {
                     
             <%if (ismaestro) {%>
-                    var row = 0;
-                    var col = 0;
+                   
                     var n = $("#n").val();
+                    var foundit = false;
                     for(var j=0;j<event.connections.length;j++){
-                        if(event.connections[j].connectionId==$("#alu_"+row+"_"+col+" .connectionid").val()){
+                        
+                        for (var a = 0 ; a < n ;a++){
+                            for(var s = 0; s < n; s++){
+                               if(event.connections[j].connectionId==$("#alu_"+a+"_"+s+" .connectionid").val() && foundit == false){
                             
-                            $("#alu_"+row+"_"+col).attr("style","background-color: #e18787;border: 1px solid #000");
-                            $("#alu_"+row+"_"+col).attr("onclick","");
-                        }else{
-                            col++;
-                            if(col >= n-1){
-                                col =0
-                                row++;
-                            }  
-                            j--;
+                                $("#alu_"+a+"_"+s).attr("style","background-color: #e18787;border: 1px solid #000");
+                                $("#alu_"+a+"_"+s).attr("onclick","");
+                                foundit = true;
+                            
+                               }
+                                
+                            }
+                            
                         }
-                        
-                        
-                        
+              
                     }
             <%}%>
                 }
