@@ -22,7 +22,17 @@ public class Cleaner implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-//        throw new UnsupportedOperationException("Not supported yet.");
+Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
+            try {
+                DriverManager.registerDriver(driver);
+            } catch (SQLException ex) {
+                Logger.getLogger(Cleaner.class.getName()).log(Level.SEVERE, null, ex);
+            }
+               
+
+        }
     }
 
     @Override
