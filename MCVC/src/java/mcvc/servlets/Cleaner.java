@@ -42,6 +42,12 @@ public class Cleaner implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        Enumeration<String> attributes = sce.getServletContext().getAttributeNames();
+        while(attributes.hasMoreElements()){
+            String attribute = attributes.nextElement();          
+            sce.getServletContext().removeAttribute(attribute);            
+        }
+        
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
