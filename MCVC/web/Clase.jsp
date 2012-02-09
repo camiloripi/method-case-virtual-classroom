@@ -101,7 +101,13 @@
                         if (document.getElementById("pubVideoOnly").checked) {
                             publisherProperties.publishAudio = false;
                         }
-                        
+                        <%if (ismaestro) {%>
+                              $.ajax({
+                                type: "POST",
+                                url: "PublisherProperties",
+                                data: "sessionId=<%=sessionId%>&video="+publisherProperties.publishVideo+"&audio="+publisherProperties.publishAudio+"&todo=set"
+                                });       
+                        <%}%>
                         publisherProperties.width=200;
                         publisherProperties.height=200;
                         publisher = session.publish(publisherDiv.id, publisherProperties);

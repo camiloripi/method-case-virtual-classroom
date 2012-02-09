@@ -32,6 +32,10 @@
         <servlet-name>ServletSiganlR</servlet-name>
         <servlet-class>mcvc.servlets.ServletSiganlR</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PublisherProperties</servlet-name>
+        <servlet-class>mcvc.servlets.PublisherProperties</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -59,6 +63,10 @@
     <servlet-mapping>
         <servlet-name>ServletSiganlR</servlet-name>
         <url-pattern>/ServletSiganlR</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PublisherProperties</servlet-name>
+        <url-pattern>/PublisherProperties</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
