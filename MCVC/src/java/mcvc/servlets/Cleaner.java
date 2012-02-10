@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import mcvc.hibernate.clases.HibernateUtil;
 import mcvc.util.publisherProperties;
 
 /**
@@ -24,6 +25,7 @@ public class Cleaner implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        HibernateUtil.getSessionFactory();
         ArrayList<publisherProperties> publisherarry = new ArrayList<publisherProperties>();
         sce.getServletContext().setAttribute("publisher", publisherarry);
 
@@ -42,6 +44,7 @@ public class Cleaner implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        HibernateUtil.getSessionFactory().close();
         Enumeration<String> attributes = sce.getServletContext().getAttributeNames();
         while(attributes.hasMoreElements()){
             String attribute = attributes.nextElement();          
