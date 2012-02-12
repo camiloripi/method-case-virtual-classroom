@@ -47,6 +47,8 @@
         <script type="text/javascript" charset="utf-8">
             var session = TB.initSession("<%=sessionId%>"); // Sample session ID. 
             var publisher;
+            var ocup_alumno = false;
+            var ocup_maestro = false;
             session.addEventListener("sessionConnected", sessionConnectedHandler);
             session.addEventListener("streamCreated", streamCreatedHandler);
             session.addEventListener("streamDestroyed", streamDestroyedHandler);
@@ -88,29 +90,61 @@
                         var containerDiv = document.createElement('div');
                         containerDiv.className = "subscriberContainer";
                         containerDiv.setAttribute('id', 'opentok_publisher');
+                        if(ocup_maestro == false){
                         var videoPanel = document.getElementById("maestro_div");
+                        ocup_maestro = true;
+                        }else{
+                            
+                            if(ocup_alumno == false){
+                                var videoPanel = document.getElementById("alumno_div");
+                                ocup_alumno = true;
+                            }
+                        }
+                        
                         videoPanel.appendChild(containerDiv);
                         var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
                         publisherDiv.setAttribute('id', 'replacement_div')
                         containerDiv.appendChild(publisherDiv);
             
                         var publisherProperties = new Object();
+                        
+            <%if (ismaestro) {%>
                         if (document.getElementById("pubAudioOnly").checked) {
                             publisherProperties.publishVideo = false;
                         }
                         if (document.getElementById("pubVideoOnly").checked) {
                             publisherProperties.publishAudio = false;
                         }
-                        <%if (ismaestro) {%>
-                              $.ajax({
-                                type: "POST",
-                                url: "PublisherProperties",
-                                data: "sessionId=<%=sessionId%>&video="+publisherProperties.publishVideo+"&audio="+publisherProperties.publishAudio+"&todo=set"
-                                });       
-                        <%}%>
-                        publisherProperties.width=200;
-                        publisherProperties.height=200;
-                        publisher = session.publish(publisherDiv.id, publisherProperties);
+                        $.ajax({
+                            type: "POST",
+                            url: "PublisherProperties",
+                            data: "sessionId=<%=sessionId%>&video="+publisherProperties.publishVideo+"&audio="+publisherProperties.publishAudio+"&todo=set",
+                            success: function(){
+                                publisherProperties.width=200;
+                                publisherProperties.height=200;
+                                publisher = session.publish(publisherDiv.id, publisherProperties);
+                            }
+                        });       
+            <%} else {%>
+                        $.ajax({
+                            type: "POST",
+                            url: "PublisherProperties",
+                            data: "sessionId=<%=sessionId%>&todo=get",
+                            dataType: "json",
+                            success: function(data){
+                                if(data!=null){
+                                    var properties = typeof data != 'object' ? JSON.parse(data) : data;
+                                    alert(properties.video);
+                                    publisherProperties.publishVideo = properties.video;
+                                    publisherProperties.publishAudio = properties.audio;
+                                    publisherProperties.width=200;
+                                    publisherProperties.height=200;
+                                    publisher = session.publish(publisherDiv.id, publisherProperties);
+                                }
+                            }
+                        });
+            <%}%>
+                        
                         
                         $("#pubControls").hide();
             <%if (!ismaestro) {%>
@@ -148,14 +182,17 @@
                     for (i = 0; i < event.streams.length; i++) {
                         var stream = event.streams[i];
                         if (stream.connection.connectionId == session.connection.connectionId) {
-                            publisher =null;
                             videoPanel.removeChild(publisherContainer);
+                            publisher =null;ocup_maestro =false;
                         } else {
                             var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
                             if(streamContainerDiv) {
-                                videoPanel = document.getElementById("maestro_div")
+                                
+                                videoPanel = document.getElementById("alumno_div");
                                 videoPanel.removeChild(streamContainerDiv);
+                                ocup_alumno = false;
                             }
+                          
             
                         }
                     }
@@ -164,14 +201,26 @@
                 
 			
                 function subscribeToStreams(streams) {
+                    
                     for (i = 0; i < streams.length; i++) {
+                        
                         var stream = streams[i];
                         if (stream.connection.connectionId != session.connection.connectionId) {
                             var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
                             containerDiv.className = "subscriberContainer";
                             var divId = stream.streamId;    // Give the div the id of the stream as its id
                             containerDiv.setAttribute('id', 'streamContainer' + divId);
-                            var videoPanel = document.getElementById("alumno_div");
+                            
+                            if(ocup_alumno == false){
+                              var videoPanel = document.getElementById("alumno_div");  
+                              ocup_alumno = true;
+                            }else{ 
+                                if(ocup_maestro == false){
+                                   var videoPanel = document.getElementById("maestro_div");  
+                                    ocup_maestro  = true;
+                                }
+                            }
+                            
                             videoPanel.appendChild(containerDiv);
                             var publisherProperties = new Object();
                             publisherProperties.width=200;
@@ -183,6 +232,7 @@
                             
                         }
                     }
+                  
                 }
                 
                 function changeStatus(status)
@@ -286,13 +336,13 @@
                         
                         for (var a = 0 ; a < n ;a++){
                             for(var s = 0; s < n; s++){
-                               if(event.connections[j].connectionId==$("#alu_"+a+"_"+s+" .connectionid").val() && foundit == false){
+                                if(event.connections[j].connectionId==$("#alu_"+a+"_"+s+" .connectionid").val() && foundit == false){
                             
-                                $("#alu_"+a+"_"+s).attr("style","background-color: #e18787;border: 1px solid #000");
-                                $("#alu_"+a+"_"+s).attr("onclick","");
-                                foundit = true;
+                                    $("#alu_"+a+"_"+s).attr("style","background-color: #e18787;border: 1px solid #000");
+                                    $("#alu_"+a+"_"+s).attr("onclick","");
+                                    foundit = true;
                             
-                               }
+                                }
                                 
                             }
                             
@@ -309,6 +359,7 @@
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver=<%=maestro%>&type=1",
                         success: function(){
                             session.signal();
+                            $("#levantar_mano").hide();
                         }
                     });
                 
@@ -366,6 +417,22 @@
                         }
                     }
                     return "";
+                }
+                
+                function findtd_id(connectionid){
+                    var n = $("#n").val();
+                    var id = ""
+                    
+                    for(var i =0;i<n;i++){
+                        for(var j=0;j<n;j++){
+                            id = "#alu_"+i+"_"+j;
+                            if( $(id+" .connectionid").val() == connectionid){
+                                return id;
+                            }
+                        }
+                    }
+                    return "";
+                    
                 }
             
                 function showinfo(id){
@@ -426,6 +493,7 @@
                             $("#parar_hablar").hide();
                             $(id+" .participando").val("NO");
                             $(id+" .permitir_participar").val("NO");
+                            $(id).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
                             session.signal();
                         }
                     });
@@ -461,6 +529,7 @@
                         </tr>
 
                     </table>
+                    <%if (ismaestro) {%>
                     <table>
                         <tr>
                             <td>
@@ -523,7 +592,7 @@
 
                         </tr>
                     </table>
-
+                    <%}%>
 
                 </div> 
             </fieldset>

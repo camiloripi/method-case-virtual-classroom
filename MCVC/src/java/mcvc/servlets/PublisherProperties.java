@@ -4,6 +4,7 @@
  */
 package mcvc.servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.StyledEditorKit;
 import mcvc.util.publisherProperties;
 
 /**
@@ -36,28 +36,49 @@ public class PublisherProperties extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             String todo = request.getParameter("todo");
-            if(todo.equals("set")){
+            if (todo.equals("set")) {
                 publisherProperties pp = new publisherProperties();
                 boolean video = true;
                 boolean audio = true;
                 String videostr = request.getParameter("video");
                 String audiostr = request.getParameter("audio");
-                if(videostr.equals("false")){
+                if (videostr.equals("false")) {
                     video = false;
                 }
-                if(audiostr.equals("false")){
+                if (audiostr.equals("false")) {
                     audio = false;
                 }
                 String sessionid = request.getParameter("sessionId");
                 pp.setAudio(audio);
                 pp.setVideo(video);
                 pp.setSessionid(sessionid);
-                ArrayList<publisherProperties> publisher = (ArrayList<publisherProperties>)request.getServletContext().getAttribute("publisher");
-                publisher.add(pp); 
+                ArrayList<publisherProperties> publisher = (ArrayList<publisherProperties>) request.getServletContext().getAttribute("publisher");
+                publisher.add(pp);
                 request.getServletContext().setAttribute("publisher", publisher);
-                
+
+            } else if (todo.equals("get")) {
+                ArrayList<publisherProperties> publisher = (ArrayList<publisherProperties>) request.getServletContext().getAttribute("publisher");
+                publisherProperties pp = new publisherProperties();
+                String sessionid = request.getParameter("sessionId");
+                pp.setAudio(true);
+                pp.setVideo(true);
+                pp.setSessionid(sessionid);
+                for (int i = 0; i < publisher.size(); i++) {
+                    if (publisher.get(i).getSessionid().equals(sessionid)) {
+                        pp.setAudio(publisher.get(i).isAudio());
+                        pp.setVideo(publisher.get(i).isVideo());
+                        publisher.remove(i);
+                        break;
+                    }
+                }
+                request.getServletContext().setAttribute("publisher", publisher);
+                Gson gson = new Gson();
+                out.print(gson.toJson(pp));
+
             }
-        } finally {            
+
+
+        } finally {
             out.close();
         }
     }
