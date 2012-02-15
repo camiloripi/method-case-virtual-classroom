@@ -91,8 +91,8 @@
                         containerDiv.className = "subscriberContainer";
                         containerDiv.setAttribute('id', 'opentok_publisher');
                         if(ocup_maestro == false){
-                        var videoPanel = document.getElementById("maestro_div");
-                        ocup_maestro = true;
+                            var videoPanel = document.getElementById("maestro_div");
+                            ocup_maestro = true;
                         }else{
                             
                             if(ocup_alumno == false){
@@ -212,11 +212,11 @@
                             containerDiv.setAttribute('id', 'streamContainer' + divId);
                             
                             if(ocup_alumno == false){
-                              var videoPanel = document.getElementById("alumno_div");  
-                              ocup_alumno = true;
+                                var videoPanel = document.getElementById("alumno_div");  
+                                ocup_alumno = true;
                             }else{ 
                                 if(ocup_maestro == false){
-                                   var videoPanel = document.getElementById("maestro_div");  
+                                    var videoPanel = document.getElementById("maestro_div");  
                                     ocup_maestro  = true;
                                 }
                             }
@@ -443,7 +443,7 @@
                     $("#Telefono").text($(id+" .telefono").val()); 
                     $("#Celular").text($(id+" .celular").val());
                
-                    if($(id+" .permitir_participar").val()=="SI"){
+                    if($(id+" .permitir_participar").val()=="SI" && $(id+" .BLOCK").val()=="NO"){
                         $("#permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
                         $("#permitir_hablar").show();
                     }else{
@@ -474,6 +474,18 @@
                             var count = $(id+" .count_participacion").text();
                             count ++;
                             $(id+" .count_participacion").text(count);
+                            $(id).attr("style","background-color: #01a0c7;border: 1px solid #000; cursor: pointer");
+                            var n = $("#n").val();
+                            for(var i =0;i<n;i++){
+                                for(var j=0;j<n;j++){
+                                    var id_ = "#alu_"+i+"_"+j;
+                                    if(id_==id){
+                                        $(id_+" .BLOCK").val("NO"); 
+                                    }else{
+                                       $(id_+" .BLOCK").val("SI");  
+                                    }
+                                }
+                            }
                             session.signal();
                         }
                     });  
@@ -494,6 +506,13 @@
                             $(id+" .participando").val("NO");
                             $(id+" .permitir_participar").val("NO");
                             $(id).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
+                            var n = $("#n").val();
+                            for(var i =0;i<n;i++){
+                                for(var j=0;j<n;j++){
+                                    var id_ = "#alu_"+i+"_"+j;
+                                    $(id_+" .BLOCK").val("NO"); 
+                                }
+                            }
                             session.signal();
                         }
                     });
@@ -547,6 +566,7 @@
                                             <input type="hidden" class="celular" value=""/>
                                             <input type="hidden" class="permitir_participar" value="NO" />
                                             <input type="hidden" class="participando" value="NO" />
+                                            <input type="hidden" class="BLOCK" value="NO" />
                                             <label class="count_participacion">0</label>
                                         </td>
                                         <%}%>
