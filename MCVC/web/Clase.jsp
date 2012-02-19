@@ -134,7 +134,7 @@
                             success: function(data){
                                 if(data!=null){
                                     var properties = typeof data != 'object' ? JSON.parse(data) : data;
-                                    alert(properties.video);
+                                    
                                     publisherProperties.publishVideo = properties.video;
                                     publisherProperties.publishAudio = properties.audio;
                                     publisherProperties.width=200;
@@ -270,6 +270,8 @@
                                     $("#alu_"+a+"_"+s).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
                                     $("#alu_"+a+"_"+s).attr("onclick","showinfo('#alu_"+a+"_"+s+"')");
                                     $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId); 
+                                    $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
+                                    
                                     foundit = true;
                                     break;
                                 }
@@ -290,6 +292,7 @@
                                         $("#alu_"+a+"_"+s+" .sa").val(connectiondata[3]);
                                         $("#alu_"+a+"_"+s+" .telefono").val(connectiondata[4]);
                                         $("#alu_"+a+"_"+s+" .celular").val(connectiondata[5]);
+                                        $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                         foundit = true;
                                         break;
                                     }
@@ -316,8 +319,7 @@
                 }
             
             
-                function sessionDisConnectedHandler(event) {
-                    alert("Se desconecto alguien desde csession disconecged") 
+                function sessionDisConnectedHandler(event) { 
                 
             <%if (ismaestro) {%>
                     changeStatus(4);
@@ -339,7 +341,7 @@
                                 if(event.connections[j].connectionId==$("#alu_"+a+"_"+s+" .connectionid").val() && foundit == false){
                             
                                     $("#alu_"+a+"_"+s).attr("style","background-color: #e18787;border: 1px solid #000");
-                                    $("#alu_"+a+"_"+s).attr("onclick","");
+                                    $("#alu_"+a+"_"+s+ ".CONNECT").val("NO");
                                     foundit = true;
                             
                                 }
@@ -376,6 +378,7 @@
                                 if(data!=null){
                                     var señales = typeof data != 'object' ? JSON.parse(data) : data;
                                     for(var i=0;i<señales.length;i++){
+                                        
                                         if(señales[i].reciber == "<%=tblUsuarios.getUsrEmail()%>"){
                                             if(señales[i].type== 1){
                                                 var id = fintd(señales[i].sender);
@@ -387,13 +390,19 @@
                                        
                                             }
                                             if(señales[i].type == 2){
-                                                alert("me dieron permiso")
                                                 startPublishing();
                                             }
                                             if(señales[i].type == 3){
-                                                session.unpublish(publisher);
+                                                session.unpublish(publisher);                                              
+                                            }
+                                            if(señales[i].type == 4){
+                                                var id = fintd(señales[i].sender);
+                                                parar(id);
+                                            }
+                                            if(señales[i].type == 5){
                                                 $("#dejar_de_hablar").hide();
                                                 $("#levantar_mano").show();
+                                                
                                             }
                                         }
                                    
@@ -458,14 +467,12 @@
                 }
             
                 function permitirhablar(id){
-                    alert("Permitire hablar");
                     var email = $(id+" .email").val();
                     $.ajax({
                         type: "POST",
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=2",
                         success: function(){
-                            alert("Se guardo la señal");
                             $("#permitir_hablar").hide();
                             $("#parar_hablar").attr("onclick", "parar('"+id+"')");
                             $("#parar_hablar").show();
@@ -482,7 +489,7 @@
                                     if(id_==id){
                                         $(id_+" .BLOCK").val("NO"); 
                                     }else{
-                                       $(id_+" .BLOCK").val("SI");  
+                                        $(id_+" .BLOCK").val("SI");  
                                     }
                                 }
                             }
@@ -492,25 +499,30 @@
                 }
                 
                 function parar(id){
-                    alert("detener participacion");
                     var email = $(id+" .email").val();
                     $.ajax({
                         type: "POST",
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=3",
                         success: function(){
-                            alert("Se guardo la señal");
                             $("#permitir_hablar").hide();
                             $("#parar_hablar").attr("onclick", "");
                             $("#parar_hablar").hide();
-                            $(id+" .participando").val("NO");
-                            $(id+" .permitir_participar").val("NO");
-                            $(id).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
                             var n = $("#n").val();
                             for(var i =0;i<n;i++){
                                 for(var j=0;j<n;j++){
                                     var id_ = "#alu_"+i+"_"+j;
-                                    $(id_+" .BLOCK").val("NO"); 
+                                    $(id_+" .BLOCK").val("NO");
+                                    $(id_+" .permitir_participar").val("NO");
+                                    $(id_+" .participando").val("NO");
+                                    if( $(id_+" .CONNECT").val()=="SI"){
+                                        $(id_).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");  
+                                    }
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "ServletSignals",
+                                        data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+$(id_+" .email").val()+"&type=5"});
+                                    
                                 }
                             }
                             session.signal();
@@ -519,9 +531,17 @@
                 }
                 
                 function BajarMano(){
-                    session.unpublish(publisher);
-                    $("#dejar_de_hablar").hide();
-                    $("#levantar_mano").show();
+                    $.ajax({
+                        type: "POST",
+                        url: "ServletSignals",
+                        data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver=<%=maestro%>&type=4",
+                        success: function(){
+                            session.signal();
+                            $("#dejar_de_hablar").hide();
+                            $("#levantar_mano").show();
+                        }
+                    });
+                   
                 }
             
         </script>
@@ -567,6 +587,7 @@
                                             <input type="hidden" class="permitir_participar" value="NO" />
                                             <input type="hidden" class="participando" value="NO" />
                                             <input type="hidden" class="BLOCK" value="NO" />
+                                            <input type="hidden" class="CONNECT" value="NO" />
                                             <label class="count_participacion">0</label>
                                         </td>
                                         <%}%>
