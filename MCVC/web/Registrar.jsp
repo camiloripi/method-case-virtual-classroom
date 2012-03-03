@@ -22,34 +22,34 @@
                         </td>
                         <td style="padding-left: 10px;">
                             <label>Celular</label>
-                            <input type="number" name="celular" id="celular" required/>
+                            <input type="number" name="celular" tabindex="2" id="celular" required/>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label>Nombre</label>
-                            <input type="text" name="nombre" id="nombre" required/>
+                            <input type="text" name="nombre" tabindex="3" id="nombre" required/>
                         </td> 
                         <td style="padding-left: 10px;">
                             <label>Telefono</label>
-                            <input type="number" name="telefono" id="telefono" required/>
+                            <input type="number" name="telefono" tabindex="4" id="telefono" required/>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label>Primer Apellido</label>
-                            <input type="text" name="1apellido" id="1apellido" required/> 
+                            <input type="text" name="1apellido" tabindex="5" id="1apellido" required/> 
                         </td>
                         <td style="padding-left: 10px;">
                             <label>Contraseña</label>
-                            <input type="password" tabindex="2" required name="pass" id="pass" required/>
+                            <input type="password" tabindex="6" required name="pass" id="pass" required/>
 
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label>Segundo Apellido</label>
-                            <input type="text" name="2apellido" id="2apellido" required/>
+                            <input type="text" name="2apellido" tabindex="7" id="2apellido" required/>
                         </td>
                     </tr>
 

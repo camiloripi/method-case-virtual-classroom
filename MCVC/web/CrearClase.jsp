@@ -8,11 +8,29 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%if (session.getAttribute("usuario") == null) {
                 response.sendRedirect("index.jsp");
             }%>
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
+        <link type="text/css" href="CSS/jquery-ui-1.8.18.custom.css" rel="stylesheet">
+        <script type="text/javascript" src="JS/jquery-1.7.1.js"></script>
+        <script type="text/javascript" src="JS/jquery-ui-1.8.18.custom.min.js"></script>
+        <script type="text/javascript" src ="JS/jquery-ui-timepicker-addon.js"></script>
+        
+        <script>
+            $(function() {
+		$( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});        
+            });
+        </script>
+        
+        <script>
+             $(function() {
+		$('#timepicker').timepicker({});   
+            });
+        </script>
+        
     </head>
     <body>
 
@@ -32,13 +50,13 @@
 
                         <td>
                             <label>Fecha Sesión:</label>
-                            <input type="date"  name="txt_fecha" id="txt_fecha" required/>
+                            <input type="text"  name="txt_fecha" id="datepicker" required/>
                         <td>
                     </tr>
                     <tr>
                         <td>
                             <label>Hora Sesión:</label>
-                            <input type="time"  name="txt_hora" id="txt_hora" required/>
+                            <input type="time"  name="txt_hora" id="timepicker" required/>
                         <td>
                     </tr>
                     <tr>
