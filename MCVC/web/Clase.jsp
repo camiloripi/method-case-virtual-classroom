@@ -63,6 +63,13 @@
                 $("#aluControls").hide();
                 $("#permitir_hablar").hide();
                 $("#parar_hablar").hide();
+                $(".stu").width($(".stu").width());
+                $("body").width($("body").width());
+                $("#clasemain").width($("#clasemain").width());
+                 $(".piz").cleditor({width:"99%", height:"100%"});
+                 
+                
+                
             });
             
             function connect(){
@@ -120,8 +127,8 @@
                             url: "PublisherProperties",
                             data: "sessionId=<%=sessionId%>&video="+publisherProperties.publishVideo+"&audio="+publisherProperties.publishAudio+"&todo=set",
                             success: function(){
-                                publisherProperties.width=200;
-                                publisherProperties.height=200;
+                                publisherProperties.width=100;
+                                publisherProperties.height=100;
                                 publisher = session.publish(publisherDiv.id, publisherProperties);
                             }
                         });       
@@ -137,8 +144,8 @@
                                     
                                     publisherProperties.publishVideo = properties.video;
                                     publisherProperties.publishAudio = properties.audio;
-                                    publisherProperties.width=200;
-                                    publisherProperties.height=200;
+                                    publisherProperties.width=100;
+                                    publisherProperties.height=100;
                                     publisher = session.publish(publisherDiv.id, publisherProperties);
                                 }
                             }
@@ -223,8 +230,8 @@
                             
                             videoPanel.appendChild(containerDiv);
                             var publisherProperties = new Object();
-                            publisherProperties.width=200;
-                            publisherProperties.height=200;
+                            publisherProperties.width=100;
+                            publisherProperties.height=100;
                             var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
                             subscriberDiv.setAttribute('id', divId);
                             containerDiv.appendChild(subscriberDiv);
@@ -258,17 +265,14 @@
                 }
                 
                 function connectionCreatedHandler(event) {
-            <%if (ismaestro) {%> 
-                    
-                    var n = $("#n").val();
+            <%if (ismaestro) {%>
                     var foundit = false;
                     for(var j=0;j<event.connections.length;j++){
                         var connectiondata = getConnectionData(event.connections[j]);
-                        for(var a=0;a < n;a++){
-                            for(var s=0;s < n;s++){
+                        for(var a=0;a < 3;a++){
+                            for(var s=0;s < 7;s++){
                                 if($("#alu_"+a+"_"+s+" .email").val()== connectiondata[0] && foundit == false){
-                                    $("#alu_"+a+"_"+s).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
-                                    $("#alu_"+a+"_"+s).attr("onclick","showinfo('#alu_"+a+"_"+s+"')");
+                                    
                                     $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId); 
                                     $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                     
@@ -280,19 +284,18 @@
                         }
                         
                         if(foundit==false){
-                            for(var a=0;a < n;a++){
-                                for(var s=0;s < n;s++){
+                            for(var a=0;a < 3;a++){
+                                for(var s=0;s < 7;s++){
                                     if($("#alu_"+a+"_"+s+" .email").val()== "" && foundit == false){
-                                        $("#alu_"+a+"_"+s).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");
-                                        $("#alu_"+a+"_"+s).attr("onclick","showinfo('#alu_"+a+"_"+s+"')");
                                         $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId);
                                         $("#alu_"+a+"_"+s+" .email").val(connectiondata[0]);
-                                        $("#alu_"+a+"_"+s+" .username").val(connectiondata[1]);
-                                        $("#alu_"+a+"_"+s+" .pa").val(connectiondata[2]);
+                                        $("#alu_"+a+"_"+s+" .username").text(connectiondata[1]);
+                                        $("#alu_"+a+"_"+s+" .pa").text(" "+connectiondata[2][0]+".");
                                         $("#alu_"+a+"_"+s+" .sa").val(connectiondata[3]);
                                         $("#alu_"+a+"_"+s+" .telefono").val(connectiondata[4]);
                                         $("#alu_"+a+"_"+s+" .celular").val(connectiondata[5]);
                                         $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
+                                        $("#alu_"+a+"_"+s+" .count_participacion").text("0"); 
                                         foundit = true;
                                         break;
                                     }
@@ -332,15 +335,15 @@
                     
             <%if (ismaestro) {%>
                    
-                    var n = $("#n").val();
+                
                     var foundit = false;
                     for(var j=0;j<event.connections.length;j++){
                         
-                        for (var a = 0 ; a < n ;a++){
-                            for(var s = 0; s < n; s++){
+                        for (var a = 0 ; a < 3 ;a++){
+                            for(var s = 0; s < 7; s++){
                                 if(event.connections[j].connectionId==$("#alu_"+a+"_"+s+" .connectionid").val() && foundit == false){
                             
-                                    $("#alu_"+a+"_"+s).attr("style","background-color: #e18787;border: 1px solid #000");
+                                    $("#alu_"+a+"_"+s).attr("class","backR stu");
                                     $("#alu_"+a+"_"+s+ ".CONNECT").val("NO");
                                     foundit = true;
                             
@@ -384,8 +387,8 @@
                                                 var id = fintd(señales[i].sender);
                                                 if(id != ""){
                                                     $(id+" .permitir_participar").val("SI")
-                                       
-                                                    $(id).attr("style","background-color: #8dc700;border: 1px solid #000; cursor: pointer");
+                                         
+                                                    $(id).attr("class","backG stu");
                                                 }
                                        
                                             }
@@ -414,11 +417,11 @@
                 }
                 
                 function fintd(email){
-                    var n = $("#n").val();
+
                     var id = ""
                     
-                    for(var i =0;i<n;i++){
-                        for(var j=0;j<n;j++){
+                    for(var i =0;i<3;i++){
+                        for(var j=0;j<7;j++){
                             id = "#alu_"+i+"_"+j;
                             if( $(id+" .email").val() == email){
                                 return id;
@@ -429,11 +432,11 @@
                 }
                 
                 function findtd_id(connectionid){
-                    var n = $("#n").val();
+               
                     var id = ""
                     
-                    for(var i =0;i<n;i++){
-                        for(var j=0;j<n;j++){
+                    for(var i =0;i<3;i++){
+                        for(var j=0;j<7;j++){
                             id = "#alu_"+i+"_"+j;
                             if( $(id+" .connectionid").val() == connectionid){
                                 return id;
@@ -443,28 +446,7 @@
                     return "";
                     
                 }
-            
-                function showinfo(id){
-                    $("#nombre").text($(id+" .username").val()); 
-                    $("#pr_ape").text($(id+" .pa").val()); 
-                    $("#sg_ape").text($(id+" .sa").val()); 
-                    $("#correo").text($(id+" .email").val()); 
-                    $("#Telefono").text($(id+" .telefono").val()); 
-                    $("#Celular").text($(id+" .celular").val());
-               
-                    if($(id+" .permitir_participar").val()=="SI" && $(id+" .BLOCK").val()=="NO"){
-                        $("#permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
-                        $("#permitir_hablar").show();
-                    }else{
-                        $("#permitir_hablar").hide(); 
-                    }
-                
-                    if($(id+" .participando").val() == "SI"){
-                        $("#parar_hablar").show();
-                    }else{
-                        $("#parar_hablar").hide();
-                    }
-                }
+
             
                 function permitirhablar(id){
                     var email = $(id+" .email").val();
@@ -482,9 +464,9 @@
                             count ++;
                             $(id+" .count_participacion").text(count);
                             $(id).attr("style","background-color: #01a0c7;border: 1px solid #000; cursor: pointer");
-                            var n = $("#n").val();
-                            for(var i =0;i<n;i++){
-                                for(var j=0;j<n;j++){
+              
+                            for(var i =0;i<3;i++){
+                                for(var j=0;j<7;j++){
                                     var id_ = "#alu_"+i+"_"+j;
                                     if(id_==id){
                                         $(id_+" .BLOCK").val("NO"); 
@@ -508,9 +490,9 @@
                             $("#permitir_hablar").hide();
                             $("#parar_hablar").attr("onclick", "");
                             $("#parar_hablar").hide();
-                            var n = $("#n").val();
-                            for(var i =0;i<n;i++){
-                                for(var j=0;j<n;j++){
+                       
+                            for(var i =0;i<3;i++){
+                                for(var j=0;j<7;j++){
                                     var id_ = "#alu_"+i+"_"+j;
                                     $(id_+" .BLOCK").val("NO");
                                     $(id_+" .permitir_participar").val("NO");
@@ -543,44 +525,27 @@
                     });
                    
                 }
+                $(function() {
+		$( "#tabs" ).tabs();
+	});
             
         </script>
 
     </head>
     <body>
-
-        <div class="box clase">
-
+        <div id="clasemain">           
             <fieldset class="boxBodyclase">
-                <div id="videoPanel">
-                    <table style="width: 400px;height: 200px" >
-                        <tr>
-                            <td style="width: 200px">
-                                <div id="maestro_div">
-
-                                </div> 
-                            </td>
-                            <td style="width: 200px">
-                                <div id="alumno_div">
-
-                                </div>
-                            </td>
-                        </tr>
-
-                    </table>
-                    <%if (ismaestro) {%>
-                    <table>
-                        <tr>
-                            <td>
-                                <table style="width: 200px;height: 200px" >
-                                    <%for (int i = 0; i < n; i++) {%>
-                                    <tr>
-                                        <%for (int j = 0; j < n; j++) {%>
-                                        <td style="border: 1px solid #000;" id="alu_<%=String.valueOf(i) + "_" + String.valueOf(j)%>">
+                <table style="width: 100%;height: 100%">
+                    <tr>
+                        <td style="height: 100px">
+                            <table style="width: 100%;height: 100px" id="cuadricula">
+                                <%for (int i = 0; i < 3; i++) {%>
+                                <tr >
+                                    <%for (int j = 0; j < 7; j++) {%> 
+                                    <td style="height: 30px;padding-top: 3px;white-space: nowrap;">
+                                        <div style="text-align: center;" class="backW stu" id="alu_<%=String.valueOf(i) + "_" + String.valueOf(j)%>">
                                             <input type="hidden" class="connectionid" value=""/>
                                             <input type="hidden" class="email" value=""/>
-                                            <input type="hidden" class="username" value=""/>
-                                            <input type="hidden" class="pa" value=""/>
                                             <input type="hidden" class="sa" value=""/>
                                             <input type="hidden" class="telefono" value=""/>
                                             <input type="hidden" class="celular" value=""/>
@@ -588,79 +553,68 @@
                                             <input type="hidden" class="participando" value="NO" />
                                             <input type="hidden" class="BLOCK" value="NO" />
                                             <input type="hidden" class="CONNECT" value="NO" />
-                                            <label class="count_participacion">0</label>
-                                        </td>
-                                        <%}%>
 
-                                    </tr>
+                                            <table style="width: 100%">
+                                                <tr><td><label class="username"></label><label class="pa"></label></td></tr>
+                                                <tr><td><label class="count_participacion"></label></td></tr>
+                                            </table>
+                                        </div>
+                                    </td>
                                     <%}%>
-                                </table>
+                                </tr>
+                                <%}%>
 
-                            </td>
-                            <td>
-                                <table style="width: 200px;height: 200px; border: 1px solid #000">
-                                    <tr>
-                                        <td>Nombre</td>
-                                        <td><label id="nombre"></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Primer Apellido</td>
-                                        <td><label id="pr_ape"></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Segundo Apellido</td>
-                                        <td><label id="sg_ape"></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Correro</td>
-                                        <td><label id="correo"></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Telefono</td>
-                                        <td><label id="Telefono"></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Celular</td>
-                                        <td><label id="Celular"></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="button" class="btnnormal" value="Permitir Hablar" id ="permitir_hablar" onClick="" /></td>
-                                        <td><input type="button" class="btnnormal" value="Detener Participacion" id ="parar_hablar" onClick="" /></td>
-                                    </tr>
-
-                                </table>                              
-                            </td>
-
-                        </tr>
-                    </table>
-                    <%}%>
-
-                </div> 
-            </fieldset>
-            <footer >
-                <table>
+                            </table>
+                        </td> 
+                    </tr>
                     <tr>
                         <td>
-                            <div id="sessionControls">
-                                <input type="button" class="btnnormal" value="Connect" id ="connectLink" onClick="connect()" />
-                                <input type="button" class="btnnormal" value="Leave" id ="disconnectLink" onClick="disconnect()" />
-                            </div> 
-                        </td>
-                        <td>
-                            <div id ="pubControls">
-                                <form id="publishForm"> 
-                                    <input type="button" class="btnnormal" value="Start Publishing" onClick="startPublishing()" />
-                                    <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
-                                    <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
-                                    <input type="radio" id="pubVideoOnly" name="pubRad" />&nbsp;Video-only
-                                </form>
-                            </div>
-                        </td>
-                        <td>
-                            <div id="aluControls">
-                                <input type="button" class="btnnormal" value="Levantar Mano" id ="levantar_mano" onClick="LevantarMano()" />
-                                <input type="button" class="btnnormal" value="Dejar de Hablar" id ="dejar_de_hablar" onClick="BajarMano()" />
-                            </div>
+                            <table style="width: 100%;height: 100%">
+                                <tr>
+                                    <td style="width: 100px;height: 200px">
+                                        <div id="videoPanel">
+                                            <table style="width: 100px;height: 200px" >
+                                                <tr>
+                                                    <td style="width: 100px;border: 1px solid #000">
+                                                        <div id="maestro_div">
+
+                                                        </div> 
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 100px;border: 1px solid #000">
+                                                        <div id="alumno_div">
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div> 
+                                    </td>
+                                    <td style="height: 100%">
+                                        <div style="height: 100%;margin:10px 5px 5px 5px">
+                                            <div id="tabs"style="height: 95%">
+                                                <ul>
+                                                    <li><a href="#tabs-1">1</a></li>
+                                                    <li><a href="#tabs-2">2</a></li>
+                                                    <li><a href="#tabs-3">3</a></li>
+                                                </ul>
+                                                <div id="tabs-1" style="height: 80%">
+                                                    <textarea class="piz" name="input"></textarea>
+                                                </div>
+                                                <div id="tabs-2" style="height: 80%">
+                                                    <textarea class="piz" name="input"></textarea>
+                                                </div>
+                                                <div id="tabs-3" style="height: 80%">
+                                                    <textarea class="piz" name="input"></textarea>
+                                                </div>
+
+                                            </div>
+                                    </td>
+                                </tr>
+                            </table>  
                         </td>
                     </tr>
 
@@ -668,13 +622,40 @@
 
 
 
+
+
+            </fieldset>
+            <footer >
+                <table style="height: 100%;">
+                    <tr>
+                        <td style="vertical-align:middle;">
+                            <div id="sessionControls">
+                                <input type="button" class="btnnormal2" value="Connect" id ="connectLink" onClick="connect()" />
+                                <input type="button" class="btnnormal2" value="Leave" id ="disconnectLink" onClick="disconnect()" />
+                            </div> 
+                        </td>
+                        <td style="vertical-align:middle;">
+                            <div id ="pubControls">
+                                <form id="publishForm"> 
+                                    <input type="button" class="btnnormal2" value="Start Publishing" onClick="startPublishing()" />
+                                    <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
+                                    <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
+                                    <input type="radio" id="pubVideoOnly" name="pubRad" />&nbsp;Video-only
+                                </form>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;">
+                            <div id="aluControls">
+                                <input type="button" class="btnnormal2" value="Levantar Mano" id ="levantar_mano" onClick="LevantarMano()" />
+                                <input type="button" class="btnnormal2" value="Dejar de Hablar" id ="dejar_de_hablar" onClick="BajarMano()" />
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
             </footer>
 
-
-
-        </div>
-
-        <input type="hidden" id="n" value="<%=n%>"/>
+        </div>      
     </body>
 </html>
 <%} finally {%>

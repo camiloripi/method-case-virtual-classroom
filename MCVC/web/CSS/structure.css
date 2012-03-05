@@ -12,6 +12,7 @@
 */
 body{
     background:#EAEAEA;
+ 
 }
 .box
 {
@@ -66,17 +67,6 @@ body{
     margin:-130px 0 0 -166px;
 }
 
-
-
-
-
-.box.clase
-{
-    height:90%;
-    width:90%;
-    margin-top: 2%;
-}
-
 .boxBody
 {
     background:#fefefe;
@@ -91,28 +81,32 @@ body{
 .boxBodyclase
 {
     background:#fefefe;
-    background-image:url("../IMG/diamond_u.png");
     background-repeat: no-repeat;
     border-top:1px solid #dde0e8;
-    border-bottom:1px solid #dde0e8;
-    padding:110px 20px 190px;
+    border-bottom: 2px solid #C4161C;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
     
-    margin-bottom: 2px;
+    height: 92%;
+    
+    /*margin-bottom: 2px;*/
 }
 
 .boxBodyclase #videoPanel{
-    height: 230px;
-    width: 600px;
+    height: 200px;
+    width: 100px;
+    margin-left: 5px;
+    margin-top: 10px;
     
 }
 
 .boxBodyclase #videoPanel #maestro_div{
-    height: 100%;
+    height: 100px;
     
 }
 
 .boxBodyclase #videoPanel #alumno_div{
-    height: 100%;
+    height: 100px;
     
 }
 
@@ -148,6 +142,22 @@ body{
     -moz-border-radius:5px;
     border-radius:5px;
 }
+
+#clasemain footer
+{
+    background:#104073;
+
+   /* padding:22px 22px;
+
+   
+    /*overflow:hidden;*/
+  
+    height:7%;
+    border: 2px solid #104073;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+}
 .box label
 {
     display:block;
@@ -159,21 +169,47 @@ body{
     margin:4px 0 0;
 }
 
+#clasemain footer label{
+    float:left;
+    margin:4px 0 0;
+}
+
 .box footer #publishForm{
     color: #fff;
 }
+
+#clasemain footer #publishForm{
+    color: #fff;
+}
+
 .box footer input[type=checkbox]{
     vertical-align:sub;
     
     /*vertical-align:middle;*/
     margin-right:10px;
 }
+
+#clasemain footer input[type=checkbox]{
+    vertical-align:sub;
+    
+    /*vertical-align:middle;*/
+    margin-right:10px;
+}
+
+
 .box input[type=text],
 .box input[type=email],
 .box input[type=password],
 .box input[type=date],
 .box input[type=time],
 .box input[type=number],
+#clasemain input[type=text],
+#clasemain input[type=email],
+#clasemain input[type=password],
+#clasemain input[type=date],
+#clasemain input[type=time],
+#clasemain input[type=text]:focus,
+ input[type=number],
 .txtField,
 .cjComboBox
 {
@@ -195,6 +231,12 @@ body{
 .box input[type=date]:focus,
 .box input[type=time]:focus,
 .box input[type=number]:focus,
+#clasemain input[type=text]:focus,
+#clasemain input[type=email]:focus,
+#clasemain input[type=password]:focus,
+#clasemain input[type=date]:focus,
+#clasemain input[type=time]:focus,
+#clasemain input[type=number]:focus,
 .txtField:focus,
 .cjComboBox:focus
 {
@@ -281,6 +323,41 @@ body{
    text-shadow:rgba(0,0,0,0.3) 0 -1px 0px; 
 }
 
+.btnnormal2{
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:15px;
+    background:#a1d8f0;
+    background:-moz-linear-gradient(top, #EAEAEA, #ffffff);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#ffffff));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#badff3', EndColorStr='#7acbed')";
+    border:1px solid #7db0cc !important;
+    cursor: pointer;
+
+    font:bold 11px/14px Verdana, Tahomma, Geneva;
+    text-shadow:rgba(0,0,0,0.2) 0 1px 0px; 
+    color:#000;
+    -moz-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    -webkit-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    margin-left:12px;
+    padding:7px 21px; 
+
+    
+}
+
+
+.btnnormal2:hover{
+    background:#C4161C;
+    background:-moz-linear-gradient(top, #EAEAEA, #dbdbdb);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#dbdbdb));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7acbed', EndColorStr='#badff3')";
+    
+}
+.btnnormal2:active{
+   text-shadow:rgba(0,0,0,0.3) 0 -1px 0px; 
+}
+
 .masito
 {
     background:#C4161C;
@@ -309,4 +386,64 @@ footer#main{
     text-align:center;
     font:normal 11px/16px Arial, Helvetica, sans-serif;
     width:100%;
+}
+
+#clasemain{
+    position: absolute;
+    height: 97%;
+    width: 99%;
+    margin-left: 10px;
+    margin-top: 10px;
+    background:#C4161C;
+    border: 2px solid #C4161C;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow: 0 0 5px 5px #888;
+    -webkit-box-shadow: 0 0 5px 5px#888;
+    box-shadow: 0 0 5px 5px #888;
+    color:#444;
+    font:normal 12px/14px Arial, Helvetica, Sans-serif;
+    
+    
+}
+
+
+.stu{
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:5px;
+    border:1px solid #7db0cc !important;
+    /*width: 100%;*/height: 100%;
+    font:bold 11px/14px Verdana, Tahomma, Geneva;
+    text-shadow:rgba(0,0,0,0.2) 0 1px 0px; 
+    color:#000;
+    -moz-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    -webkit-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    margin-right: 3px;
+    margin-left: 3px;
+
+    
+}
+
+.backW{
+    background:-moz-linear-gradient(top, #EAEAEA, #ffffff);
+    background:-webkit-gradient(linear, left top, left bottom, from(#EAEAEA), to(#ffffff));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#badff3', EndColorStr='#7acbed')";
+    
+}
+
+.backG{
+    background:-moz-linear-gradient(top, #8dc700, #577b00);
+    background:-webkit-gradient(linear, left top, left bottom, from(#8dc700), to(#577b00));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#8dc700', EndColorStr='#577b00')";
+    
+}
+
+.backR{
+     background:-moz-linear-gradient(top, #e18787 , #d24a4a);
+    background:-webkit-gradient(linear, left top, left bottom, from(#e18787 ), to(#d24a4a));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e18787 ', EndColorStr='#d24a4a')";
+    
 }

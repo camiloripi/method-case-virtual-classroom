@@ -14,10 +14,7 @@
                 response.sendRedirect("index.jsp");
             }%>
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
-        <link type="text/css" href="CSS/jquery-ui-1.8.18.custom.css" rel="stylesheet">
-        <script type="text/javascript" src="JS/jquery-1.7.1.js"></script>
-        <script type="text/javascript" src="JS/jquery-ui-1.8.18.custom.min.js"></script>
-        <script type="text/javascript" src ="JS/jquery-ui-timepicker-addon.js"></script>
+
         
         <script>
             $(function() {
