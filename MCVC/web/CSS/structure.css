@@ -391,7 +391,7 @@ footer#main{
 #clasemain{
     position: absolute;
     height: 97%;
-    width: 99%;
+    width: 98%;
     margin-left: 10px;
     margin-top: 10px;
     background:#C4161C;
@@ -445,5 +445,28 @@ footer#main{
      background:-moz-linear-gradient(top, #e18787 , #d24a4a);
     background:-webkit-gradient(linear, left top, left bottom, from(#e18787 ), to(#d24a4a));
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e18787 ', EndColorStr='#d24a4a')";
+    
+}
+
+.botTab{
+    margin: 4px;
+    background:none;
+    border: none
+    
+}
+
+.costumTab{
+    border: 1px solid #cccccc; background: #f6f6f6 url(../IMG/images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #1c94c4;
+    list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap;
+    -webkit-border-top-right-radius: 4px;
+    -khtml-border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
+    -webkit-border-top-left-radius: 4px;
+    -khtml-border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.costumTab:hover{
+   border: 1px solid #d3e2f2; background: #bababa 50% 50% repeat-x; font-weight: bold; color: #eeeeee;
     
 }

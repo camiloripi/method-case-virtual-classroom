@@ -49,6 +49,7 @@
             var publisher;
             var ocup_alumno = false;
             var ocup_maestro = false;
+            var editor;
             session.addEventListener("sessionConnected", sessionConnectedHandler);
             session.addEventListener("streamCreated", streamCreatedHandler);
             session.addEventListener("streamDestroyed", streamDestroyedHandler);
@@ -66,7 +67,8 @@
                 $(".stu").width($(".stu").width());
                 $("body").width($("body").width());
                 $("#clasemain").width($("#clasemain").width());
-                 $(".piz").cleditor({width:"99%", height:"100%"});
+       
+                editor=$(".piz").cleditor({width:"99%", height:"100%"});
                  
                 
                 
@@ -526,8 +528,44 @@
                    
                 }
                 $(function() {
-		$( "#tabs" ).tabs();
-	});
+                  tab_counter = 2;
+                  $( "#tabs").tabs({
+                        add: function( event, ui ) {
+				$( ui.panel ).append( "<textarea class='piz'></textarea>" );
+                               editor = $(".piz").cleditor({width:"99%", height:"100%"});
+                               
+                                
+                                
+			},
+                        show: function(event, ui) { 
+                            var tab = $(ui.panel).attr("id");
+                            tab = tab.substr(5, tab.length);
+                                tab = tab -1;
+                                editor[tab].focus();
+                            editor[tab].refresh();   
+                        
+                        
+                            }
+                    });
+                    
+                    
+                });
+                
+                function addTab() {
+                    if(tab_counter<20){
+			$( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'>"+tab_counter+"</a></li>" );
+			$( "#tabs").tabs( "add", "#tabs-" + tab_counter,tab_counter );
+                        var other = $("#addtab");
+                        $("#tab"+tab_counter).after(other.clone());
+                        other.after($("#tab"+tab_counter)).remove();
+                        $("#tabs-" + tab_counter).attr("style","height: 80%" );
+                    
+                        
+                      
+			tab_counter++;
+                    }
+                       
+		}
             
         </script>
 
@@ -597,18 +635,11 @@
                                         <div style="height: 100%;margin:10px 5px 5px 5px">
                                             <div id="tabs"style="height: 95%">
                                                 <ul>
-                                                    <li><a href="#tabs-1">1</a></li>
-                                                    <li><a href="#tabs-2">2</a></li>
-                                                    <li><a href="#tabs-3">3</a></li>
+                                                    <li id="tab1"><a href="#tabs-1">1</a></li>
+                                                    <li class=" costumTab " id="addtab"><input type="button" value="+" class="botTab" onclick="addTab()"/></li>
                                                 </ul>
                                                 <div id="tabs-1" style="height: 80%">
-                                                    <textarea class="piz" name="input"></textarea>
-                                                </div>
-                                                <div id="tabs-2" style="height: 80%">
-                                                    <textarea class="piz" name="input"></textarea>
-                                                </div>
-                                                <div id="tabs-3" style="height: 80%">
-                                                    <textarea class="piz" name="input"></textarea>
+                                                    <textarea class="piz"></textarea>
                                                 </div>
 
                                             </div>
