@@ -17,7 +17,7 @@ import mcvc.util.SIGNALS;
  *
  * @author Camilo-Rivera
  */
-public class ServletSignals extends HttpServlet {
+public class ServletSignalsALL extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,19 +38,21 @@ public class ServletSignals extends HttpServlet {
             String sender = request.getParameter("sender");
             String reciver = request.getParameter("reciver");
             int type = Integer.valueOf(request.getParameter("type"));
+            String tab = request.getParameter("tab");
+            String text = request.getParameter("text");
+            String reciver_arr[] = reciver.split(";");
+            ArrayList<SIGNALS>signals_arr = (ArrayList<SIGNALS>)request.getServletContext().getAttribute(sessionId);
+            for(int i=0;i<reciver_arr.length;i++){
             SIGNALS signal = new SIGNALS();
             signal.setEstatus(true);
-            signal.setReciber(reciver);
+            signal.setReciber(reciver_arr[i]);
             signal.setSender(sender);
             signal.setType(type);
-            signal.setText("");
-            signal.setTab("");
-            ArrayList<SIGNALS>signals_arr = (ArrayList<SIGNALS>)request.getServletContext().getAttribute(sessionId);
+            signal.setText(text);
+            signal.setTab(tab);           
             signals_arr.add(signal);
+            }
             request.getServletContext().setAttribute(sessionId,signals_arr);
-            
-            
-            
         } finally {            
             out.close();
         }

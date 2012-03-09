@@ -13,6 +13,8 @@ public class SIGNALS {
     private String reciber;
     private int type;
     private boolean estatus;
+    private String text;
+    private String tab;
 
     public String getSender() {
         return sender;
@@ -65,6 +67,34 @@ public class SIGNALS {
      */
     public void setEstatus(boolean estatus) {
         this.estatus = estatus;
+    }
+
+    /**
+     * @return the text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * @param text the text to set
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /**
+     * @return the tab
+     */
+    public String getTab() {
+        return tab;
+    }
+
+    /**
+     * @param tab the tab to set
+     */
+    public void setTab(String tab) {
+        this.tab = tab;
     }
     
     

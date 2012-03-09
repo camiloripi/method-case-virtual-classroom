@@ -9,4 +9,5 @@
 <script type="text/javascript" src="JS/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src ="JS/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src ="JS/jquery.cleditor.js"></script>
+<script type="text/javascript" src ="JS/jquery.cleditor.table.js"></script>
 <title>MCVC</title>

@@ -62,14 +62,14 @@
                 $("#disconnectLink").hide();
                 $("#pubControls").hide();
                 $("#aluControls").hide();
-                $("#permitir_hablar").hide();
-                $("#parar_hablar").hide();
+                $(".permitir_hablar").hide();
+                $(".parar_hablar").hide();
                 $(".stu").width($(".stu").width());
                 $("body").width($("body").width());
                 $("#clasemain").width($("#clasemain").width());
-       
+                <%if(ismaestro){%>
                 editor=$(".piz").cleditor({width:"99%", height:"100%"});
-                 
+                 <%}%>
                 
                 
             });
@@ -129,8 +129,8 @@
                             url: "PublisherProperties",
                             data: "sessionId=<%=sessionId%>&video="+publisherProperties.publishVideo+"&audio="+publisherProperties.publishAudio+"&todo=set",
                             success: function(){
-                                publisherProperties.width=100;
-                                publisherProperties.height=100;
+                                publisherProperties.width=220;
+                                publisherProperties.height=140;
                                 publisher = session.publish(publisherDiv.id, publisherProperties);
                             }
                         });       
@@ -146,8 +146,8 @@
                                     
                                     publisherProperties.publishVideo = properties.video;
                                     publisherProperties.publishAudio = properties.audio;
-                                    publisherProperties.width=100;
-                                    publisherProperties.height=100;
+                                    publisherProperties.width=220;
+                                    publisherProperties.height=140;
                                     publisher = session.publish(publisherDiv.id, publisherProperties);
                                 }
                             }
@@ -232,8 +232,8 @@
                             
                             videoPanel.appendChild(containerDiv);
                             var publisherProperties = new Object();
-                            publisherProperties.width=100;
-                            publisherProperties.height=100;
+                            publisherProperties.width=220;
+                            publisherProperties.height=140;
                             var subscriberDiv = document.createElement('div'); // Create a replacement div for the subscriber
                             subscriberDiv.setAttribute('id', divId);
                             containerDiv.appendChild(subscriberDiv);
@@ -277,7 +277,7 @@
                                     
                                     $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId); 
                                     $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
-                                    
+                                    $("#alu_"+a+"_"+s).attr("class","backW stu");
                                     foundit = true;
                                     break;
                                 }
@@ -389,7 +389,8 @@
                                                 var id = fintd(señales[i].sender);
                                                 if(id != ""){
                                                     $(id+" .permitir_participar").val("SI")
-                                         
+                                                    $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
+                                                    $(id+" .permitir_hablar").show();
                                                     $(id).attr("class","backG stu");
                                                 }
                                        
@@ -409,6 +410,9 @@
                                                 $("#levantar_mano").show();
                                                 
                                             }
+                                            if(señales[i].type==6){
+                                                $(señales[i].tab).html(señales[i].text);
+                                            }
                                         }
                                    
                                     }
@@ -423,7 +427,7 @@
                     var id = ""
                     
                     for(var i =0;i<3;i++){
-                        for(var j=0;j<7;j++){
+                        for(var j=0;j<10;j++){
                             id = "#alu_"+i+"_"+j;
                             if( $(id+" .email").val() == email){
                                 return id;
@@ -438,7 +442,7 @@
                     var id = ""
                     
                     for(var i =0;i<3;i++){
-                        for(var j=0;j<7;j++){
+                        for(var j=0;j<10;j++){
                             id = "#alu_"+i+"_"+j;
                             if( $(id+" .connectionid").val() == connectionid){
                                 return id;
@@ -457,18 +461,18 @@
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=2",
                         success: function(){
-                            $("#permitir_hablar").hide();
-                            $("#parar_hablar").attr("onclick", "parar('"+id+"')");
-                            $("#parar_hablar").show();
+                            $(".permitir_hablar").hide();
+                            $(id+ " .parar_hablar").attr("onclick", "parar('"+id+"')");
+                            $(id+" .parar_hablar").show();
                             $(id+" .participando").val("SI");
                             $(id+" .permitir_participar").val("NO");
                             var count = $(id+" .count_participacion").text();
                             count ++;
                             $(id+" .count_participacion").text(count);
-                            $(id).attr("style","background-color: #01a0c7;border: 1px solid #000; cursor: pointer");
+                            $(id).attr("class","backB stu");
               
                             for(var i =0;i<3;i++){
-                                for(var j=0;j<7;j++){
+                                for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
                                     if(id_==id){
                                         $(id_+" .BLOCK").val("NO"); 
@@ -489,18 +493,18 @@
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=3",
                         success: function(){
-                            $("#permitir_hablar").hide();
-                            $("#parar_hablar").attr("onclick", "");
-                            $("#parar_hablar").hide();
+                            $(".permitir_hablar").hide();
+                            $(".parar_hablar").attr("onclick", "");
+                            $(".parar_hablar").hide();
                        
                             for(var i =0;i<3;i++){
-                                for(var j=0;j<7;j++){
+                                for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
                                     $(id_+" .BLOCK").val("NO");
                                     $(id_+" .permitir_participar").val("NO");
                                     $(id_+" .participando").val("NO");
                                     if( $(id_+" .CONNECT").val()=="SI"){
-                                        $(id_).attr("style","background-color: #e5e5e5;border: 1px solid #000; cursor: pointer");  
+                                        $(id_).attr("class","backW stu");  
                                     }
                                     $.ajax({
                                         type: "POST",
@@ -531,19 +535,21 @@
                   tab_counter = 2;
                   $( "#tabs").tabs({
                         add: function( event, ui ) {
-				$( ui.panel ).append( "<textarea class='piz'></textarea>" );
+				$( ui.panel ).append( "<textarea class='piz'></textarea><input type=\"button\" class=\"btnnormal2\" value=\"Refresh\" onClick=\"refreshtab('#tabs-"+tab_counter+" .piz')\" style=\"margin-top: 5px;\" id=\"btabs-"+tab_counter+"\"/>" );
+                               <%if(ismaestro){%>
                                editor = $(".piz").cleditor({width:"99%", height:"100%"});
-                               
+                               <%}%>
                                 
                                 
 			},
                         show: function(event, ui) { 
+                            <%if(ismaestro){%>
                             var tab = $(ui.panel).attr("id");
                             tab = tab.substr(5, tab.length);
                                 tab = tab -1;
                                 editor[tab].focus();
                             editor[tab].refresh();   
-                        
+                            <%}%>
                         
                             }
                     });
@@ -566,6 +572,27 @@
                     }
                        
 		}
+                
+                function refreshtab(id){
+                   
+                    var liststu = "";
+                    for(var i =0;i<3;i++){
+                        for(var j=0;j<10;j++){
+                            ids = "#alu_"+i+"_"+j;
+                            if( $(ids+" .email").val() != ""){
+                                liststu = liststu + $(ids+" .email").val()+";";
+                            }
+                        }
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "ServletSignalsALL",
+                        data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=6&text="+escape($(id).val())+"&tab="+id,
+                        success: function(){
+                            session.signal();
+                        }
+                    });
+                }
             
         </script>
 
@@ -574,14 +601,16 @@
         <div id="clasemain">           
             <fieldset class="boxBodyclase">
                 <table style="width: 100%;height: 100%">
+                    <%if(ismaestro){%>
                     <tr>
+                        
                         <td style="height: 100px">
                             <table style="width: 100%;height: 100px" id="cuadricula">
                                 <%for (int i = 0; i < 3; i++) {%>
                                 <tr >
-                                    <%for (int j = 0; j < 7; j++) {%> 
+                                    <%for (int j = 0; j < 10; j++) {%> 
                                     <td style="height: 30px;padding-top: 3px;white-space: nowrap;">
-                                        <div style="text-align: center;" class="backW stu" id="alu_<%=String.valueOf(i) + "_" + String.valueOf(j)%>">
+                                        <div  class="backW stu" id="alu_<%=String.valueOf(i) + "_" + String.valueOf(j)%>">
                                             <input type="hidden" class="connectionid" value=""/>
                                             <input type="hidden" class="email" value=""/>
                                             <input type="hidden" class="sa" value=""/>
@@ -593,8 +622,12 @@
                                             <input type="hidden" class="CONNECT" value="NO" />
 
                                             <table style="width: 100%">
-                                                <tr><td><label class="username"></label><label class="pa"></label></td></tr>
-                                                <tr><td><label class="count_participacion"></label></td></tr>
+                                                <tr><td style="text-align: center;"><label class="username"></label><label class="pa"></label></td></tr>
+                                                <tr>
+                                                    <td style="text-align: center;"><label class="count_participacion"></label></td>
+                                                    <td><input type="button" class ="permitir_hablar" onClick="" /></td>
+                                                    <td><input type="button" class ="parar_hablar" onClick="" /></td>
+                                                </tr>
                                             </table>
                                         </div>
                                     </td>
@@ -605,15 +638,16 @@
                             </table>
                         </td> 
                     </tr>
+                    <%}%>
                     <tr>
                         <td>
                             <table style="width: 100%;height: 100%">
                                 <tr>
-                                    <td style="width: 100px;height: 200px">
+                                    <td style="width: 220px;height: 280px; position: relative">
                                         <div id="videoPanel">
-                                            <table style="width: 100px;height: 200px" >
+                                            <table style="width: 220px;height: 280px" >
                                                 <tr>
-                                                    <td style="width: 100px;border: 1px solid #000">
+                                                    <td style="width: 220px;/*border: 1px solid #000*/">
                                                         <div id="maestro_div">
 
                                                         </div> 
@@ -621,7 +655,7 @@
 
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 100px;border: 1px solid #000">
+                                                    <td style="width: 120px;/*border: 1px solid #000*/">
                                                         <div id="alumno_div">
 
                                                         </div>
@@ -636,10 +670,17 @@
                                             <div id="tabs"style="height: 95%">
                                                 <ul>
                                                     <li id="tab1"><a href="#tabs-1">1</a></li>
+                                                    <%if(ismaestro){%>
                                                     <li class=" costumTab " id="addtab"><input type="button" value="+" class="botTab" onclick="addTab()"/></li>
+                                                    <%}%>
                                                 </ul>
                                                 <div id="tabs-1" style="height: 80%">
+                                                    <%if(ismaestro){%>
                                                     <textarea class="piz"></textarea>
+                                                    <input type="button" class="btnnormal2" value="Refresh" onClick="refreshtab('#tabs-1 .piz')" style="margin-top: 5px;" id="btabs-1"/>
+                                                    <%}else{%>
+                                                    <p class="piz"></p>
+                                                    <%}%>
                                                 </div>
 
                                             </div>
