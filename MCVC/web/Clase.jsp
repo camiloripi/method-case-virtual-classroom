@@ -50,6 +50,8 @@
             var ocup_alumno = false;
             var ocup_maestro = false;
             var editor;
+            var gopuplish = true;
+            var permitir = true;
             session.addEventListener("sessionConnected", sessionConnectedHandler);
             session.addEventListener("streamCreated", streamCreatedHandler);
             session.addEventListener("streamDestroyed", streamDestroyedHandler);
@@ -99,16 +101,12 @@
                         var containerDiv = document.createElement('div');
                         containerDiv.className = "subscriberContainer";
                         containerDiv.setAttribute('id', 'opentok_publisher');
-                        if(ocup_maestro == false){
-                            var videoPanel = document.getElementById("maestro_div");
-                            ocup_maestro = true;
-                        }else{
-                            
-                            if(ocup_alumno == false){
-                                var videoPanel = document.getElementById("alumno_div");
-                                ocup_alumno = true;
-                            }
-                        }
+                        <%if(ismaestro){%>
+                             var videoPanel = document.getElementById("maestro_div");       
+                               <%}else{%>   
+                                var videoPanel = document.getElementById("alumno_div");   
+                                   <%}%>
+                          
                         
                         videoPanel.appendChild(containerDiv);
                         var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
@@ -131,7 +129,9 @@
                             success: function(){
                                 publisherProperties.width=220;
                                 publisherProperties.height=140;
+                                
                                 publisher = session.publish(publisherDiv.id, publisherProperties);
+                                
                             }
                         });       
             <%} else {%>
@@ -148,7 +148,10 @@
                                     publisherProperties.publishAudio = properties.audio;
                                     publisherProperties.width=220;
                                     publisherProperties.height=140;
+                                  
+                                    if(gopuplish){
                                     publisher = session.publish(publisherDiv.id, publisherProperties);
+                                    }
                                 }
                             }
                         });
@@ -187,7 +190,10 @@
                 function streamDestroyedHandler(event) {
                    
                     var publisherContainer = document.getElementById("opentok_publisher");
-                    var videoPanel = document.getElementById("maestro_div");
+                    var videoPanel = document.getElementById("alumno_div");
+                    <%if(ismaestro){%>
+                       videoPanel = document.getElementById("maestro_div");     
+                   <% }%>
                     for (i = 0; i < event.streams.length; i++) {
                         var stream = event.streams[i];
                         if (stream.connection.connectionId == session.connection.connectionId) {
@@ -196,8 +202,6 @@
                         } else {
                             var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
                             if(streamContainerDiv) {
-                                
-                                videoPanel = document.getElementById("alumno_div");
                                 videoPanel.removeChild(streamContainerDiv);
                                 ocup_alumno = false;
                             }
@@ -215,19 +219,20 @@
                         
                         var stream = streams[i];
                         if (stream.connection.connectionId != session.connection.connectionId) {
+                            var email = stream.connection.data;
+                            email = email.split(",");
+                            email = email[0];
                             var containerDiv = document.createElement('div'); // Create a container for the subscriber and its controls
                             containerDiv.className = "subscriberContainer";
                             var divId = stream.streamId;    // Give the div the id of the stream as its id
                             containerDiv.setAttribute('id', 'streamContainer' + divId);
-                            
-                            if(ocup_alumno == false){
-                                var videoPanel = document.getElementById("alumno_div");  
-                                ocup_alumno = true;
+                            var videoPanel = null;
+                            if(email=="<%=maestro%>"){
+                                videoPanel = document.getElementById("maestro_div");
+                                
                             }else{ 
-                                if(ocup_maestro == false){
-                                    var videoPanel = document.getElementById("maestro_div");  
-                                    ocup_maestro  = true;
-                                }
+                                videoPanel = document.getElementById("alumno_div");  
+                                 
                             }
                             
                             videoPanel.appendChild(containerDiv);
@@ -238,6 +243,8 @@
                             subscriberDiv.setAttribute('id', divId);
                             containerDiv.appendChild(subscriberDiv);
                             session.subscribe(stream, divId,publisherProperties);
+                            var id = findtd_id(stream.connection.connectionId);
+                            $(id+" .parar_hablar").show();
                             
                         }
                     }
@@ -334,7 +341,7 @@
                 }
                 
                 function connectionDestroyedHandler(event) {
-                    
+                    permitir = true;
             <%if (ismaestro) {%>
                    
                 
@@ -388,18 +395,24 @@
                                             if(señales[i].type== 1){
                                                 var id = fintd(señales[i].sender);
                                                 if(id != ""){
+                                                    if(permitir){
                                                     $(id+" .permitir_participar").val("SI")
                                                     $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
                                                     $(id+" .permitir_hablar").show();
                                                     $(id).attr("class","backG stu");
+                                                    }
                                                 }
                                        
                                             }
                                             if(señales[i].type == 2){
+                                                gopuplish = true;
                                                 startPublishing();
                                             }
                                             if(señales[i].type == 3){
-                                                session.unpublish(publisher);                                              
+                                                gopuplish = false;
+                                                if(publisher!=0){
+                                                session.unpublish(publisher); 
+                                                }
                                             }
                                             if(señales[i].type == 4){
                                                 var id = fintd(señales[i].sender);
@@ -412,6 +425,16 @@
                                             }
                                             if(señales[i].type==6){
                                                 $(señales[i].tab).html(señales[i].text);
+                                                var t = señales[i].tab
+                                                var tab = "#tab"+t.substring(6, t.length-5);
+                                                
+                                                var class_ = $(tab).attr("class") + " uptab";
+                                                $(tab).attr("class",class_);
+                                                
+                                            }
+                                            if(señales[i].type==7){
+                                                
+                                                addTab();
                                             }
                                         }
                                    
@@ -461,9 +484,10 @@
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=2",
                         success: function(){
+                            permitir = false;
                             $(".permitir_hablar").hide();
                             $(id+ " .parar_hablar").attr("onclick", "parar('"+id+"')");
-                            $(id+" .parar_hablar").show();
+                            
                             $(id+" .participando").val("SI");
                             $(id+" .permitir_participar").val("NO");
                             var count = $(id+" .count_participacion").text();
@@ -474,6 +498,7 @@
                             for(var i =0;i<3;i++){
                                 for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
+                                    
                                     if(id_==id){
                                         $(id_+" .BLOCK").val("NO"); 
                                     }else{
@@ -482,6 +507,7 @@
                                 }
                             }
                             session.signal();
+                            
                         }
                     });  
                 }
@@ -493,6 +519,7 @@
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+email+"&type=3",
                         success: function(){
+                            permitir = true;
                             $(".permitir_hablar").hide();
                             $(".parar_hablar").attr("onclick", "");
                             $(".parar_hablar").hide();
@@ -535,21 +562,31 @@
                   tab_counter = 2;
                   $( "#tabs").tabs({
                         add: function( event, ui ) {
-				$( ui.panel ).append( "<textarea class='piz'></textarea><input type=\"button\" class=\"btnnormal2\" value=\"Refresh\" onClick=\"refreshtab('#tabs-"+tab_counter+" .piz')\" style=\"margin-top: 5px;\" id=\"btabs-"+tab_counter+"\"/>" );
+                         
+				
                                <%if(ismaestro){%>
+                               $( ui.panel ).append( "<textarea class='piz'></textarea><input type=\"button\" class=\"btnnormal2\" value=\"Refresh\" onClick=\"refreshtab('#tabs-"+tab_counter+" .piz')\" style=\"margin-top: 5px;\" id=\"btabs-"+tab_counter+"\"/>" );
                                editor = $(".piz").cleditor({width:"99%", height:"100%"});
-                               <%}%>
+                               <%}else{%>
+                                 $( ui.panel ).append(" <p class='piz'></p>");   
+                                   <%}%>
                                 
                                 
 			},
                         show: function(event, ui) { 
-                            <%if(ismaestro){%>
                             var tab = $(ui.panel).attr("id");
+                            <%if(ismaestro){%>
+                            
                             tab = tab.substr(5, tab.length);
                                 tab = tab -1;
                                 editor[tab].focus();
                             editor[tab].refresh();   
-                            <%}%>
+                            <%}else{%>
+                                var tabl = "#tab"+tab.substring(5, tab.length);
+                                var class_ = $(tabl).attr("class");
+                                class_=class_.replace("uptab", "");
+                                $(tabl).attr("class",class_);
+                                <%}%>
                         
                             }
                     });
@@ -561,12 +598,14 @@
                     if(tab_counter<20){
 			$( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'>"+tab_counter+"</a></li>" );
 			$( "#tabs").tabs( "add", "#tabs-" + tab_counter,tab_counter );
-                        var other = $("#addtab");
+                      <%if(ismaestro){%>
+                                       var other = $("#addtab");
                         $("#tab"+tab_counter).after(other.clone());
                         other.after($("#tab"+tab_counter)).remove();
+                        addtabS();
+                        <%}%>
                         $("#tabs-" + tab_counter).attr("style","height: 80%" );
-                    
-                        
+                         
                       
 			tab_counter++;
                     }
@@ -588,6 +627,26 @@
                         type: "POST",
                         url: "ServletSignalsALL",
                         data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=6&text="+escape($(id).val())+"&tab="+id,
+                        success: function(){
+                            session.signal();
+                        }
+                    });
+                }
+                
+                function addtabS(){
+                    var liststu = "";
+                    for(var i =0;i<3;i++){
+                        for(var j=0;j<10;j++){
+                            ids = "#alu_"+i+"_"+j;
+                            if( $(ids+" .email").val() != ""){
+                                liststu = liststu + $(ids+" .email").val()+";";
+                            }
+                        }
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "ServletSignalsALL",
+                        data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=7",
                         success: function(){
                             session.signal();
                         }
@@ -625,8 +684,8 @@
                                                 <tr><td style="text-align: center;"><label class="username"></label><label class="pa"></label></td></tr>
                                                 <tr>
                                                     <td style="text-align: center;"><label class="count_participacion"></label></td>
-                                                    <td><input type="button" class ="permitir_hablar" onClick="" /></td>
-                                                    <td><input type="button" class ="parar_hablar" onClick="" /></td>
+                                                    <td style="text-align: right;"><input type="button" class ="permitir_hablar" onClick="" /></td>
+                                                    <td style="text-align: right;"><input type="button" class ="parar_hablar" onClick="" /></td>
                                                 </tr>
                                             </table>
                                         </div>
