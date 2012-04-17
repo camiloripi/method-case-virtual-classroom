@@ -59,7 +59,11 @@
             session.addEventListener("sessionDisconnected", sessionDisConnectedHandler);
             session.addEventListener("connectionDestroyed", connectionDestroyedHandler);
             session.addEventListener("signalReceived", signalHandler);
-            
+            window.onbeforeunload = function() { 
+                <%if (ismaestro) {%>
+                    changeStatus(4);
+            <%}%>
+            };
             $(document).ready(function() {
                 $("#disconnectLink").hide();
                 $("#pubControls").hide();
@@ -69,17 +73,17 @@
                 $(".stu").width($(".stu").width());
                 $("body").width($("body").width());
                 $("#clasemain").width($("#clasemain").width());
-                <%if(ismaestro){%>
-                editor=$(".piz").cleditor({width:"99%", height:"100%"});
-                 <%}%>
+            <%if (ismaestro) {%>
+                    editor=$(".piz").cleditor({width:"99%", height:"100%"});
+            <%}%>
                 
                 
-            });
+                });
             
-            function connect(){
+                function connect(){
               
                 
-                token ="";
+                    token ="";
             <%if (ismaestro) {%>
                     token ="<%=tokbox.generateToKenMaestro(sessionId, tblUsuarios)%>";        
             <%} else {%>
@@ -101,11 +105,11 @@
                         var containerDiv = document.createElement('div');
                         containerDiv.className = "subscriberContainer";
                         containerDiv.setAttribute('id', 'opentok_publisher');
-                        <%if(ismaestro){%>
-                             var videoPanel = document.getElementById("maestro_div");       
-                               <%}else{%>   
-                                var videoPanel = document.getElementById("alumno_div");   
-                                   <%}%>
+            <%if (ismaestro) {%>
+                        var videoPanel = document.getElementById("maestro_div");       
+            <%} else {%>   
+                        var videoPanel = document.getElementById("alumno_div");   
+            <%}%>
                           
                         
                         videoPanel.appendChild(containerDiv);
@@ -150,7 +154,7 @@
                                     publisherProperties.height=140;
                                   
                                     if(gopuplish){
-                                    publisher = session.publish(publisherDiv.id, publisherProperties);
+                                        publisher = session.publish(publisherDiv.id, publisherProperties);
                                     }
                                 }
                             }
@@ -191,9 +195,9 @@
                    
                     var publisherContainer = document.getElementById("opentok_publisher");
                     var videoPanel = document.getElementById("alumno_div");
-                    <%if(ismaestro){%>
-                       videoPanel = document.getElementById("maestro_div");     
-                   <% }%>
+            <%if (ismaestro) {%>
+                    videoPanel = document.getElementById("maestro_div");     
+            <% }%>
                     for (i = 0; i < event.streams.length; i++) {
                         var stream = event.streams[i];
                         if (stream.connection.connectionId == session.connection.connectionId) {
@@ -363,8 +367,15 @@
                         }
               
                     }
+            <%} else {%>
+                    var arr = event.connections[0].data.split(",", 1);
+                    if(arr == "<%=maestro%>"){
+                        session.disconnect();
+                    }
             <%}%>
                 }
+                
+           
             
                 function LevantarMano(){
                     $.ajax({
@@ -396,10 +407,10 @@
                                                 var id = fintd(señales[i].sender);
                                                 if(id != ""){
                                                     if(permitir){
-                                                    $(id+" .permitir_participar").val("SI")
-                                                    $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
-                                                    $(id+" .permitir_hablar").show();
-                                                    $(id).attr("class","backG stu");
+                                                        $(id+" .permitir_participar").val("SI")
+                                                        $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
+                                                        $(id+" .permitir_hablar").show();
+                                                        $(id).attr("class","backG stu");
                                                     }
                                                 }
                                        
@@ -411,7 +422,7 @@
                                             if(señales[i].type == 3){
                                                 gopuplish = false;
                                                 if(publisher!=0){
-                                                session.unpublish(publisher); 
+                                                    session.unpublish(publisher); 
                                                 }
                                             }
                                             if(señales[i].type == 4){
@@ -559,36 +570,36 @@
                    
                 }
                 $(function() {
-                  tab_counter = 2;
-                  $( "#tabs").tabs({
+                    tab_counter = 2;
+                    $( "#tabs").tabs({
                         add: function( event, ui ) {
                          
 				
-                               <%if(ismaestro){%>
-                               $( ui.panel ).append( "<textarea class='piz'></textarea><input type=\"button\" class=\"btnnormal2\" value=\"Refresh\" onClick=\"refreshtab('#tabs-"+tab_counter+" .piz')\" style=\"margin-top: 5px;\" id=\"btabs-"+tab_counter+"\"/>" );
-                               editor = $(".piz").cleditor({width:"99%", height:"100%"});
-                               <%}else{%>
-                                 $( ui.panel ).append(" <p class='piz'></p>");   
-                                   <%}%>
+            <%if (ismaestro) {%>
+                            $( ui.panel ).append( "<textarea class='piz'></textarea><input type=\"button\" class=\"btnnormal2\" value=\"Refresh\" onClick=\"refreshtab('#tabs-"+tab_counter+" .piz')\" style=\"margin-top: 5px;\" id=\"btabs-"+tab_counter+"\"/>" );
+                            editor = $(".piz").cleditor({width:"99%", height:"100%"});
+            <%} else {%>
+                            $( ui.panel ).append(" <p class='piz'></p>");   
+            <%}%>
                                 
                                 
 			},
                         show: function(event, ui) { 
                             var tab = $(ui.panel).attr("id");
-                            <%if(ismaestro){%>
+            <%if (ismaestro) {%>
                             
                             tab = tab.substr(5, tab.length);
-                                tab = tab -1;
-                                editor[tab].focus();
+                            tab = tab -1;
+                            editor[tab].focus();
                             editor[tab].refresh();   
-                            <%}else{%>
-                                var tabl = "#tab"+tab.substring(5, tab.length);
-                                var class_ = $(tabl).attr("class");
-                                class_=class_.replace("uptab", "");
-                                $(tabl).attr("class",class_);
-                                <%}%>
+            <%} else {%>
+                            var tabl = "#tab"+tab.substring(5, tab.length);
+                            var class_ = $(tabl).attr("class");
+                            class_=class_.replace("uptab", "");
+                            $(tabl).attr("class",class_);
+            <%}%>
                         
-                            }
+                        }
                     });
                     
                     
@@ -598,12 +609,12 @@
                     if(tab_counter<20){
 			$( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'>"+tab_counter+"</a></li>" );
 			$( "#tabs").tabs( "add", "#tabs-" + tab_counter,tab_counter );
-                      <%if(ismaestro){%>
-                                       var other = $("#addtab");
+            <%if (ismaestro) {%>
+                        var other = $("#addtab");
                         $("#tab"+tab_counter).after(other.clone());
                         other.after($("#tab"+tab_counter)).remove();
                         addtabS();
-                        <%}%>
+            <%}%>
                         $("#tabs-" + tab_counter).attr("style","height: 80%" );
                          
                       
@@ -660,9 +671,9 @@
         <div id="clasemain">           
             <fieldset class="boxBodyclase">
                 <table style="width: 100%;height: 100%">
-                    <%if(ismaestro){%>
+                    <%if (ismaestro) {%>
                     <tr>
-                        
+
                         <td style="height: 100px">
                             <table style="width: 100%;height: 100px" id="cuadricula">
                                 <%for (int i = 0; i < 3; i++) {%>
@@ -729,15 +740,15 @@
                                             <div id="tabs"style="height: 95%">
                                                 <ul>
                                                     <li id="tab1"><a href="#tabs-1">1</a></li>
-                                                    <%if(ismaestro){%>
+                                                    <%if (ismaestro) {%>
                                                     <li class=" costumTab " id="addtab"><input type="button" value="+" class="botTab" onclick="addTab()"/></li>
-                                                    <%}%>
+                                                        <%}%>
                                                 </ul>
                                                 <div id="tabs-1" style="height: 80%">
-                                                    <%if(ismaestro){%>
+                                                    <%if (ismaestro) {%>
                                                     <textarea class="piz"></textarea>
                                                     <input type="button" class="btnnormal2" value="Refresh" onClick="refreshtab('#tabs-1 .piz')" style="margin-top: 5px;" id="btabs-1"/>
-                                                    <%}else{%>
+                                                    <%} else {%>
                                                     <p class="piz"></p>
                                                     <%}%>
                                                 </div>
