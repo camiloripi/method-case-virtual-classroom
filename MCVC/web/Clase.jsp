@@ -72,6 +72,7 @@
                     $(".permitir_hablar").hide();
                     $(".parar_hablar").hide();
                     $(".warm_call").hide();
+                    $(".cold_call").hide();
                     $(".stu").width($(".stu").width());
                     $("body").width($("body").width());
                     $("#clasemain").width($("#clasemain").width());
@@ -206,8 +207,20 @@
                             videoPanel.removeChild(publisherContainer);
                             publisher =null;ocup_maestro =false;
                         } else {
+                            
                             var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
                             if(streamContainerDiv) {
+                                <%if (ismaestro) {%>
+                                    videoPanel = document.getElementById("alumno_div");     
+                                 <% }else{%>
+                                     var email = stream.connection.data;
+                                    email = email.split(",");
+                                    email = email[0];
+                                    if(email =='<%=maestro%>' ){
+                                     videoPanel = document.getElementById("maestro_div"); 
+                                    }
+                                     
+                                     <%}%>
                                 videoPanel.removeChild(streamContainerDiv);
                                 ocup_alumno = false;
                             }
@@ -291,8 +304,13 @@
                                     $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId); 
                                     $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                     $("#alu_"+a+"_"+s).attr("class","backW stu");
+                                    if(permitir){
                                      $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
-                                    $("#alu_"+a+"_"+s+" .warm_call").show();
+                                      $("#alu_"+a+"_"+s+" .warm_call").show();
+                                    }
+                                     $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
+                                    $("#alu_"+a+"_"+s+" .cold_call").show();
+                                   
                                     foundit = true;
                                     break;
                                 }
@@ -313,8 +331,12 @@
                                         $("#alu_"+a+"_"+s+" .celular").val(connectiondata[5]);
                                         $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                         $("#alu_"+a+"_"+s+" .count_participacion").text("0");
+                                        if(permitir){
                                         $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
                                         $("#alu_"+a+"_"+s+" .warm_call").show();
+                                        }
+                                        $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
+                                        $("#alu_"+a+"_"+s+" .cold_call").show();
                                         foundit = true;
                                         break;
                                     }
@@ -416,7 +438,7 @@
                                                         $(id+" .permitir_participar").val("SI")
                                                         $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
                                                         $(id+" .permitir_hablar").show();
-                                                        $(id+" .warm_call").hide();
+                                                        $(id+" .warm_call").hide();                                                       
                                                         $(id).attr("class","backG stu");
                                                     }
                                                 }
@@ -543,7 +565,7 @@
                             $(".permitir_hablar").hide();
                             $(".parar_hablar").attr("onclick", "");
                             $(".parar_hablar").hide();
-                            $(id+" .warm_call").show();
+                            
                             for(var i =0;i<3;i++){
                                 for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
@@ -551,12 +573,14 @@
                                     $(id_+" .permitir_participar").val("NO");
                                     $(id_+" .participando").val("NO");
                                     if( $(id_+" .CONNECT").val()=="SI"){
-                                        $(id_).attr("class","backW stu");  
-                                    }
-                                    $.ajax({
+                                        $(id_+" .warm_call").show();
+                                        $(id_).attr("class","backW stu"); 
+                                        $.ajax({
                                         type: "POST",
                                         url: "ServletSignals",
                                         data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+$(id_+" .email").val()+"&type=5"});
+                                    }
+                                    
                                     
                                 }
                             }
@@ -566,12 +590,14 @@
                 }
                 
                 function WarmCall(id){
-                 $(id+" .warm_call").hide();
+                 $(".warm_call").hide();
                 
                 permitirhablar(id);
                
                 }
-                
+                function ColdCall(id){
+                    alert("cold call");
+                }
                 function BajarMano(){
                     $.ajax({
                         type: "POST",
@@ -716,6 +742,7 @@
                                                     <td style="text-align: right;"><input type="button" class ="permitir_hablar" onClick="" /></td>
                                                     <td style="text-align: right;"><input type="button" class ="parar_hablar" onClick="" /></td>
                                                     <td style="text-align: right;"><input type="button" class ="warm_call" onClick="" /></td>
+                                                    <td style="text-align: right;width: 12px;"><input type="button" class ="cold_call" onClick="" /></td>
                                                 </tr>
                                             </table>
                                         </div>

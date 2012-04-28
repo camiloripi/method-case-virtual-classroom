@@ -500,6 +500,18 @@ border: 2px solid rgba(1, 160, 199, 0.5);
     
 }
 
+.cold_call{
+  border: none;
+    background-image: url("../IMG/ICONOS/12x12/cold_call.png");
+    height: 12px;
+    width: 12px;  
+}
+
+.cold_call:hover{
+    background-image: url("../IMG/ICONOS/12x12/cold_call_hover.png"); 
+    
+}
+
 .parar_hablar{
     border: none;
     background-image: url("../IMG/ICONOS/12x12/stop_talk.png");
