@@ -488,6 +488,18 @@ border: 2px solid rgba(1, 160, 199, 0.5);
    
 }
 
+.warm_call{
+  border: none;
+    background-image: url("../IMG/ICONOS/12x12/warm_call.png");
+    height: 12px;
+    width: 12px;  
+}
+
+.warm_call:hover{
+    background-image: url("../IMG/ICONOS/12x12/warm_call_hover.png"); 
+    
+}
+
 .parar_hablar{
     border: none;
     background-image: url("../IMG/ICONOS/12x12/stop_talk.png");

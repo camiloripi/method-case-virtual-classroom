@@ -45,6 +45,7 @@
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
         <script src="http://static.opentok.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>       
         <script type="text/javascript" charset="utf-8">
+
             var session = TB.initSession("<%=sessionId%>"); // Sample session ID. 
             var publisher;
             var ocup_alumno = false;
@@ -60,19 +61,20 @@
             session.addEventListener("connectionDestroyed", connectionDestroyedHandler);
             session.addEventListener("signalReceived", signalHandler);
             window.onbeforeunload = function() { 
-                <%if (ismaestro) {%>
+            <%if (ismaestro) {%>
                     changeStatus(4);
             <%}%>
-            };
-            $(document).ready(function() {
-                $("#disconnectLink").hide();
-                $("#pubControls").hide();
-                $("#aluControls").hide();
-                $(".permitir_hablar").hide();
-                $(".parar_hablar").hide();
-                $(".stu").width($(".stu").width());
-                $("body").width($("body").width());
-                $("#clasemain").width($("#clasemain").width());
+                };
+                $(document).ready(function() {
+                    $("#disconnectLink").hide();
+                    $("#pubControls").hide();
+                    $("#aluControls").hide();
+                    $(".permitir_hablar").hide();
+                    $(".parar_hablar").hide();
+                    $(".warm_call").hide();
+                    $(".stu").width($(".stu").width());
+                    $("body").width($("body").width());
+                    $("#clasemain").width($("#clasemain").width());
             <%if (ismaestro) {%>
                     editor=$(".piz").cleditor({width:"99%", height:"100%"});
             <%}%>
@@ -289,6 +291,8 @@
                                     $("#alu_"+a+"_"+s+" .connectionid").val(event.connections[j].connectionId); 
                                     $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                     $("#alu_"+a+"_"+s).attr("class","backW stu");
+                                     $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
+                                    $("#alu_"+a+"_"+s+" .warm_call").show();
                                     foundit = true;
                                     break;
                                 }
@@ -308,7 +312,9 @@
                                         $("#alu_"+a+"_"+s+" .telefono").val(connectiondata[4]);
                                         $("#alu_"+a+"_"+s+" .celular").val(connectiondata[5]);
                                         $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
-                                        $("#alu_"+a+"_"+s+" .count_participacion").text("0"); 
+                                        $("#alu_"+a+"_"+s+" .count_participacion").text("0");
+                                        $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
+                                        $("#alu_"+a+"_"+s+" .warm_call").show();
                                         foundit = true;
                                         break;
                                     }
@@ -410,12 +416,15 @@
                                                         $(id+" .permitir_participar").val("SI")
                                                         $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
                                                         $(id+" .permitir_hablar").show();
+                                                        $(id+" .warm_call").hide();
                                                         $(id).attr("class","backG stu");
                                                     }
                                                 }
                                        
                                             }
                                             if(señales[i].type == 2){
+                                                 $("#dejar_de_hablar").show();
+                                                 $("#levantar_mano").hide();
                                                 gopuplish = true;
                                                 startPublishing();
                                             }
@@ -534,7 +543,7 @@
                             $(".permitir_hablar").hide();
                             $(".parar_hablar").attr("onclick", "");
                             $(".parar_hablar").hide();
-                       
+                            $(id+" .warm_call").show();
                             for(var i =0;i<3;i++){
                                 for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
@@ -554,6 +563,13 @@
                             session.signal();
                         }
                     });
+                }
+                
+                function WarmCall(id){
+                 $(id+" .warm_call").hide();
+                
+                permitirhablar(id);
+               
                 }
                 
                 function BajarMano(){
@@ -583,7 +599,7 @@
             <%}%>
                                 
                                 
-			},
+                        },
                         show: function(event, ui) { 
                             var tab = $(ui.panel).attr("id");
             <%if (ismaestro) {%>
@@ -607,8 +623,8 @@
                 
                 function addTab() {
                     if(tab_counter<20){
-			$( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'>"+tab_counter+"</a></li>" );
-			$( "#tabs").tabs( "add", "#tabs-" + tab_counter,tab_counter );
+                        $( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'>"+tab_counter+"</a></li>" );
+                        $( "#tabs").tabs( "add", "#tabs-" + tab_counter,tab_counter );
             <%if (ismaestro) {%>
                         var other = $("#addtab");
                         $("#tab"+tab_counter).after(other.clone());
@@ -618,10 +634,10 @@
                         $("#tabs-" + tab_counter).attr("style","height: 80%" );
                          
                       
-			tab_counter++;
+                        tab_counter++;
                     }
                        
-		}
+                }
                 
                 function refreshtab(id){
                    
@@ -663,6 +679,8 @@
                         }
                     });
                 }
+                
+              
             
         </script>
 
@@ -697,6 +715,7 @@
                                                     <td style="text-align: center;"><label class="count_participacion"></label></td>
                                                     <td style="text-align: right;"><input type="button" class ="permitir_hablar" onClick="" /></td>
                                                     <td style="text-align: right;"><input type="button" class ="parar_hablar" onClick="" /></td>
+                                                    <td style="text-align: right;"><input type="button" class ="warm_call" onClick="" /></td>
                                                 </tr>
                                             </table>
                                         </div>
