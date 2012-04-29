@@ -37,13 +37,18 @@ public class ServletSignals extends HttpServlet {
             String sessionId = request.getParameter("sessionId");
             String sender = request.getParameter("sender");
             String reciver = request.getParameter("reciver");
+            String text = request.getParameter("text");
             int type = Integer.valueOf(request.getParameter("type"));
             SIGNALS signal = new SIGNALS();
             signal.setEstatus(true);
             signal.setReciber(reciver);
             signal.setSender(sender);
             signal.setType(type);
-            signal.setText("");
+            if(text==null){
+               signal.setText(""); 
+            }else{
+            signal.setText(text);
+            }
             signal.setTab("");
             ArrayList<SIGNALS>signals_arr = (ArrayList<SIGNALS>)request.getServletContext().getAttribute(sessionId);
             signals_arr.add(signal);

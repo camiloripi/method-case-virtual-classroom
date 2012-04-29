@@ -66,6 +66,16 @@
             <%}%>
                 };
                 $(document).ready(function() {
+                    // Initially, hide them all
+                    hideAllMessages();
+		 
+		 
+                    // When message is clicked, hide it
+                    $('.messageclose').click(function(){			  
+                        // $(this).animate({top: -$(this).outerHeight()}, 500);
+                    });
+                
+                
                     $("#disconnectLink").hide();
                     $("#pubControls").hide();
                     $("#aluControls").hide();
@@ -210,17 +220,17 @@
                             
                             var streamContainerDiv = document.getElementById("streamContainer" + stream.streamId);
                             if(streamContainerDiv) {
-                                <%if (ismaestro) {%>
-                                    videoPanel = document.getElementById("alumno_div");     
-                                 <% }else{%>
-                                     var email = stream.connection.data;
-                                    email = email.split(",");
-                                    email = email[0];
-                                    if(email =='<%=maestro%>' ){
-                                     videoPanel = document.getElementById("maestro_div"); 
-                                    }
+            <%if (ismaestro) {%>
+                                videoPanel = document.getElementById("alumno_div");     
+            <% } else {%>
+                                var email = stream.connection.data;
+                                email = email.split(",");
+                                email = email[0];
+                                if(email =='<%=maestro%>' ){
+                                    videoPanel = document.getElementById("maestro_div"); 
+                                }
                                      
-                                     <%}%>
+            <%}%>
                                 videoPanel.removeChild(streamContainerDiv);
                                 ocup_alumno = false;
                             }
@@ -305,10 +315,10 @@
                                     $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                     $("#alu_"+a+"_"+s).attr("class","backW stu");
                                     if(permitir){
-                                     $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
-                                      $("#alu_"+a+"_"+s+" .warm_call").show();
+                                        $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
+                                        $("#alu_"+a+"_"+s+" .warm_call").show();
                                     }
-                                     $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
+                                    $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
                                     $("#alu_"+a+"_"+s+" .cold_call").show();
                                    
                                     foundit = true;
@@ -332,8 +342,8 @@
                                         $("#alu_"+a+"_"+s+" .CONNECT").val("SI"); 
                                         $("#alu_"+a+"_"+s+" .count_participacion").text("0");
                                         if(permitir){
-                                        $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
-                                        $("#alu_"+a+"_"+s+" .warm_call").show();
+                                            $("#alu_"+a+"_"+s+" .warm_call").attr("onclick", "WarmCall('#alu_"+a+"_"+s+"')");
+                                            $("#alu_"+a+"_"+s+" .warm_call").show();
                                         }
                                         $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
                                         $("#alu_"+a+"_"+s+" .cold_call").show();
@@ -445,8 +455,8 @@
                                        
                                             }
                                             if(señales[i].type == 2){
-                                                 $("#dejar_de_hablar").show();
-                                                 $("#levantar_mano").hide();
+                                                $("#dejar_de_hablar").show();
+                                                $("#levantar_mano").hide();
                                                 gopuplish = true;
                                                 startPublishing();
                                             }
@@ -477,6 +487,10 @@
                                             if(señales[i].type==7){
                                                 
                                                 addTab();
+                                            }
+                                            if(señales[i].type==8){
+                                                $("#messagefrommaster").html(señales[i].text);
+                                                $('.infofrommaster').animate({top:"0"}, 500);
                                             }
                                         }
                                    
@@ -576,9 +590,9 @@
                                         $(id_+" .warm_call").show();
                                         $(id_).attr("class","backW stu"); 
                                         $.ajax({
-                                        type: "POST",
-                                        url: "ServletSignals",
-                                        data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+$(id_+" .email").val()+"&type=5"});
+                                            type: "POST",
+                                            url: "ServletSignals",
+                                            data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrEmail()%>&reciver="+$(id_+" .email").val()+"&type=5"});
                                     }
                                     
                                     
@@ -590,13 +604,14 @@
                 }
                 
                 function WarmCall(id){
-                 $(".warm_call").hide();
+                    $(".warm_call").hide();
                 
-                permitirhablar(id);
+                    permitirhablar(id);
                
                 }
                 function ColdCall(id){
-                    alert("cold call");
+                    $("#messageid").val($(id+" .email").val());
+                    $('.info').animate({top:"0"}, 500);
                 }
                 function BajarMano(){
                     $.ajax({
@@ -706,6 +721,31 @@
                     });
                 }
                 
+               		 
+                function hideAllMessages()
+                {
+                        $('.info').css('top', -$('.info').outerHeight()); //move element outside viewport
+                        $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight()); 
+                        
+                }
+                
+                function closemessages(){
+                    
+                     $('.info').animate({top: -$('.info').outerHeight()}, 500);
+                     $.ajax({
+                        type: "POST",
+                        url: "ServletSignals",
+                        data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+$('#messageid').val()+"&type=8&text="+$('#messagetext').val(),
+                        success: function(){
+                            session.signal();
+                        }
+                    });
+                }
+                function closemessagesfrommaster(){
+                    $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight());
+                }
+
+            
               
             
         </script>
@@ -843,7 +883,20 @@
                 </table>
             </footer>
 
-        </div>      
+        </div> 
+
+
+        <div class="info message">
+            <h3>Send A Message to the Student</h3>
+            <input type="text" id="messagetext" /><button onclick="closemessages()" class="btnnormal2">Send</button>
+            <input type="hidden" id="messageid"/> 
+        </div>
+                                                
+        <div class="infofrommaster message">
+            <h3 id="messagefrommaster">Send A Message to the Student</h3>
+            <button  class="btnnormal2" onclick="closemessagesfrommaster()">OK</button>
+
+        </div>                                       
     </body>
 </html>
 <%} finally {%>
