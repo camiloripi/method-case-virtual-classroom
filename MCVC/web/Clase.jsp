@@ -83,6 +83,7 @@
                     $(".parar_hablar").hide();
                     $(".warm_call").hide();
                     $(".cold_call").hide();
+                    $("#gradetab").hide();
                     $(".stu").width($(".stu").width());
                     $("body").width($("body").width());
                     $("#clasemain").width($("#clasemain").width());
@@ -543,7 +544,7 @@
                             permitir = false;
                             $(".permitir_hablar").hide();
                             $(id+ " .parar_hablar").attr("onclick", "parar('"+id+"')");
-                            
+                            $("#gradetab").show();
                             $(id+" .participando").val("SI");
                             $(id+" .permitir_participar").val("NO");
                             var count = $(id+" .count_participacion").text();
@@ -570,6 +571,10 @@
                 
                 function parar(id){
                     var email = $(id+" .email").val();
+                    var grade = $("input[name='grade']:checked").val();
+                    var studentgrades = $(id+ " .GRADE").val();
+                    studentgrades += grade+",";
+                    $(id+ " .GRADE").val(studentgrades);
                     $.ajax({
                         type: "POST",
                         url: "ServletSignals",
@@ -579,7 +584,7 @@
                             $(".permitir_hablar").hide();
                             $(".parar_hablar").attr("onclick", "");
                             $(".parar_hablar").hide();
-                            
+                            $("#gradetab").hide();
                             for(var i =0;i<3;i++){
                                 for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
@@ -724,15 +729,15 @@
                		 
                 function hideAllMessages()
                 {
-                        $('.info').css('top', -$('.info').outerHeight()); //move element outside viewport
-                        $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight()); 
+                    $('.info').css('top', -$('.info').outerHeight()); //move element outside viewport
+                    $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight()); 
                         
                 }
                 
                 function closemessages(){
                     
-                     $('.info').animate({top: -$('.info').outerHeight()}, 500);
-                     $.ajax({
+                    $('.info').animate({top: -$('.info').outerHeight()}, 500);
+                    $.ajax({
                         type: "POST",
                         url: "ServletSignals",
                         data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+$('#messageid').val()+"&type=8&text="+$('#messagetext').val(),
@@ -759,7 +764,7 @@
                     <tr>
 
                         <td style="height: 100px">
-                            <table style="width: 100%;height: 100px" id="cuadricula">
+                            <table style="width: 100%;height: 100px" id="cuadricula" >
                                 <%for (int i = 0; i < 3; i++) {%>
                                 <tr >
                                     <%for (int j = 0; j < 10; j++) {%> 
@@ -774,6 +779,7 @@
                                             <input type="hidden" class="participando" value="NO" />
                                             <input type="hidden" class="BLOCK" value="NO" />
                                             <input type="hidden" class="CONNECT" value="NO" />
+                                            <input type="hidden" class="GRADE" value="" />
 
                                             <table style="width: 100%">
                                                 <tr><td style="text-align: center;"><label class="username"></label><label class="pa"></label></td></tr>
@@ -799,27 +805,45 @@
                         <td>
                             <table style="width: 100%;height: 100%">
                                 <tr>
-                                    <td style="width: 220px;height: 280px; position: relative">
-                                        <div id="videoPanel">
-                                            <table style="width: 220px;height: 280px" >
-                                                <tr>
-                                                    <td style="width: 220px;/*border: 1px solid #000*/">
-                                                        <div id="maestro_div">
+                                    <td style="width: 220px;" >
+                                        <table style="height: 100%;width: 220px;">
+                                            <tr>
+                                                <td style="width: 220px;height: 280px; position: relative">
+                                                    <div id="videoPanel">
+                                                        <table style="width: 220px;height: 280px" >
+                                                            <tr>
+                                                                <td style="width: 220px;/*border: 1px solid #000*/">
+                                                                    <div id="maestro_div">
 
-                                                        </div> 
-                                                    </td>
+                                                                    </div> 
+                                                                </td>
 
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 120px;/*border: 1px solid #000*/">
-                                                        <div id="alumno_div">
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 120px;/*border: 1px solid #000*/">
+                                                                    <div id="alumno_div">
 
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
 
-                                            </table>
-                                        </div> 
+                                                        </table>
+                                                    </div>  
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 5px;">
+                                                    <div id="gradetab"class="box">
+                                                        <h2 style="text-align: center">Grade the Student</h2><br/>
+                                                        <input type="radio" name="grade" value="A" /> A<br />
+                                                        <input type="radio" name="grade" value="B" /> B<br />    
+                                                        <input type="radio" name="grade" value="C" /> C<br /> 
+                                                        <input type="radio" name="grade" value="D" /> D<br /> 
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
                                     </td>
                                     <td style="height: 100%">
                                         <div style="height: 100%;margin:10px 5px 5px 5px">
@@ -891,7 +915,7 @@
             <input type="text" id="messagetext" /><button onclick="closemessages()" class="btnnormal2">Send</button>
             <input type="hidden" id="messageid"/> 
         </div>
-                                                
+
         <div class="infofrommaster message">
             <h3 id="messagefrommaster">Send A Message to the Student</h3>
             <button  class="btnnormal2" onclick="closemessagesfrommaster()">OK</button>
