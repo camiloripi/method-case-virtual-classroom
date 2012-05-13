@@ -44,6 +44,103 @@
             }%>
         <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
         <script src="http://static.opentok.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>       
+        <style>
+            .message
+{
+    -webkit-background-size: 40px 40px;
+    -moz-background-size: 40px 40px;
+    background-size: 40px 40px;			
+    background-image: -webkit-gradient(linear, left top, right bottom,
+        color-stop(.25, rgba(255, 255, 255, .05)), color-stop(.25, transparent),
+        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .05)),
+        color-stop(.75, rgba(255, 255, 255, .05)), color-stop(.75, transparent),
+        to(transparent));
+    background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+
+    -moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+    -webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);		
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+    width: 225px;
+    border: 1px solid;
+    color: #fff;
+    padding: 15px;
+    position: fixed;
+    left: 75%;
+    _position: absolute;
+    text-shadow: 0 1px 0 rgba(0,0,0,.5);
+    -webkit-animation: animate-bg 5s linear infinite;
+    -moz-animation: animate-bg 5s linear infinite;
+}
+
+.info
+{
+    background-color: #4ea5cd;
+    border-color: #3b8eb5;
+}
+.infofrommaster
+{
+    background-color: #4ea5cd;
+    border-color: #3b8eb5;
+}
+
+.error
+{
+    background-color: #de4343;
+    border-color: #c43d3d;
+}
+
+.warning
+{
+    background-color: #eaaf51;
+    border-color: #d99a36;
+}
+
+.success
+{
+    background-color: #61b832;
+    border-color: #55a12c;
+}
+
+.message h3
+{
+    margin: 0 0 5px 0;													 
+}
+
+.message p
+{
+    margin: 0;													 
+}
+
+
+#gradetab{
+    border:6px solid #e1e1e1;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+    -moz-box-shadow:2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #95a2a7 inset;
+    -webkit-box-shadow:2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #95a2a7 inset;
+    box-shadow:2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #95a2a7 inset;
+    height: 100%;
+    margin-left: 10px;
+    background-color: #fff;
+    padding: 15px;
+
+}
+        </style>
         <script type="text/javascript" charset="utf-8">
 
             var session = TB.initSession("<%=sessionId%>"); // Sample session ID. 

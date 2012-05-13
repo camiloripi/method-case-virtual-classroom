@@ -10,8 +10,9 @@
     <head>
         <%session.setAttribute("usuario",null);%>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%@include file="WEB-INF/jspf/CS_CSS_JS.jspf" %>
-
+        <link rel="shortcut icon" href="http://www.unitec.edu/wp-content/themes/unitec/unitec.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="CSS/index.css">
+        <title>MCVC</title>
     </head>
     <body>
         <form class="box login" action="LoginServlet" method="post">
@@ -26,8 +27,5 @@
                 <input type="submit" class="btnLogin" value="Login" tabindex="4">                
             </footer>
         </form>
-
-
-
     </body>
 </html>
