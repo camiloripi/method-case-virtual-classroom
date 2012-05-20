@@ -202,7 +202,7 @@
             <%}%>
               
                     session.connect(6642061, token);
-                    
+                    //refreshtab('#tabs-1 .piz');
                 }
             
                 function disconnect(){
@@ -397,7 +397,6 @@
                             }  
                         }
                     });
-     
                 }
                 
                 function connectionCreatedHandler(event) {
@@ -420,6 +419,7 @@
                                     $("#alu_"+a+"_"+s+" .cold_call").show();
                                    
                                     foundit = true;
+                                    //refreshtab('#tabs-1 .piz');
                                     break;
                                 }
                             }
@@ -446,6 +446,7 @@
                                         $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
                                         $("#alu_"+a+"_"+s+" .cold_call").show();
                                         foundit = true;
+                                        //refreshtab('#tabs-1 .piz');
                                         break;
                                     }
                                 }
@@ -706,14 +707,12 @@
                 }
                 
                 function WarmCall(id){
-                    $(".warm_call").hide();
-                
-                    permitirhablar(id);
-               
+                    $("#messageid").val($(id+" .email").val());
+                    $('.info').animate({top:"0"}, 500);               
                 }
                 function ColdCall(id){
-                    $("#messageid").val($(id+" .email").val());
-                    $('.info').animate({top:"0"}, 500);
+                    $(".cold_call").hide();
+                    permitirhablar(id);
                 }
                 function BajarMano(){
                     $.ajax({
