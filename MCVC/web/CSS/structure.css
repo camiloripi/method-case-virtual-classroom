@@ -480,6 +480,26 @@ footer#main{
 
 }
 
+.star{
+    border: none;
+   
+    height: 12px;
+    width: 12px;  
+}
+
+.starbackgroundR{
+     background-image: url("../IMG/ICONOS/12x12/star2.png");
+}
+.starbackgroundY{
+     background-image: url("../IMG/ICONOS/12x12/star1.png");
+}
+.starbackgroundB{
+     background-image: url("../IMG/ICONOS/12x12/star3.png");
+}
+.starbackgroundG{
+     background-image: url("../IMG/ICONOS/12x12/star4.png");
+}
+
 .warm_call{
     border: none;
     background-image: url("../IMG/ICONOS/12x12/warm_call.png");

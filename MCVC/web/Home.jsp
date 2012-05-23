@@ -70,7 +70,7 @@
                                         <%}%>
                                     </td>
                                     <td>
-                                        <label><a class="masito" href="TokenPage.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>&nombre=<%=face.getTblsession().get(i).getClsNombre()%>">MAS</a></label>
+                                        <label><a class="masito" href="Mas.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>&nombre=<%=face.getTblsession().get(i).getClsNombre()%>">MAS</a></label>
                                     </td>
                                 </tr>
                                 <%

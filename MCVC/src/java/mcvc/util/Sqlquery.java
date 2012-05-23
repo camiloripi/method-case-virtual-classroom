@@ -152,7 +152,7 @@ public class Sqlquery {
             tr.setId(temporal);
             
             tr.setExcCantParticipaciones(0);
-            tr.setExcNota('A');          
+            tr.setExcNota('D');          
             
             session.save(tr);
             tx.commit();
@@ -230,6 +230,32 @@ public class Sqlquery {
         
         return ok;
     }
+    
+     public String UpdateGrade(String CLS_ID,String Alumno,String Grade,String Participacion){
+        tblestudiantesxclase = null;
+        String ok="";
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblEstudiantesxclase where  EXC_Estudiante='"+Alumno+"' and EXC_Clase='"+CLS_ID+"'");
+            tblestudiantesxclase  = (List<TblEstudiantesxclase>) q.list();
+            if(tblestudiantesxclase.size()>0){
+                TblEstudiantesxclase tblupdate;
+                tblupdate = tblestudiantesxclase.get(0);
+                int participacion = Integer.valueOf(Participacion);
+                tblupdate.setExcCantParticipaciones(participacion);
+                tblupdate.setExcNota(Grade.charAt(0));
+                session.saveOrUpdate(tblupdate);
+                tx.commit();
+            }
+            
+        } catch (Exception e) {
+            ok = "No se Guardar La Nota";
+        }
+        
+        return ok;
+    }
+    
+    
 
     /**
      * @return the session

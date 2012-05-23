@@ -22,6 +22,7 @@
 <%TblSession tblsession = face.getTblsession().get(0);%>
 <%TblUsuarios tblUsuarios = face.getUserinfo((String) session.getAttribute("usuario"));%>
 <%String maestro = tblsession.getClsMaestro();%>
+<%int cls_ID = tblsession.getClsId();%>
 <%int cupos = tblsession.getClsCupo();%>
 
 
@@ -46,100 +47,84 @@
         <script src="http://static.opentok.com/v0.91/js/TB.min.js" type="text/javascript" charset="utf-8"></script>       
         <style>
             .message
-{
-    -webkit-background-size: 40px 40px;
-    -moz-background-size: 40px 40px;
-    background-size: 40px 40px;			
-    background-image: -webkit-gradient(linear, left top, right bottom,
-        color-stop(.25, rgba(255, 255, 255, .05)), color-stop(.25, transparent),
-        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .05)),
-        color-stop(.75, rgba(255, 255, 255, .05)), color-stop(.75, transparent),
-        to(transparent));
-    background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
-        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
-        transparent 75%, transparent);
-    background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
-        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
-        transparent 75%, transparent);
-    background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
-        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
-        transparent 75%, transparent);
-    background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
-        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
-        transparent 75%, transparent);
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
-        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
-        transparent 75%, transparent);
+            {
+                -webkit-background-size: 40px 40px;
+                -moz-background-size: 40px 40px;
+                background-size: 40px 40px;			
+                background-image: -webkit-gradient(linear, left top, right bottom,
+                    color-stop(.25, rgba(255, 255, 255, .05)), color-stop(.25, transparent),
+                    color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .05)),
+                    color-stop(.75, rgba(255, 255, 255, .05)), color-stop(.75, transparent),
+                    to(transparent));
+                background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                    transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                    transparent 75%, transparent);
+                background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                    transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                    transparent 75%, transparent);
+                background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                    transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                    transparent 75%, transparent);
+                background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                    transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                    transparent 75%, transparent);
+                background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                    transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                    transparent 75%, transparent);
 
-    -moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
-    -webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);		
-    box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
-    width: 225px;
-    border: 1px solid;
-    color: #fff;
-    padding: 15px;
-    position: fixed;
-    left: 75%;
-    _position: absolute;
-    text-shadow: 0 1px 0 rgba(0,0,0,.5);
-    -webkit-animation: animate-bg 5s linear infinite;
-    -moz-animation: animate-bg 5s linear infinite;
-}
+                -moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+                -webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);		
+                box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+                width: 225px;
+                border: 1px solid;
+                color: #fff;
+                padding: 15px;
+                position: fixed;
+                left: 75%;
+                _position: absolute;
+                text-shadow: 0 1px 0 rgba(0,0,0,.5);
+                -webkit-animation: animate-bg 5s linear infinite;
+                -moz-animation: animate-bg 5s linear infinite;
+            }
 
-.info
-{
-    background-color: #4ea5cd;
-    border-color: #3b8eb5;
-}
-.infofrommaster
-{
-    background-color: #4ea5cd;
-    border-color: #3b8eb5;
-}
+            .info
+            {
+                background-color: #4ea5cd;
+                border-color: #3b8eb5;
+            }
+            .infofrommaster
+            {
+                background-color: #4ea5cd;
+                border-color: #3b8eb5;
+            }
 
-.error
-{
-    background-color: #de4343;
-    border-color: #c43d3d;
-}
+            .error
+            {
+                background-color: #de4343;
+                border-color: #c43d3d;
+            }
 
-.warning
-{
-    background-color: #eaaf51;
-    border-color: #d99a36;
-}
+            .warning
+            {
+                background-color: #eaaf51;
+                border-color: #d99a36;
+            }
 
-.success
-{
-    background-color: #61b832;
-    border-color: #55a12c;
-}
+            .success
+            {
+                background-color: #61b832;
+                border-color: #55a12c;
+            }
 
-.message h3
-{
-    margin: 0 0 5px 0;													 
-}
+            .message h3
+            {
+                margin: 0 0 5px 0;													 
+            }
 
-.message p
-{
-    margin: 0;													 
-}
-
-
-#gradetab{
-    border:6px solid #e1e1e1;
-    -webkit-border-radius:3px;
-    -moz-border-radius:3px;
-    border-radius:3px;
-    -moz-box-shadow:2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #95a2a7 inset;
-    -webkit-box-shadow:2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #95a2a7 inset;
-    box-shadow:2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #95a2a7 inset;
-    height: 100%;
-    margin-left: 10px;
-    background-color: #fff;
-    padding: 15px;
-
-}
+            .message p
+            {
+                margin: 0;													 
+            }
         </style>
         <script type="text/javascript" charset="utf-8">
 
@@ -172,15 +157,15 @@
                         // $(this).animate({top: -$(this).outerHeight()}, 500);
                     });
                 
-                
+                    $(".star").hide();
                     $("#disconnectLink").hide();
+                    $("#save_class").hide();
                     $("#pubControls").hide();
                     $("#aluControls").hide();
                     $(".permitir_hablar").hide();
                     $(".parar_hablar").hide();
                     $(".warm_call").hide();
                     $(".cold_call").hide();
-                    $("#gradetab").hide();
                     $(".stu").width($(".stu").width());
                     $("body").width($("body").width());
                     $("#clasemain").width($("#clasemain").width());
@@ -401,6 +386,7 @@
                 
                 function connectionCreatedHandler(event) {
             <%if (ismaestro) {%>
+                     $("#save_class").show();
                     var foundit = false;
                     for(var j=0;j<event.connections.length;j++){
                         var connectiondata = getConnectionData(event.connections[j]);
@@ -417,6 +403,9 @@
                                     }
                                     $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
                                     $("#alu_"+a+"_"+s+" .cold_call").show();
+                                    
+                                    $("#alu_"+a+"_"+s+" .star").attr("onclick", "SetGrade('#alu_"+a+"_"+s+"')");
+                                    $("#alu_"+a+"_"+s+"  .star").show();
                                    
                                     foundit = true;
                                     //refreshtab('#tabs-1 .piz');
@@ -445,6 +434,8 @@
                                         }
                                         $("#alu_"+a+"_"+s+" .cold_call").attr("onclick", "ColdCall('#alu_"+a+"_"+s+"')");
                                         $("#alu_"+a+"_"+s+" .cold_call").show();
+                                        $("#alu_"+a+"_"+s+" .star").attr("onclick", "SetGrade('#alu_"+a+"_"+s+"')");
+                                        $("#alu_"+a+"_"+s+"  .star").show();
                                         foundit = true;
                                         //refreshtab('#tabs-1 .piz');
                                         break;
@@ -494,6 +485,7 @@
                                 if(event.connections[j].connectionId==$("#alu_"+a+"_"+s+" .connectionid").val() && foundit == false){
                             
                                     $("#alu_"+a+"_"+s).attr("class","backR stu");
+                                    $("#alu_"+a+"_"+s+"  .star").hide();
                                     $("#alu_"+a+"_"+s+ ".CONNECT").val("NO");
                                     foundit = true;
                             
@@ -642,7 +634,7 @@
                             permitir = false;
                             $(".permitir_hablar").hide();
                             $(id+ " .parar_hablar").attr("onclick", "parar('"+id+"')");
-                            $("#gradetab").show();
+                            
                             $(id+" .participando").val("SI");
                             $(id+" .permitir_participar").val("NO");
                             var count = $(id+" .count_participacion").text();
@@ -682,7 +674,6 @@
                             $(".permitir_hablar").hide();
                             $(".parar_hablar").attr("onclick", "");
                             $(".parar_hablar").hide();
-                            $("#gradetab").hide();
                             for(var i =0;i<3;i++){
                                 for(var j=0;j<10;j++){
                                     var id_ = "#alu_"+i+"_"+j;
@@ -846,6 +837,60 @@
                     $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight());
                 }
 
+                function SetGrade(id){
+                    
+                    var actual = $(id + " .GRADE").val();
+                   
+                    if(actual < 3){
+                        actual++;
+                    
+                    }else{
+                    
+                        actual = 0;
+                    }
+                   
+                    $(id + " .GRADE").val(actual);
+                
+                    if(actual == 0){
+                    
+                        $(id + " .star").attr("class","star starbackgroundR");
+                    }
+                    if(actual == 1){
+                    
+                        $(id + " .star").attr("class","star starbackgroundY");
+                    }
+                    if(actual == 2){
+                    
+                        $(id + " .star").attr("class","star starbackgroundB");
+                    }
+                    if(actual == 3){
+                    
+                        $(id + " .star").attr("class","star starbackgroundG");
+                    }
+                
+                }
+                
+                
+                function SaveClass(){
+                    var liststu = "";
+                    for(var i =0;i<3;i++){
+                        for(var j=0;j<10;j++){
+                            ids = "#alu_"+i+"_"+j;
+                            if( $(ids+" .email").val() != ""){
+                                liststu = liststu + $(ids+" .email").val()+","+$(ids+" .GRADE").val()+","+$(ids+" .count_participacion").html()+";";
+                            }
+                        }
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "ServletSaveClass",
+                        data: "cls_ID=<%=cls_ID%>&alumnos="+liststu,
+                        success: function(){
+                            alert("Class Save");
+                        }
+                    });
+                    
+                }
             
               
             
@@ -875,11 +920,13 @@
                                             <input type="hidden" class="participando" value="NO" />
                                             <input type="hidden" class="BLOCK" value="NO" />
                                             <input type="hidden" class="CONNECT" value="NO" />
-                                            <input type="hidden" class="GRADE" value="" />
+                                            <input type="hidden" class="GRADE" value="0" />
 
                                             <table style="width: 100%">
-                                                <tr><td style="text-align: center;"><label class="username"></label><label class="pa"></label></td></tr>
+
+                                                <tr ><td colspan="5" style="text-align: center;"><label class="username"></label><label class="pa"></label></td></tr>
                                                 <tr>
+                                                    <td style="text-align:left;width: 12px;"><input type="button" class ="star starbackgroundR" onClick="" /></td> 
                                                     <td style="text-align: center;"><label class="count_participacion"></label></td>
                                                     <td style="text-align: right;"><input type="button" class ="permitir_hablar" onClick="" /></td>
                                                     <td style="text-align: right;"><input type="button" class ="parar_hablar" onClick="" /></td>
@@ -927,17 +974,6 @@
                                                     </div>  
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="padding-bottom: 5px;">
-                                                    <div id="gradetab"class="box">
-                                                        <h2 style="text-align: center">Grade the Student</h2><br/>
-                                                        <input type="radio" name="grade" value="A" /> A<br />
-                                                        <input type="radio" name="grade" value="B" /> B<br />    
-                                                        <input type="radio" name="grade" value="C" /> C<br /> 
-                                                        <input type="radio" name="grade" value="D" /> D<br /> 
-                                                    </div>
-                                                </td>
-                                            </tr>
                                         </table>
 
                                     </td>
@@ -980,11 +1016,13 @@
                             <div id="sessionControls">
                                 <input type="button" class="btnnormal2" value="Connect" id ="connectLink" onClick="connect()" />
                                 <input type="button" class="btnnormal2" value="Leave" id ="disconnectLink" onClick="disconnect()" />
+                                <input type="button" class="btnnormal2" value="Save Class" id="save_class" onClick="SaveClass()" />
                             </div> 
                         </td>
                         <td style="vertical-align:middle;">
                             <div id ="pubControls">
                                 <form id="publishForm"> 
+                                    
                                     <input type="button" class="btnnormal2" value="Start Publishing" onClick="startPublishing()" />
                                     <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
                                     <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
