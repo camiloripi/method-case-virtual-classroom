@@ -35,6 +35,20 @@ public class Sqlquery {
         session.close();
     }
     
+    public List<TblEstudiantesxclase> getTablaNotas(Integer id)
+    {
+        try
+        {
+             tblestudiantesxclase = null; 
+             session.beginTransaction();
+             Query q = session.createQuery("from TblEstudiantesxclase where EXC_Clase = " + id);
+             tblestudiantesxclase = ( List<TblEstudiantesxclase>) q.list();
+        }
+        catch(Exception ex){}
+        
+        return tblestudiantesxclase;
+    }
+    
     public TblUsuarios getUserinfo(String email) {
         TblUsuarios user = null;
         

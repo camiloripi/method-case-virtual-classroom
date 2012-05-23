@@ -5,6 +5,16 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="mcvc.hibernate.clases.TblEstudiantesxclase"%>
+<%@page import="mcvc.util.Sqlquery"%>
+<%@page import="java.util.List" %>
+<%Sqlquery face = new Sqlquery();%>
+<%face.setcurrentSession();%>
+<%Integer cls_id = face.getiD(request.getParameter("token"));    %>
+<%List<TblEstudiantesxclase> lista = face.getTablaNotas(cls_id); %>
+
+<% %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,9 +26,33 @@
         <link rel="stylesheet" type="text/css" href="CSS/home.css">
         <title>MCVC</title>
     </head>
-    <body>
+    <body>        
         <div class="box home">
             <fieldset class="boxBody">
+                
+                <table border="15">
+                    <tr>
+                        <th> Nombre </th>
+                        <th> Nota </th>
+                        <th> Participaciones </th>
+                    </tr>                       
+                <% for(int i=0; i<lista.size(); i++)
+                    {  %>    
+                    <tr>
+                        <td> 
+                            <%=lista.get(i).getTblUsuarios().getUsrNombres()%>
+                        </td>
+                        
+                        <td>
+                            <%=lista.get(i).getExcNota()%>
+                        </td>
+                        
+                        <td>
+                            <%=lista.get(i).getExcCantParticipaciones()%>
+                        </td>
+                    </tr>
+                <%  }%>    
+                </table>
             </fieldset> 
             <footer>
                 <a href="Home.jsp" class="btnLogin" style="color: #000">Ir a Home</a>
