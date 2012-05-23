@@ -147,6 +147,7 @@
         </style>
         <script type="text/javascript" charset="utf-8">
 
+            var GlobalTabs = 0;
             var session = TB.initSession("<%=sessionId%>"); // Sample session ID. 
             var publisher;
             var ocup_alumno = false;
@@ -468,7 +469,11 @@
                         
                         
                     }
-                         
+                    addtabS();
+                    for(i=1; i<GlobalTabs; i++)
+                    {
+                        refreshtab("#tabs-"+ i + " .piz");
+                    }
             <%}%>
                    
                    
@@ -744,6 +749,7 @@
                 }
                 $(function() {
                     tab_counter = 2;
+                    GlobalTabs = tab_counter;
                     $( "#tabs").tabs({
                         add: function( event, ui ) {
                          
@@ -792,6 +798,7 @@
                          
                       
                         tab_counter++;
+                        GlobalTabs = tab_counter;
                     }
                        
                 }
