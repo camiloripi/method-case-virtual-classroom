@@ -125,6 +125,25 @@
             {
                 margin: 0;													 
             }
+
+            .tabinput{
+                border: 1px solid 
+                    #000000 !important;
+                -webkit-border-radius: 3px !important;
+                -moz-border-radius: 3px !important;
+                border-radius: 3px !important;
+                -moz-box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.06) inset, 0 0 1px #fff inset !important;
+                -webkit-box-shadow: 2px 3px 3px 
+                    rgba(0, 0, 0, 0.06) inset, 0 0 1px 
+                    #fff inset !important;
+                box-shadow: 2px 3px 3px 
+                    rgba(0, 0, 0, 0.06) inset, 0 0 1px 
+                    #fff inset !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100px !important;
+                text-align: center;
+            }
         </style>
         <script type="text/javascript" charset="utf-8">
 
@@ -386,7 +405,7 @@
                 
                 function connectionCreatedHandler(event) {
             <%if (ismaestro) {%>
-                     $("#save_class").show();
+                    $("#save_class").show();
                     var foundit = false;
                     for(var j=0;j<event.connections.length;j++){
                         var connectiondata = getConnectionData(event.connections[j]);
@@ -567,10 +586,15 @@
                                                 
                                             }
                                             if(señales[i].type==6){
-                                                $(señales[i].tab).html(señales[i].text);
+                                                var texto = señales[i].text.split("/$/");
+                                                var textopiz = "";
+                                                for(var l = 1;l<texto.length;l++){
+                                                    textopiz += texto[l];
+                                                }
+                                                $(señales[i].tab).html(textopiz);
                                                 var t = señales[i].tab
                                                 var tab = "#tab"+t.substring(6, t.length-5);
-                                                
+                                                $(tab+" .tabinput ").val(texto[0]);
                                                 var class_ = $(tab).attr("class") + " uptab";
                                                 $(tab).attr("class",class_);
                                                 
@@ -756,7 +780,7 @@
                 
                 function addTab() {
                     if(tab_counter<20){
-                        $( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'>"+tab_counter+"</a></li>" );
+                        $( "#tabs").tabs( "option", "tabTemplate", "<li id='tab"+tab_counter+"'><a href='#tabs-"+tab_counter+"'><input type='text' value='"+tab_counter+"' class='tabinput'/></a></li>" );
                         $( "#tabs").tabs( "add", "#tabs-" + tab_counter,tab_counter );
             <%if (ismaestro) {%>
                         var other = $("#addtab");
@@ -774,6 +798,9 @@
                 
                 function refreshtab(id){
                    
+                   var tab = "#tab"+id.substring(6, id.length-5);
+                   
+                   var tabname = $(tab + " .tabinput").val();
                     var liststu = "";
                     for(var i =0;i<3;i++){
                         for(var j=0;j<10;j++){
@@ -783,10 +810,12 @@
                             }
                         }
                     }
+                    
+                   
                     $.ajax({
                         type: "POST",
                         url: "ServletSignalsALL",
-                        data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=6&text="+escape($(id).val())+"&tab="+id,
+                        data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=6&text="+tabname+"/$/"+escape($(id).val())+"&tab="+id,
                         success: function(){
                             session.signal();
                         }
@@ -981,8 +1010,8 @@
                                         <div style="height: 100%;margin:10px 5px 5px 5px">
                                             <div id="tabs"style="height: 95%">
                                                 <ul>
-                                                    <li id="tab1"><a href="#tabs-1">1</a></li>
-                                                    <%if (ismaestro) {%>
+                                                    <li id="tab1"><a href="#tabs-1"><input type="text" value="1" class="tabinput"/> </a></li>
+                                                            <%if (ismaestro) {%>
                                                     <li class=" costumTab " id="addtab"><input type="button" value="+" class="botTab" onclick="addTab()"/></li>
                                                         <%}%>
                                                 </ul>
@@ -1022,7 +1051,7 @@
                         <td style="vertical-align:middle;">
                             <div id ="pubControls">
                                 <form id="publishForm"> 
-                                    
+
                                     <input type="button" class="btnnormal2" value="Start Publishing" onClick="startPublishing()" />
                                     <input type="radio" id="pubAV" name="pubRad" checked="checked" />&nbsp;Audio/Video&nbsp;&nbsp; 
                                     <input type="radio" id="pubAudioOnly" name="pubRad" />&nbsp;Audio-only&nbsp;&nbsp;
