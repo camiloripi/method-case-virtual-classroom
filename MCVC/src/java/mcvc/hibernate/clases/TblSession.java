@@ -1,5 +1,5 @@
 package mcvc.hibernate.clases;
-// Generated Dec 10, 2011 10:08:36 AM by Hibernate Tools 3.2.1.GA
+// Generated 06-10-2012 11:18:36 AM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -21,7 +21,8 @@ public class TblSession  implements java.io.Serializable {
      private String clsMaestro;
      private short clsStatus;
      private String clsSessionId;
-     private Set<TblEstudiantesxclase> tblEstudiantesxclases = new HashSet<TblEstudiantesxclase>(0);
+     private Set tblBoards = new HashSet(0);
+     private Set tblEstudiantesxclases = new HashSet(0);
 
     public TblSession() {
     }
@@ -37,7 +38,7 @@ public class TblSession  implements java.io.Serializable {
         this.clsStatus = clsStatus;
         this.clsSessionId = clsSessionId;
     }
-    public TblSession(String clsNombre, Date clsFechaCreacion, Date clsFechaSession, short clsCupo, String clsToken, String clsMaestro, short clsStatus, String clsSessionId, Set<TblEstudiantesxclase> tblEstudiantesxclases) {
+    public TblSession(String clsNombre, Date clsFechaCreacion, Date clsFechaSession, short clsCupo, String clsToken, String clsMaestro, short clsStatus, String clsSessionId, Set tblBoards, Set tblEstudiantesxclases) {
        this.clsNombre = clsNombre;
        this.clsFechaCreacion = clsFechaCreacion;
        this.clsFechaSession = clsFechaSession;
@@ -46,6 +47,7 @@ public class TblSession  implements java.io.Serializable {
        this.clsMaestro = clsMaestro;
        this.clsStatus = clsStatus;
        this.clsSessionId = clsSessionId;
+       this.tblBoards = tblBoards;
        this.tblEstudiantesxclases = tblEstudiantesxclases;
     }
    
@@ -112,11 +114,18 @@ public class TblSession  implements java.io.Serializable {
     public void setClsSessionId(String clsSessionId) {
         this.clsSessionId = clsSessionId;
     }
-    public Set<TblEstudiantesxclase> getTblEstudiantesxclases() {
+    public Set getTblBoards() {
+        return this.tblBoards;
+    }
+    
+    public void setTblBoards(Set tblBoards) {
+        this.tblBoards = tblBoards;
+    }
+    public Set getTblEstudiantesxclases() {
         return this.tblEstudiantesxclases;
     }
     
-    public void setTblEstudiantesxclases(Set<TblEstudiantesxclase> tblEstudiantesxclases) {
+    public void setTblEstudiantesxclases(Set tblEstudiantesxclases) {
         this.tblEstudiantesxclases = tblEstudiantesxclases;
     }
 

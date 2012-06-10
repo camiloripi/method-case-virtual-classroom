@@ -1,5 +1,5 @@
 package mcvc.hibernate.clases;
-// Generated Dec 10, 2011 10:08:36 AM by Hibernate Tools 3.2.1.GA
+// Generated 06-10-2012 11:18:36 AM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -19,8 +19,8 @@ public class TblUsuarios  implements java.io.Serializable {
      private String usrPassword;
      private String usrSegundoApellido;
      private boolean usrStatus;
-     private Set<TblLog> tblLogs = new HashSet<TblLog>(0);
-     private Set<TblEstudiantesxclase> tblEstudiantesxclases = new HashSet<TblEstudiantesxclase>(0);
+     private Set tblLogs = new HashSet(0);
+     private Set tblEstudiantesxclases = new HashSet(0);
 
     public TblUsuarios() {
     }
@@ -34,7 +34,7 @@ public class TblUsuarios  implements java.io.Serializable {
         this.usrSegundoApellido = usrSegundoApellido;
         this.usrStatus = usrStatus;
     }
-    public TblUsuarios(String usrEmail, String usrNombres, String usrPrimerApellido, String usrCelular, String usrTelefono, String usrPassword, String usrSegundoApellido, boolean usrStatus, Set<TblLog> tblLogs, Set<TblEstudiantesxclase> tblEstudiantesxclases) {
+    public TblUsuarios(String usrEmail, String usrNombres, String usrPrimerApellido, String usrCelular, String usrTelefono, String usrPassword, String usrSegundoApellido, boolean usrStatus, Set tblLogs, Set tblEstudiantesxclases) {
        this.usrEmail = usrEmail;
        this.usrNombres = usrNombres;
        this.usrPrimerApellido = usrPrimerApellido;
@@ -103,18 +103,18 @@ public class TblUsuarios  implements java.io.Serializable {
     public void setUsrStatus(boolean usrStatus) {
         this.usrStatus = usrStatus;
     }
-    public Set<TblLog> getTblLogs() {
+    public Set getTblLogs() {
         return this.tblLogs;
     }
     
-    public void setTblLogs(Set<TblLog> tblLogs) {
+    public void setTblLogs(Set tblLogs) {
         this.tblLogs = tblLogs;
     }
-    public Set<TblEstudiantesxclase> getTblEstudiantesxclases() {
+    public Set getTblEstudiantesxclases() {
         return this.tblEstudiantesxclases;
     }
     
-    public void setTblEstudiantesxclases(Set<TblEstudiantesxclase> tblEstudiantesxclases) {
+    public void setTblEstudiantesxclases(Set tblEstudiantesxclases) {
         this.tblEstudiantesxclases = tblEstudiantesxclases;
     }
 

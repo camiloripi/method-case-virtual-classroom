@@ -2,8 +2,9 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="mv_classroom"/>
-  <table-filter match-name="tbl_usuarios"/>
-  <table-filter match-name="tbl_estudiantesxclase"/>
-  <table-filter match-name="tbl_log"/>
   <table-filter match-name="tbl_session"/>
+  <table-filter match-name="tbl_log"/>
+  <table-filter match-name="tbl_estudiantesxclase"/>
+  <table-filter match-name="tbl_board"/>
+  <table-filter match-name="tbl_usuarios"/>
 </hibernate-reverse-engineering>

@@ -52,7 +52,7 @@
                                         for (int i = 0; i < face.getTblsession().size(); i++) {
                                 %><tr class="trh">
                                     <td>
-                                        <label><a style="color: #000;"href="Clase.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>&maestro=m"><%=face.getTblsession().get(i).getClsNombre()%></a></label>
+                                        <label><a style="color: #000;"href="ClaseMaestro.jsp?token=<%=face.getTblsession().get(i).getClsToken()%>"><%=face.getTblsession().get(i).getClsNombre()%></a></label>
                                     </td>
                                     <td><label><% out.print(face.getTblsession().get(i).getClsFechaSession());%></label></td>
                                     <td>
@@ -108,7 +108,7 @@
                                         <%if (face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 1 || face.getTblestudiantesxclase().get(i).getTblSession().getClsStatus() == 4) {%>
                                         <label><% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></label>
                                         <%} else {%>
-                                        <label><a style="color: #000;" href="Clase.jsp?token=<% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsToken());%>"> <% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></a></label>
+                                        <label><a style="color: #000;" href="ClaseAlumno.jsp?token=<% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsToken());%>"> <% out.print(face.getTblestudiantesxclase().get(i).getTblSession().getClsNombre());%></a></label>
                                         <%}%>
                                     </td>
                                     <td>

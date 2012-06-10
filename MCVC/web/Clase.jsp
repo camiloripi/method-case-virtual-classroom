@@ -207,12 +207,14 @@
             <%}%>
               
                     session.connect(6642061, token);
-                    //refreshtab('#tabs-1 .piz');
                 }
             
                 function disconnect(){
                     session.disconnect();                      
                 }
+             
+             
+             //cuidado
              
                 function startPublishing(){
                     if (!publisher) {   
@@ -307,6 +309,7 @@
                     subscribeToStreams(event.streams);
                 }
                 
+                //cuidado
                 function streamDestroyedHandler(event) {
                    
                     var publisherContainer = document.getElementById("opentok_publisher");
