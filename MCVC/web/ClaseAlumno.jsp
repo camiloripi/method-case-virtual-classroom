@@ -235,7 +235,7 @@
                             $("#dejar_de_hablar").show();
                             $("#levantar_mano").hide();
                             publisher = session.publish(publisherDiv.id, publisherProperties);
-                             alert("despues del publish");
+                            alert("despues del publish");
                         }
                     }
                 });
@@ -251,6 +251,31 @@
             $("#connectLink").hide();
             $("#aluControls").show();
             $("#dejar_de_hablar").hide();
+            $.ajax({
+                type: "POST",
+                url: "ServletBoard",
+                data: "CLSID=<%=cls_ID%>",
+                dataType: "json",
+                success: function(data){
+                    if(data!=null){
+                        var señales = typeof data != 'object' ? JSON.parse(data) : data;
+                        for(var i=0;i<señales.length;i++){
+                            if(i!=0){
+                                addTab();
+                            } 
+                        }
+                        for(var i=0;i<señales.length;i++){
+                            var texto = señales[i].text;
+                            
+                            var name = señales[i].name;
+                            $(señales[i].Tabid).html(texto);
+                            var t = señales[i].Tabid
+                            var tab = "#tab"+t.substring(6, t.length-5);
+                            $(tab+" .tabinput").html(name);
+                        }
+                    }
+                }
+            });
         }
         
         function streamCreatedHandler(event) {
@@ -390,6 +415,7 @@
                                                 
                                     }
                                     if(señales[i].type==6){
+                                        
                                         var texto = señales[i].text.split("/$/");
                                         var textopiz = "";
                                         for(var l = 1;l<texto.length;l++){
@@ -398,7 +424,7 @@
                                         $(señales[i].tab).html(textopiz);
                                         var t = señales[i].tab
                                         var tab = "#tab"+t.substring(6, t.length-5);
-                                        $(tab+" .tabinput ").val(texto[0]);
+                                        $(tab+" .tabinput").html(texto[0]);
                                         var class_ = $(tab).attr("class") + " uptab";
                                         $(tab).attr("class",class_);
                                                 

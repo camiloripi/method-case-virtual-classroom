@@ -4,12 +4,21 @@
  */
 package mcvc.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import mcvc.hibernate.clases.TblBoard;
+import mcvc.util.Boards;
+import mcvc.util.SIGNALS;
+import mcvc.util.Sqlquery;
 
 /**
  *
@@ -31,9 +40,26 @@ public class ServletBoard extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        Sqlquery sqlquery = new Sqlquery();
+        sqlquery.setcurrentSession();
         try {
-            
-        } finally {            
+            String clsId = request.getParameter("CLSID");
+            sqlquery.SelectBoards(clsId);
+            ArrayList<Boards>boards = new ArrayList<Boards>();
+            for(int i=0;i<sqlquery.getTblboard().size();i++){
+                Boards board = new Boards();
+                board.setTabid(sqlquery.getTblboard().get(i).getId().getBrdTabId());
+                board.setName(sqlquery.getTblboard().get(i).getBrdName());
+                board.setText(sqlquery.getTblboard().get(i).getBrdText());
+                boards.add(board);
+            }
+            Gson gson = new Gson();
+            Type listType = new TypeToken< ArrayList<Boards>>() {
+            }.getType();
+            out.print(gson.toJson(boards, listType));
+
+        } finally {  
+            sqlquery.closeSession();
             out.close();
         }
     }

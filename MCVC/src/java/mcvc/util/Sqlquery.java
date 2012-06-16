@@ -309,6 +309,20 @@ public class Sqlquery {
         return ok;
     }
      
+     public void SelectBoards(String CLS_ID){
+         tblboard = null;
+        String ok="";
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblBoard where  CLS_ID='"+CLS_ID+"'");
+            tblboard  = (List<TblBoard>) q.list();
+            
+        } catch (Exception e) {
+            ok = "No se Guardar La tab";
+        }
+         
+     }
+     
      public String UpdatBoard(String CLS_ID,String Tab,String Text,String Name){
         tblboard = null;
         String ok="";
