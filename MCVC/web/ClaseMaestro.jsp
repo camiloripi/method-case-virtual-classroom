@@ -23,7 +23,7 @@
             if (!maestro.equals((String) session.getAttribute("usuario"))) {
                 response.sendRedirect("index.jsp");
             }
-            face.insertBoard("1", String.valueOf(cls_ID),"#tabs-1 .piz");
+            face.insertBoard("1", String.valueOf(cls_ID), "#tabs-1 .piz");
             ArrayList<SIGNALS> signals_arr = new ArrayList<SIGNALS>();
             getServletContext().setAttribute(sessionId, signals_arr);
 %>
@@ -48,7 +48,7 @@
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
             
-                hideAllMessages(); 
+                hideAllMessages();
                 $(".loading").hide();
                 $(".star").hide();
                 $(".refreshbutton").hide();
@@ -155,6 +155,7 @@
             function hideAllMessages()
             {
                 $('.info').css('top', -$('.info').outerHeight());
+                $('.msg').css('bottom', -$('.msg').outerHeight()); 
             }
             function closemessages(){
                     
@@ -362,6 +363,13 @@
                 <input type="text" id="messagetext" /><button onclick="closemessages()" class="btnnormal2">Send</button>
                 <input type="hidden" id="messageid"/> 
             </div> 
+
+            <div class="msg messagemsg">
+                <textarea id="msg" cols="35" rows="10" readonly="true" style="width: 100%;"></textarea><br/>
+                <input id="mymsg" type="text" style="width: 90%"/>
+                <button  class="btnnormal2" onclick="chat()">SEND</button>
+
+            </div> 
         </div>
 
         <div class="loading">
@@ -444,6 +452,8 @@
             $("#pubControls").show();
             $(".refreshbutton").show();
             $("#addtab").show();
+             
+            $('.msg').animate({bottom:"0"}, 500);
             changeStatus(2);       
         }
         function streamCreatedHandler(event) {
@@ -476,27 +486,27 @@
         function subscribeToStreams(streams){
             for (i = 0; i < streams.length; i++) {
                          
-                    var stream = streams[i];
-                    if (stream.connection.connectionId != session.connection.connectionId) {
-                        var containerDiv = document.createElement('div');
-                        containerDiv.className = "subscriberContainer";
-                        var divId = stream.streamId;
-                        containerDiv.setAttribute('id', 'streamContainer' + divId);
-                        var videoPanel = null;
-                        videoPanel = document.getElementById("alumno_div");
-                        videoPanel.appendChild(containerDiv);
-                        var publisherProperties = new Object();
-                        publisherProperties.width=220;
-                        publisherProperties.height=140;
-                        var subscriberDiv = document.createElement('div');
-                        subscriberDiv.setAttribute('id', divId);
-                        containerDiv.appendChild(subscriberDiv);
-                        session.subscribe(stream, divId,publisherProperties);
-                        var id = findtd_id(stream.connection.connectionId);
-                        //$(id+" .parar_hablar").show();
+                var stream = streams[i];
+                if (stream.connection.connectionId != session.connection.connectionId) {
+                    var containerDiv = document.createElement('div');
+                    containerDiv.className = "subscriberContainer";
+                    var divId = stream.streamId;
+                    containerDiv.setAttribute('id', 'streamContainer' + divId);
+                    var videoPanel = null;
+                    videoPanel = document.getElementById("alumno_div");
+                    videoPanel.appendChild(containerDiv);
+                    var publisherProperties = new Object();
+                    publisherProperties.width=220;
+                    publisherProperties.height=140;
+                    var subscriberDiv = document.createElement('div');
+                    subscriberDiv.setAttribute('id', divId);
+                    containerDiv.appendChild(subscriberDiv);
+                    session.subscribe(stream, divId,publisherProperties);
+                    var id = findtd_id(stream.connection.connectionId);
+                    //$(id+" .parar_hablar").show();
                         
                             
-                    }
+                }
                 
             }
         }  
@@ -630,22 +640,33 @@
                         if(data!=null){
                             
                             var señales = typeof data != 'object' ? JSON.parse(data) : data;
-                            for(var i=0;i<señales.length;i++){    
-                                if(señales[i].reciber == "<%=tblUsuarios.getUsrEmail()%>"){
-                                    if(señales[i].type== 1){
-                                        var id = fintd(señales[i].sender);
-                                        if(id != ""){
-                                            $(id+" .permitir_participar").val("SI")
-                                            $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
-                                            $(id+" .permitir_hablar").show();
-                                            $(id+" .cold_call").hide();                                                       
-                                            $(id).attr("class","backG stu");
-                                        }
-                                       
+                            var firstdel = false;
+                            for(var i=0;i<señales.length;i++){ 
+                                if(señales[i].type== 101){
+                                    if(firstdel == false){
+                                       $("#msg").html(señales[i].sender+": "+señales[i].text);
+                                       firstdel = true;
+                                    }else{
+                                        $("#msg").html($("#msg").html()+"\n"+señales[i].sender+": "+señales[i].text);
                                     }
-                                    if(señales[i].type == 4){
-                                        var id = fintd(señales[i].sender);
-                                        parar(id);
+                                    
+                                }else{
+                                    if(señales[i].reciber == "<%=tblUsuarios.getUsrEmail()%>"){
+                                        if(señales[i].type== 1){
+                                            var id = fintd(señales[i].sender);
+                                            if(id != ""){
+                                                $(id+" .permitir_participar").val("SI")
+                                                $(id+ " .permitir_hablar").attr("onclick", "permitirhablar('"+id+"')");
+                                                $(id+" .permitir_hablar").show();
+                                                $(id+" .cold_call").hide();                                                       
+                                                $(id).attr("class","backG stu");
+                                            }
+                                       
+                                        }
+                                        if(señales[i].type == 4){
+                                            var id = fintd(señales[i].sender);
+                                            parar(id);
+                                        }
                                     }
                                 }
                                    
@@ -767,6 +788,20 @@
             permitirhablar(id);
         }
       
+      
+        function chat(){
+               
+            $.ajax({
+                type: "POST",
+                url: "ServletSignals",
+                data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrNombres()%>&reciver=''&type=101&text="+$("#mymsg").val(),
+                success: function(){
+                     $("#msg").html($("#msg").html()+"\n<%=tblUsuarios.getUsrNombres()%>: "+$("#mymsg").val());
+                    session.signal();   
+                }
+            }); 
+        }
+        
     </script>
 
 

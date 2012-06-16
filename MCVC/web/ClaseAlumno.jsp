@@ -43,10 +43,12 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
+                $(".loading").hide();
                 hideAllMessages();
                 $("#disconnectLink").hide();
                 $("#aluControls").hide();
                 $("body").width($("body").width());
+                
             });
             $(function() {
                 tab_counter = 2;
@@ -79,7 +81,8 @@
             }
             function hideAllMessages()
             {
-                $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight()); 
+                $('.infofrommaster').css('top', -$('.infofrommaster').outerHeight());
+                $('.msg').css('bottom', -$('.msg').outerHeight()); 
                         
             }
             
@@ -169,7 +172,18 @@
             <h3 id="messagefrommaster">Send A Message to the Student</h3>
             <button  class="btnnormal2" onclick="closemessagesfrommaster()">OK</button>
 
-        </div>                               
+        </div>   
+
+        <div class="msg messagemsg">
+            <textarea id="msg" cols="35" rows="10" readonly="true" style="width: 100%;"></textarea><br/>
+            <input id="mymsg" type="text" style="width: 100%"/>
+            <button  class="btnnormal2" onclick="chat()">SEND</button>
+
+        </div> 
+
+        <div class="loading">
+
+        </div>  
     </body>
     <script type="text/javascript" src ="http://static.opentok.com/v0.91/js/TB.min.js"></script>
     <script type="text/javascript">
@@ -199,6 +213,7 @@
         } 
         
         function connect(){
+            $( ".loading" ).show();
             token="<%=tokbox.generateToKenAlumno(sessionId, tblUsuarios)%>";
             session.connect(6642061, token);
         }
@@ -247,6 +262,7 @@
                
         function sessionConnectedHandler(event) {
             subscribeToStreams(event.streams);
+            
             $("#disconnectLink").show();
             $("#connectLink").hide();
             $("#aluControls").show();
@@ -274,6 +290,8 @@
                             $(tab+" .tabinput").html(name);
                         }
                     }
+                    $( ".loading" ).hide();
+                    $('.msg').animate({bottom:"0"}, 500);
                 }
             });
         }
@@ -389,52 +407,64 @@
                     success: function(data){
                         if(data!=null){
                             var señales = typeof data != 'object' ? JSON.parse(data) : data;
+                            var firstdel = false;
                             for(var i=0;i<señales.length;i++){
-                                        
-                                if(señales[i].reciber == "<%=tblUsuarios.getUsrEmail()%>"){
-                                    if(señales[i].type == 2){
-                                        $("#dejar_de_hablar").show();
-                                        $("#levantar_mano").hide();
-                                        startPublishing();
+                                
+                                if(señales[i].type== 101){
+                                    if(firstdel == false){
+                                        $("#msg").html(señales[i].sender+": "+señales[i].text);
+                                        firstdel = true;
+                                    }else{
+                                        $("#msg").html($("#msg").html()+"\n"+señales[i].sender+": "+señales[i].text);
                                     }
-                                    if(señales[i].type == 3){
-                                        if(publisher!=null){
-                                            session.unpublish(publisher); 
-                                            publisher = null;
-                                            $("#opentok_publisher").remove();
+                                
+                                    
+                                }else{    
+                                    if(señales[i].reciber == "<%=tblUsuarios.getUsrEmail()%>"){
+                                        if(señales[i].type == 2){
+                                            $("#dejar_de_hablar").show();
+                                            $("#levantar_mano").hide();
+                                            startPublishing();
+                                        }
+                                        if(señales[i].type == 3){
+                                            if(publisher!=null){
+                                                session.unpublish(publisher); 
+                                                publisher = null;
+                                                $("#opentok_publisher").remove();
                                             
+                                            }
                                         }
-                                    }
-                                    if(señales[i].type == 4){
-                                        var id = fintd(señales[i].sender);
-                                        parar(id);
-                                    }
-                                    if(señales[i].type == 5){
-                                        $("#dejar_de_hablar").hide();
-                                        $("#levantar_mano").show();
+                                        if(señales[i].type == 4){
+                                            var id = fintd(señales[i].sender);
+                                            parar(id);
+                                        }
+                                        if(señales[i].type == 5){
+                                            $("#dejar_de_hablar").hide();
+                                            $("#levantar_mano").show();
                                                 
-                                    }
-                                    if(señales[i].type==6){
+                                        }
+                                        if(señales[i].type==6){
                                         
-                                        var texto = señales[i].text.split("/$/");
-                                        var textopiz = "";
-                                        for(var l = 1;l<texto.length;l++){
-                                            textopiz += texto[l];
-                                        }
-                                        $(señales[i].tab).html(textopiz);
-                                        var t = señales[i].tab
-                                        var tab = "#tab"+t.substring(6, t.length-5);
-                                        $(tab+" .tabinput").html(texto[0]);
-                                        var class_ = $(tab).attr("class") + " uptab";
-                                        $(tab).attr("class",class_);
+                                            var texto = señales[i].text.split("/$/");
+                                            var textopiz = "";
+                                            for(var l = 1;l<texto.length;l++){
+                                                textopiz += texto[l];
+                                            }
+                                            $(señales[i].tab).html(textopiz);
+                                            var t = señales[i].tab
+                                            var tab = "#tab"+t.substring(6, t.length-5);
+                                            $(tab+" .tabinput").html(texto[0]);
+                                            var class_ = $(tab).attr("class") + " uptab";
+                                            $(tab).attr("class",class_);
                                                 
-                                    }
-                                    if(señales[i].type==7){            
-                                        addTab();
-                                    }
-                                    if(señales[i].type==8){
-                                        $("#messagefrommaster").html(señales[i].text);
-                                        $('.infofrommaster').animate({top:"0"}, 500);
+                                        }
+                                        if(señales[i].type==7){            
+                                            addTab();
+                                        }
+                                        if(señales[i].type==8){
+                                            $("#messagefrommaster").html(señales[i].text);
+                                            $('.infofrommaster').animate({top:"0"}, 500);
+                                        }
                                     }
                                 }
                                    
@@ -461,6 +491,19 @@
                 
         function connectionCreatedHandler(event) {
 
+        }
+        
+        function chat(){
+               
+            $.ajax({
+                type: "POST",
+                url: "ServletSignals",
+                data: "sessionId=<%=sessionId%>&sender=<%=tblUsuarios.getUsrNombres()%>&reciver=''&type=101&text="+$("#mymsg").val(),
+                success: function(){
+                    $("#msg").html($("#msg").html()+"\n<%=tblUsuarios.getUsrNombres()%>: "+$("#mymsg").val());
+                    session.signal();   
+                }
+            }); 
         }
     </script>
 </html>

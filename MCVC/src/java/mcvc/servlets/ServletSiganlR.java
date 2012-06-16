@@ -42,12 +42,17 @@ public class ServletSiganlR extends HttpServlet {
             ArrayList<SIGNALS> signals_arr = (ArrayList<SIGNALS>) request.getServletContext().getAttribute(sessionId);
             ArrayList<SIGNALS> toreturn = new ArrayList<SIGNALS>();
             for (int i = 0; i < signals_arr.size(); i++) {
+                if(signals_arr.get(i).getType()==101){
+                    SIGNALS sig = signals_arr.get(i);
+                    toreturn.add(sig);  
+                }else{
                 if (signals_arr.get(i).isEstatus() && signals_arr.get(i).getReciber().equals(reciver)) {
                     SIGNALS sig = signals_arr.get(i);
                     sig.setEstatus(false);
                     toreturn.add(sig);
                     signals_arr.set(i, sig);
 
+                }
                 }
             }
             request.getServletContext().setAttribute(sessionId, signals_arr);
