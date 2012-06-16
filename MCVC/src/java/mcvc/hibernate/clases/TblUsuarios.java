@@ -1,5 +1,5 @@
 package mcvc.hibernate.clases;
-// Generated 06-10-2012 11:18:36 AM by Hibernate Tools 3.2.1.GA
+// Generated 06-16-2012 08:39:39 AM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;

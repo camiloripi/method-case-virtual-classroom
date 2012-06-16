@@ -44,6 +44,10 @@
         <servlet-name>ServletSaveClass</servlet-name>
         <servlet-class>mcvc.servlets.ServletSaveClass</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletBoard</servlet-name>
+        <servlet-class>mcvc.servlets.ServletBoard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -83,6 +87,10 @@
     <servlet-mapping>
         <servlet-name>ServletSaveClass</servlet-name>
         <url-pattern>/ServletSaveClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletBoard</servlet-name>
+        <url-pattern>/ServletBoard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -13,9 +13,7 @@
     <property name="hibernate.c3p0.max_size">20</property>
     <property name="hibernate.c3p0.timeout">1800</property>
     <property name="hibernate.c3p0.max_statements">50</property>
-    <property name="connection.provider_class">
-            org.hibernate.connection.C3P0ConnectionProvider
-        </property>
+    <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
     <mapping resource="mcvc/hibernate/clases/TblBoard.hbm.xml"/>
     <mapping resource="mcvc/hibernate/clases/TblSession.hbm.xml"/>
     <mapping resource="mcvc/hibernate/clases/TblLog.hbm.xml"/>

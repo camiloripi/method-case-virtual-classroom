@@ -1,20 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 06-10-2012 11:18:38 AM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 06-16-2012 08:39:41 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="mcvc.hibernate.clases.TblBoard" table="tbl_board" catalog="mv_classroom">
-        <id name="brdId" type="java.lang.Integer">
-            <column name="BRD_ID" />
-            <generator class="identity" />
-        </id>
-        <many-to-one name="tblSession" class="mcvc.hibernate.clases.TblSession" fetch="select">
+        <composite-id name="id" class="mcvc.hibernate.clases.TblBoardId">
+            <key-property name="brdTabId" type="string">
+                <column name="BRD_TabID" length="45" />
+            </key-property>
+            <key-property name="clsId" type="int">
+                <column name="CLS_ID" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="tblSession" class="mcvc.hibernate.clases.TblSession" update="false" insert="false" fetch="select">
             <column name="CLS_ID" not-null="true" />
         </many-to-one>
         <property name="brdName" type="string">
             <column name="BRD_Name" length="30" not-null="true" />
         </property>
-        <property name="brdText" type="binary">
+        <property name="brdText" type="string">
             <column name="BRD_Text" />
         </property>
     </class>

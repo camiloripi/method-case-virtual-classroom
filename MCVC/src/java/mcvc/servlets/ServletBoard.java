@@ -6,19 +6,16 @@ package mcvc.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mcvc.util.SIGNALS;
-import mcvc.util.Sqlquery;
 
 /**
  *
  * @author Camilo-Rivera
  */
-public class ServletSignalsALL extends HttpServlet {
+public class ServletBoard extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -35,58 +32,8 @@ public class ServletSignalsALL extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String sessionId = request.getParameter("sessionId");
-            String sender = request.getParameter("sender");
-            String reciver = request.getParameter("reciver");
-            int type = Integer.valueOf(request.getParameter("type"));
-            String tab = request.getParameter("tab");
-            String tabname = request.getParameter("tabname");
-            String text = request.getParameter("text");
-            String reciver_arr[] = reciver.split(";");
-            ArrayList<SIGNALS> signals_arr = (ArrayList<SIGNALS>) request.getServletContext().getAttribute(sessionId);
-            for (int i = 0; i < reciver_arr.length; i++) {
-                SIGNALS signal = new SIGNALS();
-                signal.setEstatus(true);
-                signal.setReciber(reciver_arr[i]);
-                signal.setSender(sender);
-                signal.setType(type);
-                if(tabname!=null){
-                   signal.setText(tabname+"/$/"+text); 
-                }else{
-                signal.setText(text);
-                }
-                signal.setTab(tab);
-                signals_arr.add(signal);
-            }
-            request.getServletContext().setAttribute(sessionId, signals_arr);
-            if (type == 7) {
-                String clsid = request.getParameter("clsid");
-                
-                Sqlquery sql = new Sqlquery();
-                sql.setcurrentSession();
-                try {
-                    sql.insertBoard(tabname, clsid,tab);
-
-                } finally {
-                    sql.closeSession();
-                  
-                }
-
-            }
-            if(type==6)
-            {
-               String clsid = request.getParameter("clsid");
-                Sqlquery sql = new Sqlquery();
-                sql.setcurrentSession();
-                try {
-                    sql.UpdatBoard(clsid, tab, text, tabname);
-
-                } finally {
-                    sql.closeSession();
-                  
-                } 
-            }
-        } finally {
+            
+        } finally {            
             out.close();
         }
     }

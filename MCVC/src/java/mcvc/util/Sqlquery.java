@@ -23,6 +23,7 @@ public class Sqlquery {
     private List<TblLog> tbllog;
     private List<TblEstudiantesxclase> tblestudiantesxclase;
     private List<TblEstudiantesxclaseId> tblestudiantesxclaseid;
+    private List<TblBoard> tblboard;
 
     public Sqlquery() {
     }
@@ -268,6 +269,70 @@ public class Sqlquery {
         
         return ok;
     }
+     
+     public String insertBoard(String Name,String CLS_ID,String tabid) {
+  
+        String  ok = "";
+        org.hibernate.Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            tblsession = null;
+            Query q = session.createQuery("from TblBoard where CLS_ID='"+CLS_ID+"' and BRD_TabID='"+tabid+"'");
+            
+            tblboard = (List<TblBoard>) q.list();
+            if(tblboard.isEmpty()){
+            q = session.createQuery("from TblSession where clsId='"+CLS_ID+"'");
+            tblsession = (List<TblSession>) q.list();
+            TblSession sessioncls = null;
+            if(tblsession.size()>0){
+            sessioncls = tblsession.get(0);
+            }
+            TblBoardId tblboardid = new TblBoardId(tabid,Integer.parseInt(CLS_ID));
+            TblBoard tr = new TblBoard(tblboardid,sessioncls, Name);
+            session.save(tr);
+            tx.commit();
+            }else{
+               TblBoard tblupdate;
+                tblupdate = tblboard.get(0);
+                tblupdate.setBrdText("");
+                
+                session.saveOrUpdate(tblupdate);
+                tx.commit();        
+            }
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ok = "No se Pudo Insertar el Usuario Intentelo de Nuevo";
+        }
+
+        return ok;
+    }
+     
+     public String UpdatBoard(String CLS_ID,String Tab,String Text,String Name){
+        tblboard = null;
+        String ok="";
+        try {
+            org.hibernate.Transaction tx = session.beginTransaction();
+            Query q = session.createQuery("from TblBoard where  CLS_ID='"+CLS_ID+"' and BRD_TabID='"+Tab+"'");
+            tblboard  = (List<TblBoard>) q.list();
+            if(tblboard.size()>0){
+                TblBoard tblupdate;
+                tblupdate = tblboard.get(0);
+                tblupdate.setBrdName(Name);
+                tblupdate.setBrdText(Text);
+                session.saveOrUpdate(tblupdate);
+                tx.commit();
+            }
+            
+        } catch (Exception e) {
+            ok = "No se Guardar La tab";
+        }
+        
+        return ok;
+    }
+     
+     
     
     
 
@@ -353,5 +418,19 @@ public class Sqlquery {
      */
     public void setTblestudiantesxclaseid(List<TblEstudiantesxclaseId> tblestudiantesxclaseid) {
         this.tblestudiantesxclaseid = tblestudiantesxclaseid;
+    }
+
+    /**
+     * @return the tblboard
+     */
+    public List<TblBoard> getTblboard() {
+        return tblboard;
+    }
+
+    /**
+     * @param tblboard the tblboard to set
+     */
+    public void setTblboard(List<TblBoard> tblboard) {
+        this.tblboard = tblboard;
     }
 }

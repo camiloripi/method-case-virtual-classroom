@@ -23,6 +23,7 @@
             if (!maestro.equals((String) session.getAttribute("usuario"))) {
                 response.sendRedirect("index.jsp");
             }
+            face.insertBoard("1", String.valueOf(cls_ID),"#tabs-1 .piz");
             ArrayList<SIGNALS> signals_arr = new ArrayList<SIGNALS>();
             getServletContext().setAttribute(sessionId, signals_arr);
 %>
@@ -98,14 +99,14 @@
                     var other = $("#addtab");
                     $("#tab"+tab_counter).after(other.clone());
                     other.after($("#tab"+tab_counter)).remove();
-                    addtabS();
+                    addtabS(tab_counter,"#tabs-"+tab_counter+" .piz");
                     $("#tabs-" + tab_counter).attr("style","height: 80%" );                                              
                     tab_counter++;
                 }
                        
             }
                 
-            function addtabS(){
+            function addtabS(tab){
                 var liststu = "";
                 for(var i =0;i<3;i++){
                     for(var j=0;j<10;j++){
@@ -118,7 +119,7 @@
                 $.ajax({
                     type: "POST",
                     url: "ServletSignalsALL",
-                    data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=7",
+                    data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=7&clsid=<%=cls_ID%>&tabname="+tab+"&tab=#tabs-"+tab+" .piz",
                     success: function(){
                         session.signal();
                     }
@@ -144,7 +145,7 @@
                 $.ajax({
                     type: "POST",
                     url: "ServletSignalsALL",
-                    data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=6&text="+tabname+"/$/"+escape($(id).val())+"&tab="+id,
+                    data: "sessionId=<%=sessionId%>&sender=<%=maestro%>&reciver="+liststu+"&type=6&clsid=<%=cls_ID%>&text="+escape($(id).val())+"&tab="+id+"&tabname="+tabname,
                     success: function(){
                         session.signal();
                     }
