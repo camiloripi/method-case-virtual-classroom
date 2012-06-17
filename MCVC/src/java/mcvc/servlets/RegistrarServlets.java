@@ -43,8 +43,13 @@ public class RegistrarServlets extends HttpServlet {
             String apellido2 = request.getParameter("2apellido");
             String celular = request.getParameter("celular");
             String telefono = request.getParameter("telefono");
-            String contraseña = StringMD.getStringMessageDigest(request.getParameter("pass"), "MD5");
+            String cont = request.getParameter("pass");
+            String contraseña = StringMD.getStringMessageDigest(cont, "MD5");
 
+            if( cont.length() < 6)
+            {
+                 response.sendRedirect("MsjError.jsp?msj=Contraseña debe contener al menos 6 caracteres"+ "&topage=Registrar&text=Registrar");
+            }
             
             String mes = sqlquery.insertUser(email, nombre, apellido1, apellido2, celular, telefono, contraseña);
            
